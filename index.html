@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Design Suite | Artificial Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset & Base ─────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --gray-dark: #313131;
+            --gray-bg: #eeeeee;
+            --gray-light: #f7f7f7;
+            --text-primary: #313131;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --border: #ddd;
+            --white: #FFFFFF;
+            --accent-blue: #1E5C8A;
+            --accent-green: #2D6A4F;
+            --accent-purple: #5C4B8A;
+            --radius: 4px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --font-heading: 'Oswald', Arial, sans-serif;
+            --font-body: 'Work Sans', Arial, sans-serif;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: var(--maroon); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--maroon-light); text-decoration: underline; }
+
+        /* ── University Bar (top tier) ────────────────────── */
+        .university-bar {
+            background: var(--white);
+            border-bottom: 1px solid #ddd;
+            padding: 8px 24px;
+        }
+        .university-bar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .university-bar a {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .university-bar a:hover { color: var(--maroon); text-decoration: underline; }
+        .tamu-mark {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-heading);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--maroon);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+        }
+        .tamu-mark:hover { color: var(--maroon); text-decoration: none; }
+        .tamu-mark .tamu-block {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--maroon);
+            color: var(--white);
+            width: 28px;
+            height: 28px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 2px;
+            letter-spacing: 0;
+        }
+
+        /* ── Mays Header (second tier) ────────────────────── */
+        .site-header {
+            background: var(--maroon);
+            color: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 56px;
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-brand h1 {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .header-brand .separator {
+            width: 1px;
+            height: 24px;
+            background: rgba(255,255,255,0.3);
+        }
+        .header-brand .suite-name {
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* ── Navigation ───────────────────────────────────── */
+        .site-nav {
+            background: var(--gray-dark);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+        .nav-inner a {
+            color: rgba(255,255,255,0.75);
+            padding: 14px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: var(--font-body);
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .nav-inner a:hover,
+        .nav-inner a.active {
+            color: var(--white);
+            border-bottom-color: var(--white);
+            text-decoration: none;
+        }
+
+        /* ── Hero ─────────────────────────────────────────── */
+        .hero {
+            background: var(--maroon);
+            color: var(--white);
+            padding: 64px 24px 56px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 5px 16px;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 24px;
+        }
+        .hero h2 {
+            font-family: var(--font-heading);
+            font-size: 42px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+        .hero p {
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 580px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover { text-decoration: none; }
+        .btn-primary {
+            background: var(--white);
+            color: var(--maroon);
+        }
+        .btn-primary:hover { background: var(--gray-bg); color: var(--maroon); }
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+        .btn-secondary:hover { border-color: var(--white); color: var(--white); }
+
+        /* ── Main Content ─────────────────────────────────── */
+        .main { max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
+
+        /* ── Section Headers ──────────────────────────────── */
+        .section { margin-bottom: 56px; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 8px;
+        }
+        .section h3 {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .section h3::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 24px;
+            background: var(--maroon);
+            margin-right: 12px;
+            vertical-align: middle;
+        }
+        .section > p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 24px;
+            max-width: 700px;
+        }
+
+        /* ── Audience Toggle ──────────────────────────────── */
+        .audience-toggle {
+            display: flex;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+        .audience-toggle button {
+            padding: 8px 20px;
+            border: none;
+            background: var(--white);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: var(--font-body);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-right: 1px solid var(--border);
+        }
+        .audience-toggle button:last-child { border-right: none; }
+        .audience-toggle button.active {
+            background: var(--maroon);
+            color: var(--white);
+        }
+
+        /* ── Card Grid ────────────────────────────────────── */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px 24px;
+            transition: box-shadow 0.2s, transform 0.2s;
+            position: relative;
+            border-top: 4px solid var(--maroon);
+        }
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .card-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        .tag-faculty { background: #EDE8F5; color: var(--accent-purple); }
+        .tag-tli { background: #E0F0E8; color: var(--accent-green); }
+        .tag-both { background: #FFF4E0; color: #8B6914; }
+        .tag-policy { background: #FDEAEA; color: #8A1E1E; }
+        .tag-tool { background: #E8F0F8; color: var(--accent-blue); }
+        .card h4 {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .card-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--maroon);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-link:hover { gap: 8px; text-decoration: none; }
+
+        /* ── Framework Table ──────────────────────────────── */
+        .framework-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .framework-table thead {
+            background: var(--maroon);
+            color: var(--white);
+        }
+        .framework-table th {
+            padding: 14px 20px;
+            text-align: left;
+            font-family: var(--font-heading);
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .framework-table td {
+            padding: 16px 20px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .framework-table tr:last-child td { border-bottom: none; }
+        .framework-table tbody tr:hover { background: var(--gray-light); }
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .level-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .level-1 .level-dot { background: #2D6A4F; }
+        .level-2 .level-dot { background: var(--accent-blue); }
+        .level-3 .level-dot { background: var(--accent-purple); }
+        .level-4 .level-dot { background: var(--maroon); }
+
+        /* ── Toolbox Section ──────────────────────────────── */
+        .tool-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .tool-item {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            transition: box-shadow 0.2s;
+        }
+        .tool-item:hover { box-shadow: var(--shadow-sm); }
+        .tool-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .tool-info h5 {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .tool-info p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .tool-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .status-approved { background: #E0F0E8; color: #2D6A4F; }
+        .status-pilot { background: #FFF4E0; color: #8B6914; }
+        .status-review { background: #E8F0F8; color: var(--accent-blue); }
+
+        /* ── Policy Accordion ─────────────────────────────── */
+        .accordion { display: flex; flex-direction: column; gap: 8px; }
+        .accordion-item {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .accordion-trigger {
+            width: 100%;
+            padding: 18px 24px;
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: left;
+        }
+        .accordion-trigger:hover { background: var(--gray-light); }
+        .accordion-arrow {
+            font-size: 12px;
+            transition: transform 0.2s;
+            color: var(--text-muted);
+        }
+        .accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .accordion-item.open .accordion-body { max-height: 600px; }
+        .accordion-content {
+            padding: 0 24px 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .accordion-content ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        .accordion-content li { margin-bottom: 6px; }
+
+        /* ── Workflow / Process Steps ─────────────────────── */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .step {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            position: relative;
+            border-top: 3px solid var(--maroon);
+        }
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: var(--maroon);
+            color: var(--white);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .step h5 {
+            font-family: var(--font-heading);
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .step p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ── Quick-Reference Stats ────────────────────────── */
+        .stat-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            border-top: 3px solid var(--maroon);
+        }
+        .stat-card .stat-value {
+            font-family: var(--font-heading);
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--maroon);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* ── Contact / CTA ────────────────────────────────── */
+        .cta-banner {
+            background: var(--maroon);
+            color: var(--white);
+            border-radius: var(--radius);
+            padding: 48px 40px;
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .cta-banner h3 {
+            font-family: var(--font-heading);
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+        .cta-banner p {
+            opacity: 0.9;
+            font-size: 15px;
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+        .cta-banner .btn-primary {
+            background: var(--white);
+            color: var(--maroon);
+        }
+
+        /* ── Footer ───────────────────────────────────────── */
+        .site-footer {
+            background: var(--gray-dark);
+            color: rgba(255,255,255,0.7);
+            padding: 40px 24px;
+            font-size: 13px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .footer-brand strong {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--white);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .footer-brand span {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+        }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .footer-links a:hover { color: var(--white); text-decoration: underline; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 16px auto 0;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+        }
+
+        /* ── Responsive ───────────────────────────────────── */
+        @media (max-width: 768px) {
+            .hero h2 { font-size: 28px; }
+            .hero { padding: 48px 20px 40px; }
+            .main { padding: 32px 16px; }
+            .card-grid { grid-template-columns: 1fr; }
+            .process-steps { grid-template-columns: 1fr 1fr; }
+            .framework-table { font-size: 13px; }
+            .framework-table th, .framework-table td { padding: 10px 12px; }
+            .stat-bar { grid-template-columns: 1fr 1fr; }
+            .header-brand .separator, .header-brand .suite-name { display: none; }
+            .university-bar { display: none; }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .process-steps { grid-template-columns: 1fr; }
+            .stat-bar { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     UNIVERSITY BAR (top tier)
+     ════════════════════════════════════════════════════════ -->
+<div class="university-bar">
+    <div class="university-bar-inner">
+        <a href="https://www.tamu.edu" target="_blank" class="tamu-mark">
+            <span class="tamu-block">ATM</span>
+            Texas A&amp;M University
+        </a>
+        <a href="https://mays.tamu.edu" target="_blank">Mays Business School</a>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     HEADER
+     ════════════════════════════════════════════════════════ -->
+<header class="site-header">
+    <div class="header-inner">
+        <div class="header-brand">
+            <h1>Teaching &amp; Learning Innovation</h1>
+            <div class="separator"></div>
+            <span class="suite-name">Learning Design Suite</span>
+        </div>
+    </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════
+     NAVIGATION
+     ════════════════════════════════════════════════════════ -->
+<nav class="site-nav">
+    <div class="nav-inner">
+        <a href="#overview">Overview</a>
+        <a href="#tools" class="active">AI Tools</a>
+        <a href="#design-tools">Design Tools</a>
+        <a href="#policy">Policy &amp; Governance</a>
+        <a href="#literacy">AI Literacy Framework</a>
+        <a href="#workflow">Integration Workflow</a>
+        <a href="#resources">Resources</a>
+    </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════════════════════ -->
+<section class="hero" id="overview">
+    <div class="hero-content">
+        <div class="hero-badge">Artificial Intelligence</div>
+        <h2>AI-Informed Learning Design for Mays Business School</h2>
+        <p>A comprehensive resource for faculty and TLI staff to responsibly integrate artificial intelligence into course design, delivery, and quality assurance across the Flex Online and on-campus portfolio.</p>
+        <div class="hero-actions">
+            <a href="#design-tools" class="btn btn-primary">Explore Design Tools &#8594;</a>
+            <a href="#literacy" class="btn btn-secondary">View AI Literacy Framework</a>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     AT-A-GLANCE STATS
+     ════════════════════════════════════════════════════════ -->
+<main class="main">
+
+    <div class="stat-bar">
+        <div class="stat-card">
+            <div class="stat-value">4</div>
+            <div class="stat-label">AI Literacy Levels</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">9</div>
+            <div class="stat-label">Approved / Pilot Tools</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">5</div>
+            <div class="stat-label">Governance Policies</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">10</div>
+            <div class="stat-label">Interactive Design Tools</div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         AI TOOLS & INTEGRATION
+         ════════════════════════════════════════════════════ -->
+    <div class="section" id="tools">
+        <div class="section-header">
+            <h3>AI Tools &amp; Integration</h3>
+        </div>
+        <p>Approved and pilot AI tools available for use in course design, content development, and learning delivery. Each tool has been evaluated for data privacy, accessibility, and instructional alignment.</p>
+
+        <div class="audience-toggle" id="toolAudienceToggle">
+            <button class="active" onclick="filterTools('all')">All</button>
+            <button onclick="filterTools('faculty')">Faculty</button>
+            <button onclick="filterTools('tli')">TLI Staff</button>
+        </div>
+
+        <div class="tool-list" id="toolList">
+            <div class="tool-item" data-audience="both" style="border-left: 4px solid var(--maroon);">
+                <div class="tool-icon" style="background:#F5E6E6;">&#127979;</div>
+                <div class="tool-info">
+                    <h5>TAMU AI Chat (BETA)</h5>
+                    <p>Texas A&amp;M's secure, institutionally hosted AI platform at <a href="https://tamu.ai/" target="_blank">tamu.ai</a>. Provides access to multiple models (GPT-4, Claude Sonnet, Gemini) through a single interface. Sessions are not used to train external models. Supports multi-model comparison and merged outputs.</p>
+                    <span class="tool-status status-approved">Approved &mdash; Institutional</span>
+                </div>
+            </div>
+            <div class="tool-item" data-audience="both">
+                <div class="tool-icon" style="background:#E8F0F8;">&#129302;</div>
+                <div class="tool-info">
+                    <h5>Claude (Anthropic)</h5>
+                    <p>Long-form content drafting, rubric generation, syllabus review, and structured feedback on learning objectives.</p>
+                    <span class="tool-status status-approved">Approved</span>
+                </div>
+            </div>
+            <div class="tool-item" data-audience="both">
+                <div class="tool-icon" style="background:#E0F0E8;">&#9997;</div>
+                <div class="tool-info">
+                    <h5>ChatGPT (OpenAI)</h5>
+                    <p>Interactive brainstorming, quiz question drafting, and scenario-based content generation for case studies.</p>
+                    <span class="tool-status status-approved">Approved</span>
+                </div>
+            </div>
+            <div class="tool-item" data-audience="both">
+                <div class="tool-icon" style="background:#EDE8F5;">&#127912;</div>
+                <div class="tool-info">
+                    <h5>Microsoft Copilot</h5>
+                    <p>In-context assistance within Word, PowerPoint, and Teams for document drafting and slide creation.</p>
+                    <span class="tool-status status-approved">Approved</span>
+                </div>
+            </div>
+            <div class="tool-item" data-audience="tli">
+                <div class="tool-icon" style="background:#FFF4E0;">&#128202;</div>
+                <div class="tool-info">
+                    <h5>Grammarly Business</h5>
+                    <p>Consistency editing, tone calibration, and accessibility checks across all course-facing content.</p>
+                    <span class="tool-status status-approved">Approved</span>
+                </div>
+            </div>
+            <div class="tool-item" data-audience="faculty">
+                <div class="tool-icon" style="background:#FDEAEA;">&#128218;</div>
+                <div class="tool-info">
+                    <h5>NotebookLM (Google)</h5>
+                    <p>Source-grounded Q&A for research synthesis. Faculty can upload readings and generate study guides for students.</p>
+                    <span class="tool-status status-approved">Approved</span>
+                </div>
+            </div>
+            <div class="tool-item" data-audience="tli">
+                <div class="tool-icon" style="background:#E8F0F8;">&#128247;</div>
+                <div class="tool-info">
+                    <h5>Articulate Rise + AI Assist</h5>
+                    <p>AI-assisted interactive lesson authoring with auto-generated knowledge checks and layout suggestions.</p>
+                    <span class="tool-status status-pilot">Pilot</span>
+                </div>
+            </div>
+            <div class="tool-item" data-audience="both">
+                <div class="tool-icon" style="background:#E0F0E8;">&#127911;</div>
+                <div class="tool-info">
+                    <h5>Descript</h5>
+                    <p>AI-powered video and audio editing, auto-transcription, and caption generation for lecture media.</p>
+                    <span class="tool-status status-pilot">Pilot</span>
+                </div>
+            </div>
+            <div class="tool-item" data-audience="faculty">
+                <div class="tool-icon" style="background:#EDE8F5;">&#128300;</div>
+                <div class="tool-info">
+                    <h5>Turnitin AI Detection</h5>
+                    <p>AI writing detection integrated with Canvas for academic integrity monitoring in student submissions.</p>
+                    <span class="tool-status status-approved">Approved</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         LEARNING DESIGN TOOLS (Interactive Suite)
+         ════════════════════════════════════════════════════ -->
+    <div class="section" id="design-tools">
+        <div class="section-header">
+            <h3>Learning Design Tools</h3>
+        </div>
+        <p>Interactive, AI-powered tools for course design, content generation, accessibility, and student interaction. Each tool connects directly to <a href="https://tamu.ai/" target="_blank">TAMU AI Chat</a> to generate results on the page.</p>
+
+        <div class="audience-toggle" id="designToolToggle">
+            <button class="active" onclick="filterDesignTools('all')">All Tools</button>
+            <button onclick="filterDesignTools('course-design')">Course Design</button>
+            <button onclick="filterDesignTools('content')">Content Generation</button>
+            <button onclick="filterDesignTools('accessibility')">Accessibility</button>
+            <button onclick="filterDesignTools('interaction')">Student Interaction</button>
+        </div>
+
+        <div class="card-grid" id="designToolGrid">
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Course Design</span>
+                <h4>Learning Objectives Creator</h4>
+                <p>Generate clear, measurable learning objectives aligned to Bloom's Taxonomy for any course or module.</p>
+                <a href="tool-learning-objectives-creator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Course Design</span>
+                <h4>Module Sequencing Strategist</h4>
+                <p>Organize course topics into a coherent, pedagogically grounded sequence across your modules or weeks.</p>
+                <a href="tool-module-sequencing-strategist.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Course Design</span>
+                <h4>Syllabus Reviewer</h4>
+                <p>Get structured feedback on your syllabus against Mays standards, TAMU requirements, and instructional design best practices.</p>
+                <a href="tool-syllabus-reviewer.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="content">
+                <span class="card-tag tag-tool">Content Generation</span>
+                <h4>Discussion Prompt Generator</h4>
+                <p>Draft discussion prompts that extend critical thinking and connect theory to practice at targeted cognitive levels.</p>
+                <a href="tool-discussion-prompt-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="content">
+                <span class="card-tag tag-tool">Content Generation</span>
+                <h4>Assignment Description Builder</h4>
+                <p>Create clear, well-designed assignment descriptions with rubrics and built-in AI use policy statements.</p>
+                <a href="tool-assignment-description-builder.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="content">
+                <span class="card-tag tag-tool">Content Generation</span>
+                <h4>Assessment Question Generator</h4>
+                <p>Generate quiz and exam questions across multiple formats, mapped to learning objectives and Bloom's levels.</p>
+                <a href="tool-assessment-question-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="accessibility">
+                <span class="card-tag tag-tli">Accessibility</span>
+                <h4>Alt Text Generator</h4>
+                <p>Create accessible, WCAG-compliant alt text for images in course materials, slides, and Canvas pages.</p>
+                <a href="tool-alt-text-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="accessibility">
+                <span class="card-tag tag-tli">Accessibility</span>
+                <h4>Content Accessibility Checker</h4>
+                <p>Audit course content for accessibility issues including reading level, heading structure, link text, and inclusive language.</p>
+                <a href="tool-content-accessibility-checker.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="interaction">
+                <span class="card-tag tag-both">Student Interaction</span>
+                <h4>Student FAQ Generator</h4>
+                <p>Generate anticipated student questions with draft answers, organized by category, for a proactive course FAQ page.</p>
+                <a href="tool-student-faq-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="interaction">
+                <span class="card-tag tag-both">Student Interaction</span>
+                <h4>Case Study Scenario Builder</h4>
+                <p>Create realistic business case study scenarios with discussion questions, data exhibits, and teaching notes.</p>
+                <a href="tool-case-study-scenario-builder.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         POLICY & GOVERNANCE
+         ════════════════════════════════════════════════════ -->
+    <div class="section" id="policy">
+        <div class="section-header">
+            <h3>Policy &amp; Governance</h3>
+        </div>
+        <p>Institutional policies governing AI use in teaching, learning design, and student assessment at Mays Business School. All policies align with Texas A&amp;M University System regulations.</p>
+
+        <div class="accordion">
+            <div class="accordion-item open">
+                <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                    <span>Acceptable Use of AI in Course Design</span>
+                    <span class="accordion-arrow">&#9660;</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>AI tools may be used to support course design activities including content drafting, rubric development, and learning objective alignment. All AI-generated content must be reviewed, verified for accuracy, and edited by the responsible faculty member or learning designer before being published to students.</p>
+                        <ul>
+                            <li>AI outputs are starting points, not final products</li>
+                            <li>Faculty retain full responsibility for course content accuracy</li>
+                            <li>AI-generated content must meet Mays accessibility standards (WCAG 2.1 AA)</li>
+                            <li>Proprietary or FERPA-protected data must never be entered into public AI tools</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                    <span>Student-Facing AI Disclosure Requirements</span>
+                    <span class="accordion-arrow">&#9660;</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>Courses that permit or require student use of AI tools must include a clear AI use policy in the syllabus. This statement should specify which tools are allowed, how they may be used, and citation expectations.</p>
+                        <ul>
+                            <li>Include an AI use statement in the syllabus (template available below)</li>
+                            <li>Define permitted vs. prohibited uses per assignment</li>
+                            <li>Require students to disclose AI use where applicable</li>
+                            <li>Provide guidance on proper citation of AI-generated content</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                    <span>Data Privacy and FERPA Compliance</span>
+                    <span class="accordion-arrow">&#9660;</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>AI tools used in course design and delivery must comply with FERPA regulations and Texas A&amp;M data governance standards. No student personally identifiable information (PII) may be processed through AI tools that lack institutional data processing agreements.</p>
+                        <ul>
+                            <li>Do not enter student names, UINs, grades, or email addresses into AI tools</li>
+                            <li>Use only institutionally licensed or approved AI platforms for student data</li>
+                            <li>Microsoft Copilot (via TAMU license) is the only tool currently approved for use with internal institutional data</li>
+                            <li>Contact TLI before integrating any new AI tool that will process student information</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                    <span>Academic Integrity and AI Detection</span>
+                    <span class="accordion-arrow">&#9660;</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>Mays Business School supports a balanced approach to academic integrity in the age of AI. Detection tools are one signal among many; they should not be used as the sole basis for academic misconduct findings.</p>
+                        <ul>
+                            <li>Turnitin AI detection is available but produces probabilistic estimates, not certainty</li>
+                            <li>Assignment design is the most effective academic integrity strategy</li>
+                            <li>Prioritize assessments that require personal reflection, application, or in-class performance</li>
+                            <li>Document your AI policy expectations clearly in every assignment description</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                    <span>Accessibility Requirements for AI-Generated Content</span>
+                    <span class="accordion-arrow">&#9660;</span>
+                </button>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>All AI-generated content published in Canvas or distributed to students must meet the same accessibility standards as any other course material. AI tools do not reliably produce accessible output by default.</p>
+                        <ul>
+                            <li>Check heading structure, alt text, and reading order on all AI-generated documents</li>
+                            <li>Verify color contrast ratios meet WCAG 2.1 AA (4.5:1 for body text)</li>
+                            <li>Ensure AI-generated captions and transcripts are edited for accuracy</li>
+                            <li>Use the Ally accessibility checker in Canvas before publishing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         AI LITERACY FRAMEWORK
+         ════════════════════════════════════════════════════ -->
+    <div class="section" id="literacy">
+        <div class="section-header">
+            <h3>AI Literacy Framework</h3>
+        </div>
+        <p>A four-level competency model for building AI literacy among faculty and students at Mays. Each level builds on the previous, with clear indicators and practical applications mapped to course design activities.</p>
+
+        <div style="overflow-x:auto;">
+        <table class="framework-table">
+            <thead>
+                <tr>
+                    <th style="width:18%;">Level</th>
+                    <th style="width:25%;">Competency</th>
+                    <th style="width:32%;">Faculty Application</th>
+                    <th style="width:25%;">Student Outcome</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="level-badge level-1"><span class="level-dot"></span> 1 &mdash; Awareness</span></td>
+                    <td>Understands what AI is, how it works at a high level, and where it appears in everyday tools. Can distinguish AI-assisted from non-AI processes.</td>
+                    <td>Include a brief AI orientation in the Getting Started module. Identify which course tools use AI features (e.g., Grammarly, Canvas recommendations).</td>
+                    <td>Students can identify AI-powered features in tools they already use and articulate basic capabilities and limitations.</td>
+                </tr>
+                <tr>
+                    <td><span class="level-badge level-2"><span class="level-dot"></span> 2 &mdash; Application</span></td>
+                    <td>Can use AI tools effectively for defined tasks. Understands prompt engineering basics and can evaluate output quality.</td>
+                    <td>Design assignments that permit AI use with clear parameters. Provide prompt templates. Model effective AI use in class demonstrations.</td>
+                    <td>Students can use approved AI tools to complete defined tasks, write effective prompts, and assess whether AI output meets assignment requirements.</td>
+                </tr>
+                <tr>
+                    <td><span class="level-badge level-3"><span class="level-dot"></span> 3 &mdash; Evaluation</span></td>
+                    <td>Can critically assess AI outputs for accuracy, bias, and appropriateness. Understands ethical implications and institutional policy.</td>
+                    <td>Build in peer-review activities where students evaluate AI-generated work. Include case studies on AI bias in business contexts. Require reflection on AI use.</td>
+                    <td>Students can identify errors, biases, and ethical issues in AI outputs. They can justify when AI use is and is not appropriate for a given context.</td>
+                </tr>
+                <tr>
+                    <td><span class="level-badge level-4"><span class="level-dot"></span> 4 &mdash; Integration</span></td>
+                    <td>Can design workflows that strategically incorporate AI to enhance outcomes. Understands organizational and societal impacts.</td>
+                    <td>Co-design course projects where students build AI-augmented solutions for real business problems. Integrate AI into capstone and experiential learning.</td>
+                    <td>Students can propose, build, and defend AI-integrated solutions within professional and ethical boundaries relevant to their discipline.</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         INTEGRATION WORKFLOW
+         ════════════════════════════════════════════════════ -->
+    <div class="section" id="workflow">
+        <div class="section-header">
+            <h3>AI Integration Workflow</h3>
+        </div>
+        <p>A six-step process for faculty and learning designers to evaluate, plan, and integrate AI tools into a course. This workflow applies whether you are building a new Flex Online course or enhancing an existing on-campus section.</p>
+
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h5>Identify the Need</h5>
+                <p>Define the instructional problem or opportunity. What task will AI support: content creation, assessment, student engagement, or workflow efficiency?</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h5>Check Policy Alignment</h5>
+                <p>Review Mays AI governance policies. Confirm the proposed use complies with FERPA, accessibility standards, and academic integrity requirements.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h5>Select Approved Tool</h5>
+                <p>Choose from the approved tool list above. If your use case requires an unlisted tool, submit a tool evaluation request to TLI.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h5>Design with Guardrails</h5>
+                <p>Define clear parameters: what AI will and will not do, what the human review process looks like, and how students will be informed.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <h5>Pilot and Collect Feedback</h5>
+                <p>Test in a single module or assignment. Gather student and instructor feedback before scaling across the full course.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">6</div>
+                <h5>Evaluate and Document</h5>
+                <p>Assess impact on learning outcomes and efficiency. Document what worked, what did not, and share findings with TLI for the knowledge base.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         RESOURCES & TEMPLATES
+         ════════════════════════════════════════════════════ -->
+    <div class="section" id="resources">
+        <div class="section-header">
+            <h3>Resources &amp; Templates</h3>
+        </div>
+        <p>Ready-to-use templates, guides, and reference documents for integrating AI into your courses. Resources are tagged by audience to help you find what you need quickly.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <span class="card-tag tag-faculty">Faculty</span>
+                <h4>Syllabus AI Use Statement Template</h4>
+                <p>A customizable syllabus insert that communicates your course-level AI policy to students. Includes three tiers: AI prohibited, AI permitted with disclosure, and AI encouraged.</p>
+                <a href="#" class="card-link">Download Template &#8594;</a>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-both">Faculty + TLI</span>
+                <h4>AI Prompt Library for Course Design</h4>
+                <p>A curated set of effective prompts for common learning design tasks: writing learning objectives, generating quiz questions, drafting rubric criteria, and creating case study scenarios.</p>
+                <a href="#" class="card-link">View Library &#8594;</a>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-tli">TLI Staff</span>
+                <h4>AI Tool Evaluation Checklist</h4>
+                <p>A structured rubric for evaluating new AI tools against institutional requirements including data privacy, accessibility, integration capabilities, and cost.</p>
+                <a href="#" class="card-link">Download Checklist &#8594;</a>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-faculty">Faculty</span>
+                <h4>AI-Resilient Assignment Design Guide</h4>
+                <p>Strategies for designing assignments that maintain academic integrity in an AI-enabled environment. Focuses on personal application, reflection, and process-based assessment.</p>
+                <a href="#" class="card-link">View Guide &#8594;</a>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-tli">TLI Staff</span>
+                <h4>AI Integration SOP for Learning Designers</h4>
+                <p>Step-by-step operating procedures for incorporating AI tools into the course build workflow, including quality checkpoints and documentation requirements.</p>
+                <a href="#" class="card-link">View SOP &#8594;</a>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-both">Faculty + TLI</span>
+                <h4>AI Literacy Module Template (Canvas)</h4>
+                <p>A ready-to-import Canvas module that introduces students to AI literacy fundamentals. Includes a video overview, a self-assessment quiz, and a reflection discussion.</p>
+                <a href="#" class="card-link">Preview Module &#8594;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         CTA BANNER
+         ════════════════════════════════════════════════════ -->
+    <div class="cta-banner">
+        <h3>Questions about AI in your course?</h3>
+        <p>TLI is here to help you navigate AI integration, from tool selection to policy compliance. Reach out to start a conversation.</p>
+        <a href="mailto:jeffrey.jones@tamu.edu" class="btn btn-primary">Contact TLI &#8594;</a>
+    </div>
+
+</main>
+
+<!-- ════════════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <strong>Teaching &amp; Learning Innovation</strong>
+            <span>Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <div class="footer-links">
+            <a href="https://mays.tamu.edu" target="_blank">Mays Business School</a>
+            <a href="https://www.tamu.edu" target="_blank">Texas A&amp;M University</a>
+            <a href="mailto:jeffrey.jones@tamu.edu">Contact</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 Mays Business School. All rights reserved. &bull; Last updated April 2026
+    </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ════════════════════════════════════════════════════════ -->
+<script>
+    function toggleAccordion(trigger) {
+        const item = trigger.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+    }
+
+    function filterTools(audience) {
+        const buttons = document.querySelectorAll('#toolAudienceToggle button');
+        buttons.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        const items = document.querySelectorAll('#toolList .tool-item');
+        items.forEach(item => {
+            const tag = item.getAttribute('data-audience');
+            item.style.display = (audience === 'all' || tag === audience || tag === 'both') ? 'flex' : 'none';
+        });
+    }
+
+    function filterDesignTools(category) {
+        const buttons = document.querySelectorAll('#designToolToggle button');
+        buttons.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        const cards = document.querySelectorAll('#designToolGrid .card');
+        cards.forEach(card => {
+            const cat = card.getAttribute('data-category');
+            card.style.display = (category === 'all' || cat === category) ? 'block' : 'none';
+        });
+    }
+
+    const sections = document.querySelectorAll('.section, .hero');
+    const navLinks = document.querySelectorAll('.nav-inner a');
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 120;
+            if (window.scrollY >= sectionTop) current = section.getAttribute('id');
+        });
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+        });
+    });
+</script>
+
+</body>
+</html>

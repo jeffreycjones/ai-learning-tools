@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study Scenario Builder - Learning Design Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --gold: #D4A843;
+            --warm-gray: #ffffff;
+            --border: #ddd;
+            --text-dark: #2c2c2c;
+            --text-light: #666;
+            --output-bg: #1A1A1A;
+            --white: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --accent-green: #2D6A4F;
+            --radius: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', system-ui, -apple-system, sans-serif;
+            background-color: #fff;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--maroon);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .tli-mark {
+            width: 38px;
+            height: 38px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--maroon);
+            font-size: 0.75rem;
+            border-radius: 2px;
+            letter-spacing: 1px;
+        }
+
+        .header-titles h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-titles p {
+            font-size: 0.875rem;
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .header-back {
+            color: white;
+            text-decoration: none;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .header-back:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-bottom: 3rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: var(--warm-gray);
+            color: var(--maroon);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--maroon);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panel Styles */
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1.5rem;
+        }
+
+        .panel h3 {
+            font-size: 1.1rem;
+            color: var(--maroon);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group small {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Work Sans', system-ui, sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            background-color: white;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--maroon);
+            box-shadow: 0 0 0 3px rgba(80, 0, 0, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 0.25rem;
+            cursor: pointer;
+            accent-color: var(--maroon);
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Work Sans', system-ui, sans-serif;
+        }
+
+        .btn-generate {
+            background-color: var(--maroon);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-generate:hover {
+            background-color: var(--maroon-dark);
+        }
+
+        .btn-generate:disabled {
+            background-color: #999;
+            cursor: not-allowed;
+        }
+
+        .btn-copy {
+            padding: 10px 20px; border: none; border-radius: var(--radius);
+            background: var(--gold); color: var(--text-primary); font-family: 'Work Sans', Arial, sans-serif;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-copy:hover { background: #E0B64E; }
+        .btn-copy.copied { background: var(--accent-green); color: var(--white); }
+
+        /* Output Section */
+        .output-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .output-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .output-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .output-panel h3 {
+            font-size: 1.1rem;
+            color: var(--maroon);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+#output {
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 24px; min-height: 200px; font-size: 14px; line-height: 1.8; color: var(--text-primary);
+        }
+        #output h3 { font-family: 'Open Sans', Arial, sans-serif; font-size: 18px; font-weight: 600; color: var(--maroon); margin: 20px 0 8px; }
+        #output h3:first-child { margin-top: 0; }
+        #output p { margin-bottom: 8px; }
+        #output ul, #output ol { margin: 8px 0 12px 20px; }
+        #output li { margin-bottom: 6px; }
+        #output strong { color: var(--text-primary); }
+
+        .output-placeholder { color: #999; font-style: italic; }
+
+        /* ── Loading Spinner ── */
+        .loading { display: none; align-items: center; justify-content: center; gap: 12px; padding: 40px; color: var(--text-muted); }
+        .loading.active { display: flex; }
+        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--maroon); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── API Key Banner ── */
+        .api-banner {
+            background: #FFF8E8; border: 1px solid #E8D5A0; border-radius: var(--radius);
+            padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 16px;
+        }
+        .api-banner .api-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+        .api-banner .api-content { flex: 1; }
+        .api-banner .api-content p { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+        .api-banner input { max-width: 400px; }
+        .api-status { font-size: 12px; font-weight: 600; margin-top: 6px; }
+        .api-status.connected { color: var(--accent-green); }
+        .api-status.error { color: #C0392B; }
+
+        /* ── Action Bar ── */
+        .action-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; gap: 12px; flex-wrap: wrap; }
+
+        .copy-button-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-copy-output {
+            padding: 10px 20px; border: none; border-radius: var(--radius);
+            background: var(--gold); color: var(--text-primary); font-family: 'Work Sans', Arial, sans-serif;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s; flex: 1;
+        }
+        .btn-copy-output:hover { background: #E0B64E; }
+        .btn-copy-output.copied { background: var(--accent-green); color: var(--white); }
+
+        .copy-status {
+            display: none;
+            color: var(--accent-green);
+            font-weight: 600;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .copy-status.show {
+            display: flex;
+        }
+
+        /* Tips Section */
+        .tips-section {
+            margin-bottom: 3rem;
+        }
+
+        .tips-section h3 {
+            font-size: 1.3rem;
+            color: var(--maroon);
+            margin-bottom: 1.5rem;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tip-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1.5rem;
+        }
+
+        .tip-card h4 {
+            color: var(--maroon);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .tip-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* How to Use Section */
+        .how-to-use {
+            background-color: var(--warm-gray);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .how-to-use h3 {
+            color: var(--maroon);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .how-to-use ol {
+            margin-left: 1.5rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .how-to-use li {
+            margin-bottom: 1rem;
+        }
+
+        .how-to-use strong {
+            color: var(--maroon);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--warm-gray);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Utility */
+        .required {
+            color: var(--maroon);
+            font-weight: 700;
+        }
+
+        .success-message {
+            display: none;
+            color: #28a745;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <div class="tli-mark">TLI</div>
+            <div class="header-titles">
+                <h1>Learning Design Suite</h1>
+                <p>Teaching & Learning Innovation</p>
+            </div>
+        </div>
+        <a href="index.html" class="header-back">Back to Hub</a>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- API Key Banner -->
+        <div class="api-banner">
+            <div class="api-icon">&#128273;</div>
+            <div class="api-content">
+                <p>Enter your TAMU AI Chat API key to generate results directly. Get your key at <a href="https://tamu.ai/" target="_blank" style="font-weight:700;">tamu.ai</a></p>
+                <input type="password" id="apiKey" placeholder="sk-..." style="font-size:13px;">
+                <div class="api-status" id="apiStatus"></div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">Student/Course Interaction</div>
+            <h2>Case Study Scenario Builder</h2>
+            <p>Generate AI prompts to create realistic business case study scenarios tailored to your course learning objectives and student needs.</p>
+        </section>
+
+        <!-- How to Use Section -->
+        <div class="how-to-use">
+            <h3>How to Use This Tool</h3>
+            <ol>
+                <li><strong>Fill out the form:</strong> Complete all required fields with details about your course and the case study you want to create.</li>
+                <li><strong>Customize your case:</strong> Select the complexity level, format, and elements that match your pedagogical goals.</li>
+                <li><strong>Generate the case study:</strong> Click "Generate Case Study" to get AI-powered results generated directly on the page.</li>
+                <li><strong>Review results:</strong> Review the generated case study as it streams in. Use "Regenerate" for a fresh version.</li>
+                <li><strong>Copy and use:</strong> Copy the final case study to your clipboard and integrate it into your course materials.</li>
+            </ol>
+        </div>
+
+        <!-- Form and Output Grid -->
+        <div class="main-grid">
+            <!-- Form Panel -->
+            <div class="panel">
+                <h3>Case Study Parameters</h3>
+                <form id="caseForm">
+                    <!-- Course Title -->
+                    <div class="form-group">
+                        <label for="courseTitle">Course Title <span class="required">*</span></label>
+                        <input type="text" id="courseTitle" placeholder="e.g., Strategic Management, Financial Analysis" required>
+                    </div>
+
+                    <!-- Discipline -->
+                    <div class="form-group">
+                        <label for="discipline">Discipline <span class="required">*</span></label>
+                        <input type="text" id="discipline" placeholder="e.g., Finance, Marketing, Supply Chain, Management, Information Systems" required>
+                    </div>
+
+                    <!-- Learning Objectives -->
+                    <div class="form-group">
+                        <label for="objectives">Learning Objective(s) <span class="required">*</span></label>
+                        <textarea id="objectives" placeholder="What should students learn or demonstrate through this case? (e.g., Apply Porter's Five Forces framework, Evaluate ethical trade-offs, Develop implementation strategy)" required></textarea>
+                    </div>
+
+                    <!-- Industry/Sector -->
+                    <div class="form-group">
+                        <label for="industry">Industry/Sector</label>
+                        <input type="text" id="industry" placeholder="e.g., Healthcare, Technology, Retail, Energy">
+                    </div>
+
+                    <!-- Case Complexity -->
+                    <div class="form-group">
+                        <label for="complexity">Case Complexity <span class="required">*</span></label>
+                        <select id="complexity" required>
+                            <option value="">-- Select Complexity Level --</option>
+                            <option value="Introductory">Introductory (single issue, clear data)</option>
+                            <option value="Intermediate">Intermediate (2-3 interrelated issues)</option>
+                            <option value="Advanced">Advanced (ambiguous data, multiple stakeholders, ethical dimensions)</option>
+                        </select>
+                    </div>
+
+                    <!-- Case Format -->
+                    <div class="form-group">
+                        <label for="format">Case Format <span class="required">*</span></label>
+                        <select id="format" required>
+                            <option value="">-- Select Case Format --</option>
+                            <option value="Short vignette">Short vignette (1-2 paragraphs for in-class discussion)</option>
+                            <option value="Standard case">Standard case (1-2 pages with data exhibits)</option>
+                            <option value="Extended case">Extended case (multi-part with evolving scenario)</option>
+                            <option value="Mini-case with decision point">Mini-case with decision point (for exam/quiz use)</option>
+                        </select>
+                    </div>
+
+                    <!-- Elements to Include -->
+                    <div class="form-group">
+                        <label>Elements to Include</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="finData" name="elements" value="Financial data/exhibits">
+                                <label for="finData">Financial data/exhibits</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="stakeholder" name="elements" value="Stakeholder perspectives">
+                                <label for="stakeholder">Stakeholder perspectives</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ethical" name="elements" value="Ethical dilemma">
+                                <label for="ethical">Ethical dilemma</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="global" name="elements" value="International/global dimension">
+                                <label for="global">International/global dimension</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tech" name="elements" value="Technology/digital transformation angle">
+                                <label for="tech">Technology/digital transformation angle</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="dei" name="elements" value="DEI considerations">
+                                <label for="dei">DEI considerations</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="sustainability" name="elements" value="Sustainability/ESG component">
+                                <label for="sustainability">Sustainability/ESG component</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="realCompany" name="elements" value="Real company inspiration (fictionalized)">
+                                <label for="realCompany">Real company inspiration (fictionalized)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Number of Discussion Questions -->
+                    <div class="form-group">
+                        <label for="numQuestions">Number of Discussion Questions <span class="required">*</span></label>
+                        <select id="numQuestions" required>
+                            <option value="">-- Select Number --</option>
+                            <option value="3-5">3-5 questions</option>
+                            <option value="5-8">5-8 questions</option>
+                            <option value="8-12">8-12 questions</option>
+                        </select>
+                    </div>
+
+                    <!-- Additional Context -->
+                    <div class="form-group">
+                        <label for="context">Additional Context</label>
+                        <textarea id="context" placeholder="Optional: e.g., Students have covered SWOT analysis and Porter's Five Forces, Course emphasizes ethical decision-making, Prerequisites or prior content"></textarea>
+                    </div>
+
+                    <!-- Button Group -->
+                    <div class="button-group">
+                        <button type="button" class="btn-generate" id="generateBtn" onclick="generate()">Generate Case Study</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="output-panel">
+                <h3>AI-Generated Results</h3>
+                <div class="loading" id="loading"><div class="spinner"></div><span>Generating with TAMU AI Chat...</span></div>
+                <div id="output" class="panel" style="border: 1px solid var(--border); margin: 0; padding: 1.5rem;">
+                    <span class="output-placeholder">Complete the form above and click the button to get AI-powered results directly.</span>
+                </div>
+                <div class="action-bar" id="actionBar" style="display:none;">
+                    <button class="btn-copy" onclick="copyOutput()">Copy to Clipboard</button>
+                    <button class="btn-copy" onclick="generate()" style="background:var(--maroon);color:var(--white);">Regenerate</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <section class="tips-section">
+            <h3>Tips for Effective Case Studies</h3>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>Ground Cases in Realistic Data</h4>
+                    <p>Use authentic financial metrics, market conditions, and industry challenges. Realistic details make cases more engaging and credible for students.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Include Multiple Valid Perspectives</h4>
+                    <p>Design cases where different stakeholders have competing interests. This encourages students to consider viewpoints beyond their initial assumptions.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Vary Complexity Across Your Course</h4>
+                    <p>Use simpler cases early to build analytical skills, then introduce advanced cases with ambiguous data and competing priorities as students progress.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Connect to Current Business Trends</h4>
+                    <p>Reference contemporary challenges like digital transformation, supply chain disruption, sustainability pressures, or post-pandemic business shifts.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Build in Ethical Dimensions</h4>
+                    <p>Even business cases benefit from ethical considerations. Cases that require moral reasoning develop judgment and character alongside technical skills.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Test for AI-Resilience</h4>
+                    <p>Ensure your cases require judgment, tradeoff analysis, and stakeholder consideration that prevents simple AI-generated answers. Good cases demand synthesis, not summaries.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background:#313131;color:rgba(255,255,255,0.7);padding:24px;font-size:12px;">
+    <div style="max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+        <div>
+            <strong style="font-family:'Oswald',Arial,sans-serif;font-size:14px;font-weight:500;color:#fff;text-transform:uppercase;">Teaching &amp; Learning Innovation</strong><br>
+            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.4);">Learning Design Suite &bull; AI Tools &bull; Last updated April 2026</span>
+    </div>
+</footer>
+
+    <script>
+        function buildPrompt() {
+            const courseTitle = document.getElementById('courseTitle').value.trim();
+            const discipline = document.getElementById('discipline').value.trim();
+            const objectives = document.getElementById('objectives').value.trim();
+            const industry = document.getElementById('industry').value.trim();
+            const complexity = document.getElementById('complexity').value;
+            const format = document.getElementById('format').value;
+            const numQuestions = document.getElementById('numQuestions').value;
+            const context = document.getElementById('context').value.trim();
+
+            const elementCheckboxes = document.querySelectorAll('input[name="elements"]:checked');
+            const elements = Array.from(elementCheckboxes).map(cb => cb.value);
+
+            if (!courseTitle || !discipline || !objectives || !complexity || !format || !numQuestions) {
+                alert('Please fill in all required fields marked with *');
+                return null;
+            }
+
+            let userMsg = `Create a comprehensive business case study with these specifications:
+
+Course Title: ${courseTitle}
+Discipline: ${discipline}
+Learning Objectives: ${objectives}
+Case Complexity: ${complexity}
+Case Format: ${format}
+Number of Discussion Questions: ${numQuestions}`;
+
+            if (industry) userMsg += `\nIndustry/Sector: ${industry}`;
+            if (elements.length > 0) userMsg += `\nElements to Include: ${elements.join(', ')}`;
+            if (context) userMsg += `\nAdditional Context: ${context}`;
+
+            return userMsg;
+        }
+
+        async function generate() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            if (!apiKey) {
+                document.getElementById('apiStatus').textContent = 'Please enter your TAMU AI Chat API key above.';
+                document.getElementById('apiStatus').className = 'api-status error';
+                return;
+            }
+
+            const userMessage = buildPrompt();
+            if (!userMessage) return;
+
+            const outputArea = document.getElementById('output');
+            const loading = document.getElementById('loading');
+            const actionBar = document.getElementById('actionBar');
+            const btn = document.getElementById('generateBtn');
+
+            outputArea.style.display = 'none';
+            loading.classList.add('active');
+            actionBar.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+
+            const systemPrompt = `You are a business case writer for an AACSB-accredited business school. Create compelling, realistic business cases with authentic details.
+
+REQUIREMENTS:
+- Authentic company names, dates, and contextual details
+- Realistic financial figures and market conditions
+- Complex scenarios requiring judgment and tradeoff analysis
+- AI-resilient cases that demand synthesis and reasoning
+- Discussion questions at varying Bloom's levels
+- Teaching notes with learning objectives alignment and facilitation guidance
+- Use clear section headers and professional formatting`;
+
+            try {
+                const response = await fetch('https://chat-api.tamu.ai/api/chat/completions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+                    body: JSON.stringify({
+                        model: 'protected.gpt-4o',
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userMessage }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 2000,
+                        stream: true
+                    })
+                });
+
+                if (!response.ok) {
+                    let errMsg = `API returned status ${response.status}`;
+                    try { const t = await response.text(); const d = JSON.parse(t); errMsg = d.error?.message || d.detail || errMsg; } catch (_) {}
+                    throw new Error(errMsg);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let rawText = '';
+                let buffer = '';
+
+                outputArea.style.display = 'block';
+                outputArea.innerHTML = '<div style="color:var(--text-muted);font-style:italic;">Generating...</div>';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (!trimmed || !trimmed.startsWith('data: ')) continue;
+                        const payload = trimmed.slice(6);
+                        if (payload === '[DONE]') continue;
+                        try {
+                            const chunk = JSON.parse(payload);
+                            const delta = chunk.choices?.[0]?.delta?.content;
+                            if (delta) { rawText += delta; outputArea.innerHTML = formatOutput(rawText); }
+                        } catch (_) {}
+                    }
+                }
+
+                if (!rawText.trim()) throw new Error('The API returned an empty response. Please try again.');
+
+                outputArea.innerHTML = formatOutput(rawText);
+                outputArea.style.display = 'block';
+                loading.classList.remove('active');
+                actionBar.style.display = 'flex';
+                btn.disabled = false;
+                btn.textContent = 'Generate Case Study';
+
+                document.getElementById('apiStatus').textContent = 'Connected to TAMU AI Chat';
+                document.getElementById('apiStatus').className = 'api-status connected';
+
+            } catch (err) {
+                loading.classList.remove('active');
+                outputArea.style.display = 'block';
+                outputArea.innerHTML = `<div style="color:#C0392B;"><strong>Error:</strong> ${err.message}</div><p style="margin-top:8px;font-size:13px;color:var(--text-muted);">Check that your API key is correct. Get your key at <a href="https://tamu.ai/" target="_blank">tamu.ai</a>.</p>`;
+                btn.disabled = false;
+                btn.textContent = 'Generate Case Study';
+                document.getElementById('apiStatus').textContent = 'Connection failed. Check your API key.';
+                document.getElementById('apiStatus').className = 'api-status error';
+            }
+        }
+
+        function formatOutput(text) {
+            let html = text
+                .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/## (.*)/g, '<h3>$1</h3>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n- /g, '<br>&#8226; ')
+                .replace(/\n(\d+)\. /g, '<br>$1. ');
+            html = '<p>' + html + '</p>';
+            html = html.replace(/<p><h3>/g, '<h3>').replace(/<\/h3><\/p>/g, '</h3>');
+            html = html.replace(/<p>\s*<\/p>/g, '');
+            return html;
+        }
+
+        function copyOutput() {
+            const text = document.getElementById('output').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = 'Copy to Clipboard'; btn.classList.remove('copied'); }, 2000);
+            });
+        }
+
+        // Allow Enter key to generate
+        document.getElementById('caseForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                generate();
+            }
+        });
+    </script>
+</body>
+</html>

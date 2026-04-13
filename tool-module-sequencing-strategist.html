@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Sequencing Strategist - Learning Design Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --gold: #D4A843;
+            --warm-gray: #ffffff;
+            --border: #ddd;
+            --dark-output: #1A1A1A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #FFFFFF;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--maroon);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            background-color: var(--gold);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--maroon);
+            font-size: 1.2rem;
+        }
+
+        .header-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            margin-left: auto;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: var(--maroon-dark);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-bottom: 3rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--maroon);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--maroon);
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Panel */
+        .panel {
+            background-color: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .panel h2 {
+            color: var(--maroon);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .panel h3 {
+            color: var(--maroon);
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .panel h3:first-child {
+            margin-top: 0;
+        }
+
+        /* Form */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-grid.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--maroon);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group select,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            background-color: #FAFAF8;
+            color: #333;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--maroon);
+            background-color: white;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        /* Chip Selector */
+        .chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .chip {
+            padding: 0.6rem 1rem;
+            border: 2px solid var(--border);
+            background-color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .chip:hover {
+            border-color: var(--maroon);
+            background-color: #ffffff;
+        }
+
+        .chip.selected {
+            background-color: var(--maroon);
+            color: white;
+            border-color: var(--maroon);
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.85rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--maroon);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--maroon-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--gold);
+            color: var(--maroon);
+        }
+
+        .btn-secondary:hover {
+            background-color: #C49A35;
+        }
+
+        .btn-secondary:disabled {
+            background-color: #DDD;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        /* Output Area */
+        .output-section {
+            margin-top: 2rem;
+        }
+
+        .output-area {
+            background: #FFFFFF; border: 1px solid #ddd; border-radius: 4px;
+            padding: 24px; min-height: 200px; font-size: 14px; line-height: 1.8; color: #1A1A1A;
+        }
+        .output-area h3 { font-family: 'Oswald', Arial, sans-serif; font-size: 18px; font-weight: 500; text-transform: uppercase; color: var(--maroon); margin: 20px 0 8px; }
+        .output-area h3:first-child { margin-top: 0; }
+        .output-area p { margin-bottom: 8px; }
+        .output-area ul, .output-area ol { margin: 8px 0 12px 20px; }
+        .output-area li { margin-bottom: 6px; }
+        .output-placeholder { color: #999; font-style: italic; }
+
+        .output-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .loading { display: none; align-items: center; justify-content: center; gap: 12px; padding: 40px; color: #6B6B6B; }
+        .loading.active { display: flex; }
+        .spinner { width: 24px; height: 24px; border: 3px solid #ddd; border-top-color: var(--maroon); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .api-banner {
+            background: #FFF8E8; border: 1px solid #E8D5A0; border-radius: 4px;
+            padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 16px;
+        }
+        .api-banner .api-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+        .api-banner .api-content { flex: 1; }
+        .api-banner .api-content p { font-size: 13px; color: #4A4A4A; margin-bottom: 8px; }
+        .api-banner input { max-width: 400px; }
+        .api-status { font-size: 12px; font-weight: 600; margin-top: 6px; }
+        .api-status.connected { color: #2D6A4F; }
+        .api-status.error { color: #C0392B; }
+
+        .copy-success {
+            color: var(--gold);
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            background-color: rgba(212, 168, 67, 0.1);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .copy-success.show {
+            display: block;
+        }
+
+        /* Tips Section */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tip-card {
+            background-color: #FAFAF8;
+            border-left: 4px solid var(--maroon);
+            padding: 1.5rem;
+            border-radius: 6px;
+        }
+
+        .tip-card h4 {
+            color: var(--maroon);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .tip-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* How to Use Section */
+        .how-to-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .step {
+            background-color: white;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: var(--maroon);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .step h4 {
+            color: var(--maroon);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .step p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--warm-gray);
+            color: #666;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-left {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-title {
+                font-size: 1.1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .how-to-steps {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .back-link {
+                margin-left: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        /* External Link */
+        .external-link {
+            color: var(--maroon);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--maroon);
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .external-link:hover {
+            background-color: var(--maroon);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <div class="logo-mark">T</div>
+            <div class="header-title">Learning Design Suite</div>
+        </div>
+        <a href="index.html" class="back-link">Back to Hub</a>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- API Key Banner -->
+        <div class="api-banner">
+            <div class="api-icon">&#128273;</div>
+            <div class="api-content">
+                <p>Enter your TAMU AI Chat API key to generate results directly. Get your key at <a href="https://tamu.ai/" target="_blank" style="font-weight:700;">tamu.ai</a></p>
+                <input type="password" id="apiKey" placeholder="sk-..." style="font-size:13px;">
+                <div class="api-status" id="apiStatus"></div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <span class="badge">Course Design</span>
+            <h1>Module Sequencing Strategist</h1>
+            <p>Generate AI prompts to organize your course topics into a pedagogically grounded sequence</p>
+        </section>
+
+        <!-- Input Form Panel -->
+        <section class="panel">
+            <h2>Configure Your Course</h2>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="courseTitle">Course Title</label>
+                    <input type="text" id="courseTitle" placeholder="e.g., Business Strategy Fundamentals">
+                </div>
+
+                <div class="form-group">
+                    <label for="courseLevel">Course Level</label>
+                    <select id="courseLevel">
+                        <option value="">Select level...</option>
+                        <option value="Undergraduate Introductory (100-200)">Undergraduate Introductory (100-200)</option>
+                        <option value="Undergraduate Advanced (300-400)">Undergraduate Advanced (300-400)</option>
+                        <option value="Graduate / MBA">Graduate / MBA</option>
+                        <option value="Executive Education">Executive Education</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="numModules">Number of Modules/Weeks</label>
+                    <select id="numModules">
+                        <option value="">Select duration...</option>
+                        <option value="5">5 weeks</option>
+                        <option value="8">8 weeks</option>
+                        <option value="10">10 weeks</option>
+                        <option value="12">12 weeks</option>
+                        <option value="15">15 weeks</option>
+                        <option value="16">16 weeks</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="deliveryMode">Delivery Mode</label>
+                    <select id="deliveryMode">
+                        <option value="">Select mode...</option>
+                        <option value="Flex Online (asynchronous)">Flex Online (asynchronous)</option>
+                        <option value="Face-to-face">Face-to-face</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Synchronous online">Synchronous online</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group form-grid full">
+                <label for="courseTopics">Course Topics <span style="color: #666; font-weight: 400;">(one per line)</span></label>
+                <textarea id="courseTopics" placeholder="Strategic Planning&#10;Competitive Analysis&#10;Market Entry&#10;..."></textarea>
+                <div class="form-hint">List the major topics you plan to cover in your course</div>
+            </div>
+
+            <div class="form-group form-grid full">
+                <label for="prerequisiteKnowledge">Prerequisite Knowledge <span style="color: #666; font-weight: 400;">(optional)</span></label>
+                <textarea id="prerequisiteKnowledge" placeholder="Basic business terminology, familiarity with financial statements, etc."></textarea>
+                <div class="form-hint">What should students already know before starting this course?</div>
+            </div>
+
+            <div class="form-group form-grid full">
+                <label>Sequencing Priority <span style="color: #666; font-weight: 400;">(select multiple)</span></label>
+                <div class="chip-group" id="sequencingChips">
+                    <div class="chip" data-priority="Foundational-to-advanced">Foundational to Advanced</div>
+                    <div class="chip" data-priority="Simple-to-complex">Simple to Complex</div>
+                    <div class="chip" data-priority="Theory-then-application">Theory then Application</div>
+                    <div class="chip" data-priority="Chronological">Chronological</div>
+                    <div class="chip" data-priority="Problem-based">Problem-based</div>
+                    <div class="chip" data-priority="Spiral/revisiting">Spiral / Revisiting</div>
+                </div>
+            </div>
+
+            <div class="form-group form-grid full">
+                <label for="constraints">Constraints <span style="color: #666; font-weight: 400;">(optional)</span></label>
+                <textarea id="constraints" placeholder="Midterm exam in week 8, group project due week 14, guest speaker week 10, etc."></textarea>
+                <div class="form-hint">Any scheduling constraints, key assessment dates, or events that affect sequencing</div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+                <button class="btn-primary" id="generateBtn">Generate Sequence</button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="output-section" id="outputSection" style="display: none;">
+                <h2>AI-Generated Sequence</h2>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <span>Generating module sequence with TAMU AI Chat...</span>
+                </div>
+                <div class="output-area" id="outputArea">
+                    <span class="output-placeholder">Complete the form and click "Generate Sequence" to get results.</span>
+                </div>
+                <div class="output-actions">
+                    <button class="btn-secondary" id="copyBtn2">Copy to Clipboard</button>
+                    <button class="btn-secondary" id="regenerateBtn" style="background:var(--maroon);color:white;">Regenerate</button>
+                    <div class="copy-success" id="copySuccess">Copied to clipboard!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Use -->
+        <section class="panel">
+            <h2>How to Use</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Follow these steps to create an effective module sequence for your course</p>
+
+            <div class="how-to-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Fill Out Form</h4>
+                    <p>Complete the course information above, including topics, level, and any constraints or priorities.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Generate Sequence</h4>
+                    <p>Click "Generate Sequence" to get an AI-powered module sequence generated directly on the page.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Review Results</h4>
+                    <p>Review the generated sequence as it streams in. Use "Regenerate" to get a fresh version with the same inputs.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h4>Implement and Refine</h4>
+                    <p>Copy the sequence, review it with your team, and use it to build your course modules.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips Section -->
+        <section class="panel">
+            <h2>Effective Sequencing Tips</h2>
+
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>Front-load Foundational Concepts</h4>
+                    <p>Start with essential knowledge and core definitions that students need to understand more complex topics later. This reduces cognitive load and builds confidence early.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>Build in Review Weeks</h4>
+                    <p>Strategically place consolidation or review weeks to help students synthesize information and make connections between modules. Consider every 3-4 weeks.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>Align Assessments with Clusters</h4>
+                    <p>Group related modules and align major assessments (exams, projects) with these clusters. This reinforces connections and provides clear learning milestones.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>Distribute Cognitive Load</h4>
+                    <p>Alternate between heavy concept modules and more applied or practical modules. Balance difficulty and pacing to maintain engagement throughout the course.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>Show Module Dependencies</h4>
+                    <p>Clearly map which modules depend on prior knowledge. This helps students understand the progression and makes it easier to identify prerequisite concepts if struggling.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>Consider Scaffolding</h4>
+                    <p>Build assessments progressively, starting with lower-order thinking and moving toward application, analysis, and synthesis. Use formative assessments to check understanding.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background:#313131;color:rgba(255,255,255,0.7);padding:24px;font-size:12px;">
+    <div style="max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+        <div>
+            <strong style="font-family:'Oswald',Arial,sans-serif;font-size:14px;font-weight:500;color:#fff;text-transform:uppercase;">Teaching &amp; Learning Innovation</strong><br>
+            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.4);">Learning Design Suite &bull; AI Tools &bull; Last updated April 2026</span>
+    </div>
+</footer>
+
+    <script>
+        // Chip selector functionality
+        const chips = document.querySelectorAll('.chip');
+        const selectedPriorities = new Set();
+
+        chips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                const priority = this.getAttribute('data-priority');
+                if (selectedPriorities.has(priority)) {
+                    selectedPriorities.delete(priority);
+                    this.classList.remove('selected');
+                } else {
+                    selectedPriorities.add(priority);
+                    this.classList.add('selected');
+                }
+            });
+        });
+
+        function buildPrompt() {
+            const courseTitle = document.getElementById('courseTitle').value.trim();
+            const courseLevel = document.getElementById('courseLevel').value;
+            const numModules = document.getElementById('numModules').value;
+            const courseTopics = document.getElementById('courseTopics').value.trim();
+            const prerequisiteKnowledge = document.getElementById('prerequisiteKnowledge').value.trim();
+            const deliveryMode = document.getElementById('deliveryMode').value;
+            const constraints = document.getElementById('constraints').value.trim();
+
+            // Validate required fields
+            if (!courseTitle || !courseLevel || !numModules || !courseTopics || !deliveryMode) {
+                alert('Please fill in all required fields (Course Title, Course Level, Number of Modules, Course Topics, and Delivery Mode)');
+                return null;
+            }
+
+            if (selectedPriorities.size === 0) {
+                alert('Please select at least one Sequencing Priority');
+                return null;
+            }
+
+            const topicsList = courseTopics.split('\n').map(t => t.trim()).filter(t => t).join(', ');
+
+            let userMsg = `I need help organizing course topics into a structured module sequence. Here are the course details:
+
+COURSE INFORMATION:
+- Course Title: ${courseTitle}
+- Course Level: ${courseLevel}
+- Duration: ${numModules} modules/weeks
+- Delivery Mode: ${deliveryMode}
+- Course Topics: ${topicsList}`;
+
+            if (prerequisiteKnowledge) {
+                userMsg += `\n- Prerequisite Knowledge: ${prerequisiteKnowledge}`;
+            }
+
+            userMsg += `\n\nSEQUENCING PRIORITIES:
+${Array.from(selectedPriorities).map(p => '- ' + p).join('\n')}`;
+
+            if (constraints) {
+                userMsg += `\n\nCOURSE CONSTRAINTS & MILESTONES:
+${constraints}`;
+            }
+
+            return userMsg;
+        }
+
+        // Generate button
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            generate();
+        });
+
+        if (document.getElementById('regenerateBtn')) {
+            document.getElementById('regenerateBtn').addEventListener('click', function() {
+                generate();
+            });
+        }
+
+        async function generate() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            if (!apiKey) {
+                document.getElementById('apiStatus').textContent = 'Please enter your TAMU AI Chat API key above.';
+                document.getElementById('apiStatus').className = 'api-status error';
+                return;
+            }
+
+            const userMessage = buildPrompt();
+            if (!userMessage) return;
+
+            const outputArea = document.getElementById('outputArea');
+            const loading = document.getElementById('loading');
+            const outputSection = document.getElementById('outputSection');
+            const btn = document.getElementById('generateBtn');
+
+            outputSection.style.display = 'block';
+            outputArea.style.display = 'none';
+            loading.classList.add('active');
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+
+            const systemPrompt = `You are a curriculum design specialist with deep expertise in business education, pedagogical theory, course sequencing, and learning outcomes alignment. Your task is to create a structured, implementable module sequence.
+
+SEQUENCING EXPERTISE:
+- Apply cognitive load theory and scaffolding principles
+- Ensure foundational concepts precede advanced applications
+- Balance concept density and pacing for optimal learning
+- Identify dependencies and prerequisite relationships
+- Build in review and synthesis opportunities
+
+OUTPUT FORMAT:
+For each module in the sequence:
+1. Module Number & Title
+2. Key Topics Covered (prioritize from provided list)
+3. Learning Objectives (specific, measurable, Bloom's-aligned)
+4. Rationale for Placement (explain sequencing logic)
+5. Dependencies (prior modules required)
+
+ADDITIONAL ANALYSIS:
+- Flag gaps, redundancies, or pacing concerns
+- Suggest formative assessments per module
+- Recommend review/synthesis weeks for longer courses
+- Address delivery mode implications
+- Provide assessment distribution strategy
+- Use clear headers and bullet points for readability`;
+
+            try {
+                const response = await fetch('https://chat-api.tamu.ai/api/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'protected.gpt-4o',
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userMessage }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 3000,
+                        stream: true
+                    })
+                });
+
+                if (!response.ok) {
+                    let errMsg = `API returned status ${response.status}`;
+                    try {
+                        const errText = await response.text();
+                        const errData = JSON.parse(errText);
+                        errMsg = errData.error?.message || errData.detail || errMsg;
+                    } catch (_) {}
+                    throw new Error(errMsg);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let rawText = '';
+                let buffer = '';
+
+                outputArea.style.display = 'block';
+                outputArea.innerHTML = '<div style="color:#6B6B6B;font-style:italic;">Generating module sequence...</div>';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
+
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (!trimmed || !trimmed.startsWith('data: ')) continue;
+                        const payload = trimmed.slice(6);
+                        if (payload === '[DONE]') continue;
+
+                        try {
+                            const chunk = JSON.parse(payload);
+                            const delta = chunk.choices?.[0]?.delta?.content;
+                            if (delta) {
+                                rawText += delta;
+                                outputArea.innerHTML = formatOutput(rawText);
+                            }
+                        } catch (_) {}
+                    }
+                }
+
+                if (!rawText.trim()) {
+                    throw new Error('The API returned an empty response. Please try again.');
+                }
+
+                outputArea.innerHTML = formatOutput(rawText);
+                outputArea.style.display = 'block';
+                loading.classList.remove('active');
+                btn.disabled = false;
+                btn.textContent = 'Generate Sequence';
+
+                document.getElementById('apiStatus').textContent = 'Connected to TAMU AI Chat';
+                document.getElementById('apiStatus').className = 'api-status connected';
+
+            } catch (err) {
+                loading.classList.remove('active');
+                outputArea.style.display = 'block';
+                outputArea.innerHTML = `<div style="color:#C0392B;"><strong>Error:</strong> ${err.message}</div><p style="margin-top:8px;font-size:13px;color:#6B6B6B;">Check that your API key is correct and that you have access to TAMU AI Chat. You can get your API key at <a href="https://tamu.ai/" target="_blank">tamu.ai</a>.</p>`;
+                btn.disabled = false;
+                btn.textContent = 'Generate Sequence';
+                document.getElementById('apiStatus').textContent = 'Connection failed. Check your API key.';
+                document.getElementById('apiStatus').className = 'api-status error';
+            }
+        }
+
+        function formatOutput(text) {
+            let html = text
+                .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/## (.*)/g, '<h3>$1</h3>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n- /g, '<br>&#8226; ')
+                .replace(/\n(\d+)\. /g, '<br>$1. ');
+            html = '<p>' + html + '</p>';
+            html = html.replace(/<p><h3>/g, '<h3>').replace(/<\/h3><\/p>/g, '</h3>');
+            html = html.replace(/<p>\s*<\/p>/g, '');
+            return html;
+        }
+
+        // Copy to clipboard functionality
+        function copyToClipboard(buttonId) {
+            const outputText = document.getElementById('outputArea').innerText;
+            navigator.clipboard.writeText(outputText).then(() => {
+                const successMsg = document.getElementById('copySuccess');
+                successMsg.classList.add('show');
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                }, 3000);
+            }).catch(() => {
+                alert('Failed to copy to clipboard');
+            });
+        }
+
+        document.getElementById('copyBtn2').addEventListener('click', function() {
+            copyToClipboard('copyBtn2');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Description Builder - Learning Design Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --gold: #D4A843;
+            --warm-gray: #ffffff;
+            --border: #ddd;
+            --dark-bg: #1A1A1A;
+            --white: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --accent-green: #2D6A4F;
+            --radius: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #FFFFFF;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--maroon);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        header .logo-mark {
+            width: 40px;
+            height: 40px;
+            background-color: var(--gold);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--maroon);
+            font-size: 20px;
+        }
+
+        header .title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        header a {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--warm-gray);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background-color: var(--maroon);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 2px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--maroon);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #555555;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 1000px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panel Styling */
+        .panel {
+            background-color: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2rem;
+        }
+
+        .panel h2 {
+            font-size: 1.5rem;
+            color: var(--maroon);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .panel h3 {
+            font-size: 1.1rem;
+            color: var(--maroon);
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .panel h3:first-child {
+            margin-top: 0;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.95rem;
+            color: #333333;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--maroon);
+            box-shadow: 0 0 0 3px rgba(80, 0, 0, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-helper {
+            font-size: 0.85rem;
+            color: #666666;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        .select-description {
+            font-size: 0.85rem;
+            color: #666666;
+            margin-top: 0.3rem;
+        }
+
+        /* Button Styling */
+        button {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--maroon);
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--maroon-dark);
+        }
+
+        .btn-copy {
+            padding: 10px 20px; border: none; border-radius: var(--radius);
+            background: var(--gold); color: var(--text-primary); font-family: 'Work Sans', Arial, sans-serif;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-copy:hover { background: #E0B64E; }
+        .btn-copy.copied { background: var(--accent-green); color: var(--white); }
+
+        .output-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .external-link {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: transparent;
+            color: var(--maroon);
+            border: 2px solid var(--maroon);
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .external-link:hover {
+            background-color: var(--maroon);
+            color: white;
+        }
+
+        /* Output Section */
+        .output-area {
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 24px; min-height: 200px; font-size: 14px; line-height: 1.8; color: var(--text-primary);
+        }
+        .output-area h3 { font-family: 'Open Sans', Arial, sans-serif; font-size: 18px; font-weight: 600; color: var(--maroon); margin: 20px 0 8px; }
+        .output-area h3:first-child { margin-top: 0; }
+        .output-area p { margin-bottom: 8px; }
+        .output-area ul, .output-area ol { margin: 8px 0 12px 20px; }
+        .output-area li { margin-bottom: 6px; }
+        .output-area strong { color: var(--text-primary); }
+
+        .output-placeholder {
+            color: #999; font-style: italic;
+        }
+
+        /* ── Loading Spinner ── */
+        .loading { display: none; align-items: center; justify-content: center; gap: 12px; padding: 40px; color: var(--text-muted); }
+        .loading.active { display: flex; }
+        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--maroon); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── API Key Banner ── */
+        .api-banner {
+            background: #FFF8E8; border: 1px solid #E8D5A0; border-radius: var(--radius);
+            padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 16px;
+        }
+        .api-banner .api-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+        .api-banner .api-content { flex: 1; }
+        .api-banner .api-content p { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+        .api-banner input { max-width: 400px; }
+        .api-status { font-size: 12px; font-weight: 600; margin-top: 6px; }
+        .api-status.connected { color: var(--accent-green); }
+        .api-status.error { color: #C0392B; }
+
+        /* ── Action Bar ── */
+        .action-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; gap: 12px; flex-wrap: wrap; }
+
+        /* Tips Section */
+        .tips-section {
+            margin-top: 4rem;
+        }
+
+        .tips-section h2 {
+            font-size: 2rem;
+            color: var(--maroon);
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tip-card {
+            background-color: white;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .tip-card:hover {
+            box-shadow: 0 4px 12px rgba(80, 0, 0, 0.1);
+            border-color: var(--maroon);
+        }
+
+        .tip-card h3 {
+            font-size: 1.1rem;
+            color: var(--maroon);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tip-card p {
+            color: #555555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .tip-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--warm-gray);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: #666666;
+            font-size: 0.9rem;
+            margin-top: 4rem;
+        }
+
+        /* Utility */
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 200;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .success-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-section">
+            <div class="logo-mark">T</div>
+            <div class="title">Learning Design Suite</div>
+        </div>
+        <a href="index.html">Back to Resource Hub</a>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="badge">CONTENT GENERATION</div>
+        <h1>Assignment Description Builder</h1>
+        <p>Generate clear, well-designed assignment descriptions with AI use policies integrated</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- API Key Banner -->
+        <div class="api-banner">
+            <div class="api-icon">&#128273;</div>
+            <div class="api-content">
+                <p>Enter your TAMU AI Chat API key to generate results directly. Get your key at <a href="https://tamu.ai/" target="_blank" style="font-weight:700;">tamu.ai</a></p>
+                <input type="password" id="apiKey" placeholder="sk-..." style="font-size:13px;">
+                <div class="api-status" id="apiStatus"></div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Form Panel -->
+            <div class="panel">
+                <h2>Create Your Assignment</h2>
+                <form id="assignmentForm">
+                    <div class="form-group">
+                        <label for="courseTitle">Course Title</label>
+                        <input type="text" id="courseTitle" name="courseTitle" placeholder="e.g., Business Strategy Fundamentals" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="assignmentTitle">Assignment Title</label>
+                        <input type="text" id="assignmentTitle" name="assignmentTitle" placeholder="e.g., Competitive Analysis Report" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="assignmentType">Assignment Type</label>
+                        <select id="assignmentType" name="assignmentType" required>
+                            <option value="">Select an assignment type</option>
+                            <option value="Individual written paper">Individual written paper</option>
+                            <option value="Group project">Group project</option>
+                            <option value="Case analysis">Case analysis</option>
+                            <option value="Presentation">Presentation</option>
+                            <option value="Problem set">Problem set</option>
+                            <option value="Research proposal">Research proposal</option>
+                            <option value="Reflection/journal">Reflection/journal</option>
+                            <option value="Portfolio">Portfolio</option>
+                            <option value="Peer review activity">Peer review activity</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="learningObjectives">Learning Objective(s) Addressed</label>
+                        <textarea id="learningObjectives" name="learningObjectives" placeholder="Which course or module objectives does this assignment assess? (e.g., 'Students will be able to identify competitive advantages in a business model')" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="aiPolicy">AI Policy Tier</label>
+                        <select id="aiPolicy" name="aiPolicy" required>
+                            <option value="">Select an AI policy</option>
+                            <option value="AI Prohibited">AI Prohibited (no AI tools allowed)</option>
+                            <option value="AI Permitted with Disclosure">AI Permitted with Disclosure (students may use AI but must cite/disclose)</option>
+                            <option value="AI Encouraged">AI Encouraged (AI use is expected as part of the task)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scope">Approximate Length/Scope</label>
+                        <input type="text" id="scope" name="scope" placeholder="e.g., 5-7 pages or 15-minute presentation" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gradingWeight">Grading Weight</label>
+                        <input type="text" id="gradingWeight" name="gradingWeight" placeholder="e.g., 15% of final grade" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rubricStyle">Rubric Style</label>
+                        <select id="rubricStyle" name="rubricStyle" required>
+                            <option value="">Select a rubric style</option>
+                            <option value="Analytic rubric">Analytic rubric (criteria with levels)</option>
+                            <option value="Holistic rubric">Holistic rubric (overall quality levels)</option>
+                            <option value="Single-point rubric">Single-point rubric (criteria with meets expectations only)</option>
+                            <option value="Checklist">Checklist</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dueDate">Due Date / Submission Details (Optional)</label>
+                        <input type="text" id="dueDate" name="dueDate" placeholder="e.g., November 15, 2024 at 11:59 PM via Canvas">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalRequirements">Additional Requirements (Optional)</label>
+                        <textarea id="additionalRequirements" name="additionalRequirements" placeholder="e.g., Must include at least 3 peer-reviewed sources, APA format, include executive summary"></textarea>
+                    </div>
+
+                    <button type="button" class="btn-primary" id="generateBtn" onclick="generate()">Generate Assignment</button>
+                </form>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="panel">
+                <h2>AI-Generated Results</h2>
+                <div class="loading" id="loading"><div class="spinner"></div><span>Generating with TAMU AI Chat...</span></div>
+                <div class="output-area" id="outputArea">
+                    <span class="output-placeholder">Complete the form above and click the button to get AI-powered results directly.</span>
+                </div>
+                <div class="action-bar" id="actionBar" style="display:none;">
+                    <button class="btn-copy" onclick="copyOutput()">Copy to Clipboard</button>
+                    <button class="btn-copy" onclick="generate()" style="background:var(--maroon);color:var(--white);">Regenerate</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <section class="tips-section">
+            <h2>Assignment Design Best Practices</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">perspective</div>
+                    <h3>Write from the Student Perspective</h3>
+                    <p>Frame instructions as if speaking directly to students. Use clear, jargon-free language. Explain not just what they need to do, but why it matters to their learning.</p>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">lightbulb</div>
+                    <h3>Include a "Why This Matters" Section</h3>
+                    <p>Help students understand the relevance of the assignment. Connect it to real-world applications, career skills, or course concepts. This increases engagement and motivation.</p>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">target</div>
+                    <h3>Make Rubric Criteria Observable and Measurable</h3>
+                    <p>Avoid vague language like "good" or "excellent." Use specific descriptors that clearly define what different performance levels look like for each criterion.</p>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">robot</div>
+                    <h3>Address AI Use Explicitly</h3>
+                    <p>Be clear about where and how students can use AI tools. Even if AI is prohibited, state this openly. Transparent AI policies reduce confusion and academic integrity issues.</p>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">layers</div>
+                    <h3>Consider Scaffolding for Complex Assignments</h3>
+                    <p>Break large projects into smaller milestones. Provide intermediate check-ins, examples, and templates. This supports student success and reduces overwhelm.</p>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-icon">align</div>
+                    <h3>Align Rubric Criteria with Learning Objectives</h3>
+                    <p>Ensure every learning objective is assessed by at least one rubric criterion. Conversely, each rubric criterion should address a stated learning objective. Alignment matters.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background:#313131;color:rgba(255,255,255,0.7);padding:24px;font-size:12px;">
+    <div style="max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+        <div>
+            <strong style="font-family:'Oswald',Arial,sans-serif;font-size:14px;font-weight:500;color:#fff;text-transform:uppercase;">Teaching &amp; Learning Innovation</strong><br>
+            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.4);">Learning Design Suite &bull; AI Tools &bull; Last updated April 2026</span>
+    </div>
+</footer>
+
+    <script>
+        function buildPrompt() {
+            const courseTitle = document.getElementById('courseTitle').value.trim();
+            const assignmentTitle = document.getElementById('assignmentTitle').value.trim();
+            const assignmentType = document.getElementById('assignmentType').value;
+            const learningObjectives = document.getElementById('learningObjectives').value.trim();
+            const aiPolicy = document.getElementById('aiPolicy').value;
+            const scope = document.getElementById('scope').value.trim();
+            const gradingWeight = document.getElementById('gradingWeight').value.trim();
+            const rubricStyle = document.getElementById('rubricStyle').value;
+            const dueDate = document.getElementById('dueDate').value.trim();
+            const additionalRequirements = document.getElementById('additionalRequirements').value.trim();
+
+            if (!courseTitle || !assignmentTitle || !assignmentType || !learningObjectives || !aiPolicy || !scope || !gradingWeight || !rubricStyle) {
+                alert('Please fill in all required fields.');
+                return null;
+            }
+
+            let userMsg = `Create a comprehensive assignment description with the following details:
+
+Course Title: ${courseTitle}
+Assignment Title: ${assignmentTitle}
+Assignment Type: ${assignmentType}
+Learning Objective(s): ${learningObjectives}
+Scope: ${scope}
+Grading Weight: ${gradingWeight}
+Rubric Style: ${rubricStyle}
+AI Policy: ${aiPolicy}`;
+
+            if (dueDate) userMsg += `\nDue Date: ${dueDate}`;
+            if (additionalRequirements) userMsg += `\nAdditional Requirements: ${additionalRequirements}`;
+
+            return userMsg;
+        }
+
+        async function generate() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            if (!apiKey) {
+                document.getElementById('apiStatus').textContent = 'Please enter your TAMU AI Chat API key above.';
+                document.getElementById('apiStatus').className = 'api-status error';
+                return;
+            }
+
+            const userMessage = buildPrompt();
+            if (!userMessage) return;
+
+            const outputArea = document.getElementById('outputArea');
+            const loading = document.getElementById('loading');
+            const actionBar = document.getElementById('actionBar');
+            const btn = document.getElementById('generateBtn');
+
+            outputArea.style.display = 'none';
+            loading.classList.add('active');
+            actionBar.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+
+            const systemPrompt = `You are an instructional designer specializing in assignment design for business education. Create clear, well-designed assignment descriptions aligned with learning objectives.
+
+FORMATTING: Return the assignment description in sections with clear headers. Use markdown-style formatting.
+
+REQUIREMENTS:
+1. Assignment Overview with clear purpose
+2. Why This Matters section connecting to real-world applications
+3. Detailed Instructions with step-by-step guidance
+4. Submission Requirements with deadlines
+5. Grading Rubric with observable criteria
+6. AI Use Policy Statement specific to the assignment`;
+
+            try {
+                const response = await fetch('https://chat-api.tamu.ai/api/chat/completions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+                    body: JSON.stringify({
+                        model: 'protected.gpt-4o',
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userMessage }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 2000,
+                        stream: true
+                    })
+                });
+
+                if (!response.ok) {
+                    let errMsg = `API returned status ${response.status}`;
+                    try { const t = await response.text(); const d = JSON.parse(t); errMsg = d.error?.message || d.detail || errMsg; } catch (_) {}
+                    throw new Error(errMsg);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let rawText = '';
+                let buffer = '';
+
+                outputArea.style.display = 'block';
+                outputArea.innerHTML = '<div style="color:var(--text-muted);font-style:italic;">Generating...</div>';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (!trimmed || !trimmed.startsWith('data: ')) continue;
+                        const payload = trimmed.slice(6);
+                        if (payload === '[DONE]') continue;
+                        try {
+                            const chunk = JSON.parse(payload);
+                            const delta = chunk.choices?.[0]?.delta?.content;
+                            if (delta) { rawText += delta; outputArea.innerHTML = formatOutput(rawText); }
+                        } catch (_) {}
+                    }
+                }
+
+                if (!rawText.trim()) throw new Error('The API returned an empty response. Please try again.');
+
+                outputArea.innerHTML = formatOutput(rawText);
+                outputArea.style.display = 'block';
+                loading.classList.remove('active');
+                actionBar.style.display = 'flex';
+                btn.disabled = false;
+                btn.textContent = 'Generate Assignment';
+
+                document.getElementById('apiStatus').textContent = 'Connected to TAMU AI Chat';
+                document.getElementById('apiStatus').className = 'api-status connected';
+
+            } catch (err) {
+                loading.classList.remove('active');
+                outputArea.style.display = 'block';
+                outputArea.innerHTML = `<div style="color:#C0392B;"><strong>Error:</strong> ${err.message}</div><p style="margin-top:8px;font-size:13px;color:var(--text-muted);">Check that your API key is correct. Get your key at <a href="https://tamu.ai/" target="_blank">tamu.ai</a>.</p>`;
+                btn.disabled = false;
+                btn.textContent = 'Generate Assignment';
+                document.getElementById('apiStatus').textContent = 'Connection failed. Check your API key.';
+                document.getElementById('apiStatus').className = 'api-status error';
+            }
+        }
+
+        function formatOutput(text) {
+            let html = text
+                .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/## (.*)/g, '<h3>$1</h3>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n- /g, '<br>&#8226; ')
+                .replace(/\n(\d+)\. /g, '<br>$1. ');
+            html = '<p>' + html + '</p>';
+            html = html.replace(/<p><h3>/g, '<h3>').replace(/<\/h3><\/p>/g, '</h3>');
+            html = html.replace(/<p>\s*<\/p>/g, '');
+            return html;
+        }
+
+        function copyOutput() {
+            const text = document.getElementById('outputArea').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = 'Copy to Clipboard'; btn.classList.remove('copied'); }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

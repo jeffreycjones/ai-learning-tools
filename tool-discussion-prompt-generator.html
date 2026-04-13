@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discussion Prompt Generator - Learning Design Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --maroon: #500000;
+      --maroon-dark: #3C0000;
+      --gold: #D4A843;
+      --warm-gray: #ffffff;
+      --border: #ddd;
+      --text-dark: #2C2C2C;
+      --text-light: #666;
+      --output-bg: #1A1A1A;
+      --white: #FFFFFF;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: #FAFAF8;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--maroon);
+      color: var(--white);
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      background-color: var(--gold);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--maroon);
+      font-size: 20px;
+    }
+
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .back-link {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .back-link:hover {
+      opacity: 0.8;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--maroon) 0%, #6B0000 100%);
+      color: var(--white);
+      padding: 3rem 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: var(--gold);
+      color: var(--maroon-dark);
+      padding: 0.4rem 0.8rem;
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+      max-width: 600px;
+    }
+
+    /* Main Content */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 3rem;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .panel {
+      background-color: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+    }
+
+    .panel h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--maroon);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="password"],
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: 'Work Sans', sans-serif;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--maroon);
+      box-shadow: 0 0 0 3px rgba(80, 0, 0, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Chip Selector */
+    .chips-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .chip {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background-color: var(--white);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .chip:hover {
+      border-color: var(--maroon);
+      background-color: var(--warm-gray);
+    }
+
+    .chip.active {
+      background-color: var(--maroon);
+      color: var(--white);
+      border-color: var(--maroon);
+    }
+
+    /* Output Section */
+    .output-section {
+      grid-column: 1 / -1;
+    }
+
+    .output-panel {
+      background-color: #FFFFFF;
+      color: #1A1A1A;
+      padding: 2rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      font-family: 'Work Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.8;
+      min-height: 300px;
+      overflow-y: auto;
+    }
+
+    .output-panel h3 { font-family: 'Oswald', Arial, sans-serif; font-size: 18px; font-weight: 500; text-transform: uppercase; color: var(--maroon); margin: 20px 0 8px; }
+    .output-panel h3:first-child { margin-top: 0; }
+    .output-panel p { margin-bottom: 8px; }
+    .output-panel ul, .output-panel ol { margin: 8px 0 12px 20px; }
+    .output-panel li { margin-bottom: 6px; }
+    .output-panel strong { color: #1A1A1A; }
+
+    .output-panel.empty {
+      color: #999;
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Work Sans', sans-serif;
+    }
+
+    .btn-generate {
+      background-color: var(--maroon);
+      color: var(--white);
+      flex: 1;
+    }
+
+    .btn-generate:hover {
+      background-color: var(--maroon-dark);
+    }
+
+    .btn-generate:active {
+      transform: scale(0.98);
+    }
+
+    .btn-copy {
+      background-color: var(--gold);
+      color: var(--maroon-dark);
+      flex: 1;
+    }
+
+    .btn-copy:hover {
+      opacity: 0.9;
+    }
+
+    .btn-copy:active {
+      transform: scale(0.98);
+    }
+
+    .copy-feedback {
+      display: none;
+      color: #2D6A4F;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    .copy-feedback.show {
+      display: block;
+    }
+
+    .loading { display: none; align-items: center; justify-content: center; gap: 12px; padding: 40px; color: #6B6B6B; }
+    .loading.active { display: flex; }
+    .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--maroon); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .api-banner {
+      background: #FFF8E8; border: 1px solid #E8D5A0; border-radius: 4px;
+      padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 16px;
+    }
+    .api-banner .api-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .api-banner .api-content { flex: 1; }
+    .api-banner .api-content p { font-size: 13px; color: var(--text-dark); margin-bottom: 8px; }
+    .api-banner input { max-width: 400px; }
+    .api-status { font-size: 12px; font-weight: 600; margin-top: 6px; }
+    .api-status.connected { color: #2D6A4F; }
+    .api-status.error { color: #C0392B; }
+
+    /* Links */
+    .link-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+
+    .link-button {
+      color: var(--maroon);
+      text-decoration: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .link-button:hover {
+      background-color: var(--warm-gray);
+    }
+
+    /* Tips Section */
+    .tips-section {
+      margin-top: 4rem;
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .tip-card {
+      background-color: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--gold);
+    }
+
+    .tip-card h3 {
+      color: var(--maroon);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .tip-card p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* How to Use Section */
+    .how-to-section {
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .step-card {
+      background-color: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: var(--maroon);
+      color: var(--white);
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .step-card h3 {
+      color: var(--maroon);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-card p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--maroon);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .output-section {
+        grid-column: auto;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .chips-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn-generate,
+      .btn-copy {
+        flex: none;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="header-left">
+        <div class="logo-mark">TLI</div>
+        <h1 class="header-title">Learning Design Suite</h1>
+      </div>
+      <a href="index.html" class="back-link">Back to AI Resource Hub</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">Content Generation</div>
+      <h1>Discussion Prompt Generator</h1>
+      <p>Create structured AI prompts to generate thoughtful discussion prompts tailored to your course and learning objectives.</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="main">
+    <!-- API Key Banner -->
+    <div class="api-banner">
+      <div class="api-icon">&#128273;</div>
+      <div class="api-content">
+        <p>Enter your TAMU AI Chat API key to generate results directly. Get your key at <a href="https://tamu.ai/" target="_blank" style="font-weight:700;">tamu.ai</a></p>
+        <input type="password" id="apiKey" placeholder="sk-..." style="font-size:13px;">
+        <div class="api-status" id="apiStatus"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Form Panel -->
+      <div class="panel">
+        <h2>Generate Your Prompt</h2>
+
+        <div class="form-group">
+          <label for="courseTitle">Course Title</label>
+          <input type="text" id="courseTitle" placeholder="e.g., Strategic Management, Marketing Analytics">
+        </div>
+
+        <div class="form-group">
+          <label for="discussionTopic">Discussion Topic</label>
+          <input type="text" id="discussionTopic" placeholder="e.g., Impact of AI on supply chain management">
+        </div>
+
+        <div class="form-group">
+          <label for="discussionType">Discussion Type</label>
+          <select id="discussionType">
+            <option value="">Select a type</option>
+            <option value="Open-ended exploration">Open-ended exploration</option>
+            <option value="Debate/opposing perspectives">Debate/opposing perspectives</option>
+            <option value="Case analysis">Case analysis</option>
+            <option value="Current events application">Current events application</option>
+            <option value="Peer critique">Peer critique</option>
+            <option value="Reflective/experiential">Reflective/experiential</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Cognitive Level (select all that apply)</label>
+          <div class="chips-container">
+            <div class="chip" data-level="Remember">Remember</div>
+            <div class="chip" data-level="Understand">Understand</div>
+            <div class="chip" data-level="Apply">Apply</div>
+            <div class="chip" data-level="Analyze">Analyze</div>
+            <div class="chip" data-level="Evaluate">Evaluate</div>
+            <div class="chip" data-level="Create">Create</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="responseLength">Response Length Expectation</label>
+          <select id="responseLength">
+            <option value="">Select length</option>
+            <option value="Brief (150-250 words)">Brief (150-250 words)</option>
+            <option value="Standard (300-500 words)">Standard (300-500 words)</option>
+            <option value="Extended (500+ words)">Extended (500+ words)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="numPrompts">Number of Prompts to Generate</label>
+          <select id="numPrompts">
+            <option value="">Select number</option>
+            <option value="1">1</option>
+            <option value="2-3">2-3</option>
+            <option value="4-5">4-5</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="additionalContext">Additional Context (optional)</label>
+          <textarea id="additionalContext" placeholder="e.g., Students have just completed a module on supply chain disruption. This is their first discussion on this topic."></textarea>
+        </div>
+      </div>
+
+      <!-- Output Panel -->
+      <div class="panel output-section">
+        <h2>Generated Prompts</h2>
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <span>Generating discussion prompts with TAMU AI Chat...</span>
+        </div>
+        <div class="output-panel empty" id="outputPanel">
+          Generated prompts will appear here. Complete the form and click "Generate Prompts" to begin.
+        </div>
+        <div class="button-group">
+          <button class="btn-generate" id="generateBtn" onclick="generate()">Generate Prompts</button>
+          <button class="btn-copy" id="copyBtn" onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+        <div class="copy-feedback" id="copyFeedback">Copied to clipboard!</div>
+      </div>
+    </div>
+
+    <!-- How to Use Section -->
+    <section class="how-to-section">
+      <div class="panel">
+        <h2>How to Use</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h3>Fill the Form</h3>
+            <p>Enter your course details, discussion topic, and preferences about discussion type and cognitive complexity.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h3>Generate Prompts</h3>
+            <p>Click "Generate Prompts" to get AI-powered discussion prompts generated directly on the page.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h3>Review Results</h3>
+            <p>Review the generated prompts as they stream in. Use "Regenerate" to get a fresh set with the same inputs.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <h3>Copy and Use</h3>
+            <p>Copy the final prompts to your clipboard and paste them into your course discussion board or LMS.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="tips-section">
+      <div class="panel">
+        <h2>Tips for Effective Discussion Prompts</h2>
+        <div class="tips-grid">
+          <div class="tip-card">
+            <h3>Avoid Yes/No Questions</h3>
+            <p>Frame questions to require explanation and reasoning. Instead of "Is X important?" ask "How does X impact...?" to promote deeper thinking.</p>
+          </div>
+          <div class="tip-card">
+            <h3>Connect to Real-World Application</h3>
+            <p>Link discussion topics to current events, industry trends, or business scenarios your students encounter. Relevance increases engagement and retention.</p>
+          </div>
+          <div class="tip-card">
+            <h3>Build in Peer Interaction</h3>
+            <p>Include prompts that ask students to respond to peers, build on ideas, or constructively challenge viewpoints. This fosters collaborative learning.</p>
+          </div>
+          <div class="tip-card">
+            <h3>Scaffold Complexity Gradually</h3>
+            <p>Start with prompts requiring lower-order thinking and build toward analysis and evaluation. This supports learners at all levels.</p>
+          </div>
+          <div class="tip-card">
+            <h3>Include Grading Guidance</h3>
+            <p>Ask AI to specify what constitutes a strong response. This helps students understand expectations and makes your grading more consistent.</p>
+          </div>
+          <div class="tip-card">
+            <h3>Consider Accessibility</h3>
+            <p>Use inclusive language and ensure prompts don't favor particular backgrounds or experiences. Be mindful of diverse learning needs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background:#313131;color:rgba(255,255,255,0.7);padding:24px;font-size:12px;">
+    <div style="max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+        <div>
+            <strong style="font-family:'Oswald',Arial,sans-serif;font-size:14px;font-weight:500;color:#fff;text-transform:uppercase;">Teaching &amp; Learning Innovation</strong><br>
+            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <span style="color:rgba(255,255,255,0.4);">Learning Design Suite &bull; AI Tools &bull; Last updated April 2026</span>
+    </div>
+</footer>
+
+  <script>
+    // Track selected cognitive levels
+    let selectedLevels = [];
+
+    // Chip selector functionality
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const level = this.getAttribute('data-level');
+        if (this.classList.contains('active')) {
+          if (!selectedLevels.includes(level)) {
+            selectedLevels.push(level);
+          }
+        } else {
+          selectedLevels = selectedLevels.filter(l => l !== level);
+        }
+      });
+    });
+
+    function buildPrompt() {
+      const courseTitle = document.getElementById('courseTitle').value.trim();
+      const discussionTopic = document.getElementById('discussionTopic').value.trim();
+      const discussionType = document.getElementById('discussionType').value;
+      const responseLength = document.getElementById('responseLength').value;
+      const numPrompts = document.getElementById('numPrompts').value;
+      const additionalContext = document.getElementById('additionalContext').value.trim();
+
+      // Validation
+      if (!courseTitle || !discussionTopic || !discussionType || selectedLevels.length === 0 || !responseLength || !numPrompts) {
+        alert('Please complete all required fields and select at least one cognitive level.');
+        return null;
+      }
+
+      const cognitiveStr = selectedLevels.join(', ');
+
+      const userMsg = `Please generate ${numPrompts} discussion prompts for a course with the following context:
+
+COURSE INFORMATION:
+- Course Title: ${courseTitle}
+- Discussion Topic: ${discussionTopic}
+- Discussion Type: ${discussionType}
+- Target Cognitive Levels: ${cognitiveStr}
+- Expected Response Length: ${responseLength}${additionalContext ? '\n- Additional Context: ' + additionalContext : ''}`;
+
+      return userMsg;
+    }
+
+    async function generate() {
+      const apiKey = document.getElementById('apiKey').value.trim();
+      if (!apiKey) {
+        document.getElementById('apiStatus').textContent = 'Please enter your TAMU AI Chat API key above.';
+        document.getElementById('apiStatus').className = 'api-status error';
+        return;
+      }
+
+      const userMessage = buildPrompt();
+      if (!userMessage) return;
+
+      const outputPanel = document.getElementById('outputPanel');
+      const loading = document.getElementById('loading');
+      const btn = document.getElementById('generateBtn');
+
+      outputPanel.style.display = 'none';
+      loading.classList.add('active');
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+
+      const systemPrompt = `You are an expert instructional designer specializing in business education at a research university. Your task is to create high-quality, engaging discussion prompts that foster critical thinking and peer learning.
+
+PROMPT DESIGN EXPERTISE:
+- Create open-ended questions avoiding yes/no answers
+- Connect theoretical concepts to real-world business applications
+- Build in scaffolding for diverse learner levels
+- Encourage evidence-based reasoning and peer interaction
+- Ensure inclusive, accessible language
+- Specify clear expectations for strong responses
+
+FORMAT FOR EACH PROMPT:
+1. Main Question: Open-ended, requires evidence/reasoning, appropriate cognitive level
+2. Follow-up Probes: 1-2 questions to deepen or broaden thinking
+3. Grading Rubric: Key concepts to address, evidence types, depth expectations
+4. Accessibility Notes: Inclusive framing, diverse perspective consideration`;
+
+      try {
+        const response = await fetch('https://chat-api.tamu.ai/api/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: 'protected.gpt-4o',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userMessage }
+            ],
+            temperature: 0.7,
+            max_tokens: 2500,
+            stream: true
+          })
+        });
+
+        if (!response.ok) {
+          let errMsg = `API returned status ${response.status}`;
+          try {
+            const errText = await response.text();
+            const errData = JSON.parse(errText);
+            errMsg = errData.error?.message || errData.detail || errMsg;
+          } catch (_) {}
+          throw new Error(errMsg);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let rawText = '';
+        let buffer = '';
+
+        outputPanel.style.display = 'block';
+        outputPanel.innerHTML = '<div style="color:#6B6B6B;font-style:italic;">Generating prompts...</div>';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (!trimmed || !trimmed.startsWith('data: ')) continue;
+            const payload = trimmed.slice(6);
+            if (payload === '[DONE]') continue;
+
+            try {
+              const chunk = JSON.parse(payload);
+              const delta = chunk.choices?.[0]?.delta?.content;
+              if (delta) {
+                rawText += delta;
+                outputPanel.innerHTML = formatOutput(rawText);
+              }
+            } catch (_) {}
+          }
+        }
+
+        if (!rawText.trim()) {
+          throw new Error('The API returned an empty response. Please try again.');
+        }
+
+        outputPanel.innerHTML = formatOutput(rawText);
+        outputPanel.classList.remove('empty');
+        outputPanel.style.display = 'block';
+        loading.classList.remove('active');
+        btn.disabled = false;
+        btn.textContent = 'Generate Prompts';
+
+        document.getElementById('apiStatus').textContent = 'Connected to TAMU AI Chat';
+        document.getElementById('apiStatus').className = 'api-status connected';
+
+      } catch (err) {
+        loading.classList.remove('active');
+        outputPanel.style.display = 'block';
+        outputPanel.innerHTML = `<div style="color:#C0392B;"><strong>Error:</strong> ${err.message}</div><p style="margin-top:8px;font-size:13px;color:#6B6B6B;">Check that your API key is correct and that you have access to TAMU AI Chat. You can get your API key at <a href="https://tamu.ai/" target="_blank">tamu.ai</a>.</p>`;
+        btn.disabled = false;
+        btn.textContent = 'Generate Prompts';
+        document.getElementById('apiStatus').textContent = 'Connection failed. Check your API key.';
+        document.getElementById('apiStatus').className = 'api-status error';
+      }
+    }
+
+    function formatOutput(text) {
+      let html = text
+        .replace(/### (.*)/g, '<h3>$1</h3>')
+        .replace(/## (.*)/g, '<h3>$1</h3>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n- /g, '<br>&#8226; ')
+        .replace(/\n(\d+)\. /g, '<br>$1. ');
+      html = '<p>' + html + '</p>';
+      html = html.replace(/<p><h3>/g, '<h3>').replace(/<\/h3><\/p>/g, '</h3>');
+      html = html.replace(/<p>\s*<\/p>/g, '');
+      return html;
+    }
+
+    function copyToClipboard() {
+      const outputText = document.getElementById('outputPanel').innerText;
+
+      if (document.getElementById('outputPanel').classList.contains('empty')) {
+        alert('Please generate prompts first.');
+        return;
+      }
+
+      navigator.clipboard.writeText(outputText).then(() => {
+        const feedback = document.getElementById('copyFeedback');
+        feedback.classList.add('show');
+        setTimeout(() => {
+          feedback.classList.remove('show');
+        }, 2000);
+      }).catch(err => {
+        alert('Failed to copy to clipboard. Please try again.');
+      });
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', generate);
+  </script>
+</body>
+</html>
