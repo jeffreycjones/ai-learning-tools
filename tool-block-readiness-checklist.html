@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Block Readiness Checklist | Learning Design Suite</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --gold: #D4A843;
+            --teal: #0D5C75;
+            --teal-light: #D9EDF0;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --border: #ddd;
+            --white: #FFFFFF;
+            --accent-green: #2D6A4F;
+            --radius: 4px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Work Sans', Arial, sans-serif; color: var(--text-primary); background: var(--white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        a { color: var(--maroon); text-decoration: none; }
+        .site-header { background: var(--maroon); color: var(--white); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-md); }
+        .header-inner { max-width: 960px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; min-height: 52px; }
+        .header-titles h1 { font-family: 'Oswald', Arial, sans-serif; font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .header-titles .subtitle { font-family: 'Work Sans', Arial, sans-serif; font-size: 11px; opacity: 0.75; letter-spacing: 0.5px; }
+        .back-link { color: rgba(255,255,255,0.8); font-size: 13px; font-weight: 600; text-decoration: none; }
+        .back-link:hover { color: var(--white); }
+        .tool-hero { background: var(--maroon); color: var(--white); padding: 48px 24px 40px; text-align: center; }
+        .tool-hero .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 2px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+        .tool-hero h2 { font-family: 'Oswald', Arial, sans-serif; font-size: 34px; font-weight: 600; text-transform: uppercase; margin-bottom: 12px; }
+        .tool-hero p { font-size: 15px; font-weight: 300; opacity: 0.9; max-width: 620px; margin: 0 auto; }
+        .main { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+        .pressure-callout {
+            background: var(--teal-light); border-left: 4px solid var(--teal); padding: 14px 20px;
+            margin-bottom: 24px; border-radius: 0 4px 4px 0; font-size: 13px; color: var(--text-secondary);
+        }
+        .pressure-callout strong { color: var(--teal); }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+        .panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); }
+        .panel-title { font-family: 'Oswald', Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.3px; font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
+        .form-group .hint { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+        input[type="text"], input[type="password"], textarea, select {
+            width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px;
+            font-family: 'Work Sans', Arial, sans-serif; font-size: 14px; color: var(--text-primary);
+            background: var(--white); transition: border-color 0.2s;
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--maroon); }
+        textarea { resize: vertical; min-height: 80px; }
+        select { cursor: pointer; appearance: auto; }
+        .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip { padding: 6px 14px; border: 1px solid var(--border); border-radius: 2px; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; background: var(--white); user-select: none; }
+        .chip:hover { border-color: var(--maroon); color: var(--maroon); }
+        .chip.selected { background: var(--maroon); color: var(--white); border-color: var(--maroon); }
+        .btn-generate {
+            width: 100%; padding: 14px; border: none; border-radius: var(--radius);
+            background: var(--maroon); color: var(--white); font-family: 'Work Sans', Arial, sans-serif;
+            font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-top: 8px;
+        }
+        .btn-generate:hover { background: var(--maroon-light); }
+        .btn-generate:disabled { background: #999; cursor: not-allowed; }
+        .output-area { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; min-height: 200px; font-size: 14px; line-height: 1.8; color: var(--text-primary); }
+        .output-area h3 { font-family: 'Oswald', Arial, sans-serif; font-size: 18px; font-weight: 500; text-transform: uppercase; color: var(--maroon); margin: 20px 0 8px; }
+        .output-area h3:first-child { margin-top: 0; }
+        .output-area h4 { font-family: 'Oswald', Arial, sans-serif; font-size: 15px; font-weight: 500; color: var(--text-primary); margin: 16px 0 6px; }
+        .output-area p { margin-bottom: 8px; }
+        .output-area ul, .output-area ol { margin: 8px 0 12px 0; padding-left: 0; list-style: none; }
+        .output-area li { margin-bottom: 8px; padding-left: 28px; position: relative; }
+        .output-area li::before {
+            content: ''; position: absolute; left: 0; top: 5px;
+            width: 16px; height: 16px; border: 1.5px solid var(--maroon); border-radius: 3px;
+            background: var(--white);
+        }
+        .output-area strong { color: var(--text-primary); }
+        .output-area em { color: var(--maroon); font-style: normal; font-weight: 600; }
+        .output-area .priority-critical { color: #C0392B; font-weight: 700; font-size: 11px; text-transform: uppercase; background: #FDEAEA; padding: 1px 6px; border-radius: 2px; margin-right: 4px; }
+        .output-area .priority-recommended { color: #1E5C8A; font-weight: 700; font-size: 11px; text-transform: uppercase; background: #E8F0F8; padding: 1px 6px; border-radius: 2px; margin-right: 4px; }
+        .output-area .tag-block-a { color: #9C4A0A; font-weight: 700; font-size: 11px; text-transform: uppercase; background: #FDE8D8; padding: 1px 6px; border-radius: 2px; margin-right: 4px; }
+        .output-area .tag-block-b { color: #0D5C75; font-weight: 700; font-size: 11px; text-transform: uppercase; background: #D9EDF0; padding: 1px 6px; border-radius: 2px; margin-right: 4px; }
+        .output-placeholder { color: #999; font-style: italic; }
+        .action-bar { display: flex; justify-content: flex-end; align-items: center; margin-top: 16px; gap: 12px; flex-wrap: wrap; }
+        .copy-btn { padding: 10px 20px; border: none; border-radius: var(--radius); background: var(--gold); color: var(--maroon-dark); font-family: 'Work Sans', Arial, sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .copy-btn:hover { background: #E0B64E; }
+        .copy-btn.copied { background: var(--accent-green); color: var(--white); }
+        .loading { display: none; align-items: center; justify-content: center; gap: 12px; padding: 40px; color: var(--text-muted); }
+        .loading.active { display: flex; }
+        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--maroon); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .api-banner { background: #FFF8E8; border: 1px solid #E8D5A0; border-radius: var(--radius); padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 16px; }
+        .api-banner .api-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+        .api-banner .api-content { flex: 1; }
+        .api-banner .api-content p { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+        .api-banner input { max-width: 400px; }
+        .api-status { font-size: 12px; font-weight: 600; margin-top: 6px; }
+        .api-status.connected { color: var(--accent-green); }
+        .api-status.error { color: #C0392B; }
+        .tips { margin-top: 40px; }
+        .tips h3 { font-family: 'Oswald', Arial, sans-serif; font-size: 20px; font-weight: 500; text-transform: uppercase; margin-bottom: 16px; }
+        .tips h3::before { content: ''; display: inline-block; width: 4px; height: 18px; background: var(--maroon); margin-right: 10px; vertical-align: middle; }
+        .tip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .tip-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; border-top: 3px solid var(--maroon); }
+        .tip-card h5 { font-family: 'Oswald', Arial, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 6px; }
+        .tip-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+        .workflow-callout { background: #F4F0EA; border-left: 4px solid var(--maroon); padding: 16px 20px; margin-top: 24px; border-radius: 0 4px 4px 0; font-size: 13px; color: var(--text-secondary); }
+        .workflow-callout strong { color: var(--maroon); }
+        footer { background: #313131; color: rgba(255,255,255,0.7); padding: 24px; font-size: 12px; margin-top: 48px; }
+        footer .footer-inner { max-width: 960px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        footer strong { font-family: 'Oswald', Arial, sans-serif; font-size: 14px; font-weight: 500; color: #fff; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div style="background:#fff;border-bottom:1px solid #ddd;padding:8px 24px;">
+    <div style="max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
+        <a href="https://www.tamu.edu" target="_blank" style="display:flex;align-items:center;gap:10px;font-family:'Oswald',Arial,sans-serif;font-size:14px;font-weight:600;color:#500000;text-transform:uppercase;letter-spacing:0.5px;text-decoration:none;">
+            <span style="display:inline-flex;align-items:center;justify-content:center;background:#500000;color:#fff;width:28px;height:28px;font-size:11px;font-weight:700;border-radius:2px;">ATM</span>
+            Texas A&amp;M University
+        </a>
+        <a href="https://mays.tamu.edu" target="_blank" style="font-size:12px;color:#6B6B6B;font-weight:500;text-decoration:none;">Mays Business School</a>
+    </div>
+</div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <div class="header-titles">
+            <h1>Teaching &amp; Learning Innovation</h1>
+            <div class="subtitle">Learning Design Suite</div>
+        </div>
+        <a href="index.html" class="back-link">&#8592; Back to AI Hub</a>
+    </div>
+</header>
+
+<section class="tool-hero">
+    <div class="badge">Learning Delivery</div>
+    <h2>Block Readiness Checklist</h2>
+    <p>A tailored readiness checklist for Mays 8-week block teaching. Designed around the 1-week overlap between Block A finishing and Block B launching. Built for faculty and TLI designers supporting launch.</p>
+</section>
+
+<main class="main">
+
+    <div class="pressure-callout">
+        <strong>About the overlap week:</strong> Mays 8-week blocks typically overlap by 1 week. Running back-to-back blocks means finishing one course while launching another in the same week. This is the most demanding moment in your block cadence. This checklist aims to make sure nothing critical drops during that overlap. If you are consistently feeling under-resourced in this rhythm, that is a signal worth raising with your department, not a personal failing.
+    </div>
+
+    <div class="api-banner">
+        <div class="api-icon">&#128273;</div>
+        <div class="api-content">
+            <p>This tool connects to <strong>TAMU AI Chat</strong> to generate your tailored checklist. Enter your API key below. Your key is stored only in this browser session and is never saved or transmitted to any server other than TAMU AI Chat.</p>
+            <input type="password" id="apiKey" placeholder="Enter your TAMU AI Chat API key" value="">
+            <div class="api-status" id="apiStatus"></div>
+            <p style="margin-top:6px;margin-bottom:0;"><a href="https://tamu.ai/" target="_blank" style="font-size:12px;">Get your API key from TAMU AI Chat &#8594;</a></p>
+        </div>
+    </div>
+
+    <div class="two-col">
+
+        <div class="panel">
+            <div class="panel-title">Your Block Context</div>
+
+            <div class="form-group">
+                <label>Teaching Context</label>
+                <select id="teachingContext">
+                    <option value="">Select your situation...</option>
+                    <option value="back-to-back block (finishing one block and launching the next in the same week)">Back-to-back block (most common)</option>
+                    <option value="repeat teaching this course but not back-to-back (did not teach last block)">Repeat teach, not back-to-back</option>
+                    <option value="first time teaching this specific course">First time teaching this course</option>
+                    <option value="first block of the academic year (fresh semester start)">First block of academic year</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Course Launching (Block B)</label>
+                <div class="hint">The course whose launch you are preparing.</div>
+                <input type="text" id="blockBCourse" placeholder="e.g., FINC 445 - Investments, Block B 2026">
+            </div>
+
+            <div class="form-group">
+                <label>Course Finishing (Block A)</label>
+                <div class="hint">Only fill in if you are running back-to-back blocks. Leave blank otherwise.</div>
+                <input type="text" id="blockACourse" placeholder="e.g., FINC 409 - Financial Management, Block A 2026">
+            </div>
+
+            <div class="form-group">
+                <label>Modality of Launching Course</label>
+                <select id="modality">
+                    <option value="">Select modality...</option>
+                    <option value="Flex Online (fully asynchronous)">Flex Online (async)</option>
+                    <option value="hybrid (mix of async and synchronous sessions)">Hybrid</option>
+                    <option value="in-person (classroom-based)">In-person</option>
+                    <option value="executive education short-form intensive">Executive education</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Course Level</label>
+                <select id="courseLevel">
+                    <option value="">Select course level...</option>
+                    <option value="undergraduate introductory">Undergraduate - Introductory</option>
+                    <option value="undergraduate advanced">Undergraduate - Advanced</option>
+                    <option value="graduate / MBA">Graduate / MBA</option>
+                    <option value="executive education">Executive education</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Current Phase</label>
+                <div class="hint">Where are you in the cycle right now? This shapes what appears first in your output.</div>
+                <select id="currentPhase">
+                    <option value="">Select current phase...</option>
+                    <option value="structural prep (2 to 3 weeks before Block B launch)">Structural prep (2-3 weeks out)</option>
+                    <option value="in the overlap week (Block A final week and Block B launch prep week)">In the overlap week</option>
+                    <option value="launch day and Block B week 1">Launch day / Week 1</option>
+                    <option value="give me the full cycle view across all three phases">Full cycle view</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Areas of Concern</label>
+                <div class="hint">Select areas where you want extra attention in the output.</div>
+                <div class="chip-group" id="concernChips">
+                    <span class="chip selected" data-value="course shell and content refresh (dates, modules, syllabus, links)">Course Shell &amp; Content</span>
+                    <span class="chip selected" data-value="accessibility (alt text, captions, UDOIT, headings, contrast)">Accessibility</span>
+                    <span class="chip selected" data-value="assessments and rubrics (gradebook, due dates, rubric alignment)">Assessments &amp; Rubrics</span>
+                    <span class="chip selected" data-value="student communication (welcome message, announcements, first-day setup)">Student Communication</span>
+                    <span class="chip" data-value="technology readiness (Canvas Studio, discussion boards, external tools)">Technology</span>
+                    <span class="chip" data-value="instructor readiness (pacing plan, office hours, grading cadence)">Instructor Readiness</span>
+                    <span class="chip" data-value="Mays Flex Online and accreditation standards">Mays / Accreditation Standards</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Special Considerations (optional)</label>
+                <textarea id="specialConsiderations" style="min-height: 90px;" placeholder="e.g., First time using a new textbook, large enrollment (120 students), new TA, major syllabus revision, adding XR stage component..."></textarea>
+            </div>
+
+            <button class="btn-generate" onclick="generate()">Generate My Checklist</button>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Your Tailored Checklist</div>
+            <div class="loading" id="loading"><div class="spinner"></div><span>Generating with TAMU AI Chat...</span></div>
+            <div class="output-area" id="outputArea">
+                <span class="output-placeholder">Your block readiness checklist will appear here. Complete the form and click "Generate My Checklist" to begin.</span>
+            </div>
+            <div class="action-bar" id="actionBar" style="display:none;">
+                <button class="copy-btn" onclick="copyOutput()">Copy Checklist</button>
+                <button class="copy-btn" onclick="window.print()">Print</button>
+                <button class="copy-btn" onclick="generate()" style="background:var(--maroon);color:var(--white);">Regenerate</button>
+            </div>
+
+            <div class="workflow-callout">
+                <strong>Pairs with TLI QA Tracker:</strong> This checklist helps you confirm your block is ready to launch. For a deeper, rubric-based audit of a completed course shell, use the TLI QA Tracker. Checklist before launch, QA Tracker for pre-launch verification.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="tips">
+        <h3>Tips for Best Results</h3>
+        <div class="tip-grid">
+            <div class="tip-card">
+                <h5>Run It Early, Run It Again</h5>
+                <p>Generate the full-cycle view 3 weeks before launch, save it, then regenerate for the overlap week to get the compressed version when you need it most.</p>
+            </div>
+            <div class="tip-card">
+                <h5>Back-to-Back Is the Hardest</h5>
+                <p>If you are running consecutive blocks, name your finishing course in the Block A field. The tool will tag items as Block A wind-down vs Block B launch so you can see both streams at once.</p>
+            </div>
+            <div class="tip-card">
+                <h5>Critical vs Recommended</h5>
+                <p>Items marked CRITICAL are the "nothing drops" list. If time collapses, those are what you hold. RECOMMENDED items are the full-quality standard; nice to hit, not catastrophic to miss.</p>
+            </div>
+            <div class="tip-card">
+                <h5>The Tool Does Not Replace Review</h5>
+                <p>The checklist is tailored by AI based on your inputs. It is not an authoritative Mays compliance document. Use it as a working aid, not a sign-off.</p>
+            </div>
+            <div class="tip-card">
+                <h5>Flag What the Tool Cannot See</h5>
+                <p>If you have course-specific items the AI would not know about (new textbook rollout, pilot technology, large enrollment accommodation), put them in Special Considerations so they show up in your output.</p>
+            </div>
+            <div class="tip-card">
+                <h5>Share With Your TLI Designer</h5>
+                <p>Copy the checklist into your TLI consultation or Wrike ticket so your designer can see what you are working through. It speeds up support conversations.</p>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div>
+            <strong>Teaching &amp; Learning Innovation</strong><br>
+            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <span style="font-size:12px;color:rgba(255,255,255,0.4);">&copy; 2026 Mays Business School &bull; Last updated April 2026</span>
+    </div>
+</footer>
+
+<script>
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => chip.classList.toggle('selected'));
+    });
+
+    function buildPrompt() {
+        const teachingContext = document.getElementById('teachingContext').value;
+        const blockBCourse = document.getElementById('blockBCourse').value.trim();
+        const blockACourse = document.getElementById('blockACourse').value.trim();
+        const modality = document.getElementById('modality').value;
+        const courseLevel = document.getElementById('courseLevel').value;
+        const currentPhase = document.getElementById('currentPhase').value;
+        const specialConsiderations = document.getElementById('specialConsiderations').value.trim();
+        const concerns = Array.from(document.querySelectorAll('#concernChips .chip.selected')).map(c => c.dataset.value);
+
+        if (!teachingContext) { alert('Please select your teaching context.'); return null; }
+        if (!blockBCourse) { alert('Please enter the course you are launching.'); return null; }
+        if (!modality) { alert('Please select a modality.'); return null; }
+        if (!courseLevel) { alert('Please select a course level.'); return null; }
+        if (!currentPhase) { alert('Please select your current phase.'); return null; }
+
+        const isBackToBack = teachingContext.includes('back-to-back');
+
+        let userMessage = `GENERATE A TAILORED BLOCK READINESS CHECKLIST FOR MAYS 8-WEEK BLOCK TEACHING.
+
+INSTRUCTOR CONTEXT:
+- Teaching context: ${teachingContext}
+- Course launching (Block B): ${blockBCourse}`;
+
+        if (isBackToBack && blockACourse) {
+            userMessage += `\n- Course finishing (Block A): ${blockACourse}`;
+        } else if (isBackToBack && !blockACourse) {
+            userMessage += `\n- Course finishing (Block A): Not specified, but back-to-back cadence is active`;
+        }
+
+        userMessage += `
+- Modality: ${modality}
+- Course level: ${courseLevel}
+- Current phase in the cycle: ${currentPhase}`;
+
+        if (concerns.length > 0) {
+            userMessage += `\n\nAREAS OF CONCERN (give these extra attention):\n` + concerns.map(c => `- ${c}`).join('\n');
+        }
+
+        if (specialConsiderations) userMessage += `\n\nSPECIAL CONSIDERATIONS:\n${specialConsiderations}`;
+
+        return userMessage;
+    }
+
+    async function generate() {
+        const apiKey = document.getElementById('apiKey').value.trim();
+        if (!apiKey) {
+            document.getElementById('apiStatus').textContent = 'Please enter your TAMU AI Chat API key above.';
+            document.getElementById('apiStatus').className = 'api-status error';
+            return;
+        }
+
+        const userMessage = buildPrompt();
+        if (!userMessage) return;
+
+        const outputArea = document.getElementById('outputArea');
+        const loading = document.getElementById('loading');
+        const actionBar = document.getElementById('actionBar');
+        const btn = document.querySelector('.btn-generate');
+
+        outputArea.style.display = 'none';
+        loading.classList.add('active');
+        actionBar.style.display = 'none';
+        btn.disabled = true;
+        btn.textContent = 'Generating...';
+
+        const systemPrompt = `You are an expert instructional operations advisor for Teaching & Learning Innovation at Mays Business School, Texas A&M University. You help faculty and TLI designers prepare for 8-week block launches in the Mays Flex Online model.
+
+MAYS BLOCK CONTEXT YOU MUST UNDERSTAND:
+- Mays runs courses in 8-week blocks, multiple blocks per year
+- Blocks typically overlap by 1 week: the final week of Block A is the launch-prep week of Block B
+- Back-to-back block teaching means finishing and launching in the same week - this is the highest-pressure operational moment
+- Flex Online is asynchronous; hybrid and in-person variants exist
+- TLI QA Tracker audits course shells against a 123-criterion rubric (complementary tool, not this one)
+- Canvas is the LMS; Cidi Labs Design Plus is the Canvas LTI for branded accessible components; UDOIT is the accessibility checker
+
+YOUR TASK:
+Generate a tailored, prioritized block readiness checklist structured around the three phases of a block cycle. Tailor the depth, length, and emphasis based on the instructor's teaching context and current phase.
+
+OUTPUT STRUCTURE:
+1. Begin with a brief summary (3-5 lines): instructor's situation, what phase(s) the checklist emphasizes, and an "if you only do three things this week" call-out listing the top three items by priority.
+
+2. Then structure the checklist in three phases, each as an H3 section:
+
+   **Phase 1: Block B Structural Prep (2-3 weeks before launch)**
+   Structural work done while the current block is still mid-course. Content, rubrics, syllabus updates, accessibility audit.
+
+   **Phase 2: The Overlap Week (Block A final week / Block B launch-prep week)**
+   The highest-pressure moment. For back-to-back faculty, this must include BOTH Block A wind-down items AND Block B launch-prep items, each clearly tagged. For non-back-to-back faculty, this is final polish for Block B only.
+
+   **Phase 3: Launch Day + Block B Week 1**
+   Post-launch monitoring. For back-to-back faculty, also includes Block A close-out items (grades, incompletes, archiving).
+
+3. End with a brief "Items This Tool Cannot See" section listing 3-5 reminders of course-specific items the faculty member should add themselves (e.g., rollout of new textbook edition, special accommodation plans, pilot technology).
+
+ITEM FORMATTING:
+Each checklist item must be on its own line as a markdown bullet starting with "- ".
+Each item MUST begin with tags in this exact format at the start of the line, using these strings verbatim:
+
+For priority (always include one):
+[CRITICAL] - must-do, nothing drops
+[RECOMMENDED] - full-quality standard, worth holding
+[OPTIONAL] - do if time allows
+
+For block tagging (ONLY for back-to-back faculty, add after priority):
+[BLOCK A] - Block A wind-down item
+[BLOCK B] - Block B launch item
+
+For role tagging (always include):
+[FACULTY] - faculty owns this
+[TLI] - TLI designer owns this
+[SHARED] - collaborative or either role
+
+After tags, write the item text as a verification prompt, not a task. Examples:
+- "[CRITICAL] [BLOCK B] [FACULTY] Confirm the syllabus PDF passes accessibility check (run through UDOIT or Microsoft Accessibility Checker)"
+- "[RECOMMENDED] [BLOCK A] [FACULTY] Verify all Block A final assignment grades are posted and released to students"
+- "[CRITICAL] [BLOCK B] [SHARED] Confirm Start-Here module is visible to students and first-assignment dates match the syllabus"
+
+TAILORING RULES:
+- Back-to-back context: Phase 2 is the center of gravity. Dual-tag every Phase 2 and Phase 3 item as Block A or Block B. Output can be longer overall but ruthlessly prioritized so "if you only do three things" truly captures the essentials.
+- First-time teaching: Phase 1 is the largest section. Include more structural items. Flag items where faculty may benefit from TLI consultation.
+- Repeat-not-back-to-back: Moderate output focused on refresh and update. Skip items that would only apply to first-time teaches.
+- First block of academic year: Include fresh-start items (orientation, course norms reset, platform updates from the summer).
+- Match the current-phase input: if the instructor says they are in the overlap week, lead with Phase 2. If structural prep, lead with Phase 1.
+
+RUTHLESS PRIORITIZATION:
+Overlap-week output should not exceed 12-15 total items for back-to-back faculty across both blocks. Non-back-to-back overlap week should not exceed 8-10 items. Quality over quantity.
+
+TONE:
+Direct, operational, non-anxious. Do not lecture the faculty member about the importance of items. State the item as a verification prompt and move on. Trust the reader to know why the item matters.
+
+ACCREDITATION AND COMPLIANCE:
+When an item is accessibility-related or potentially touches AACSB or accreditation standards, include a brief note in parens: "(accessibility)" or "(AACSB-adjacent)". Do not invent specific regulation names you cannot verify.
+
+DO NOT:
+- Invent Mays-specific policies. Frame standard instructional design best practices generically.
+- Generate a generic university checklist. The tool is specifically for Mays 8-week block teaching.
+- Reference the TAMU AI Chat tools or the other Learning Design Suite tools unless directly relevant.
+- Include items outside the block-launch scope (mid-semester interventions, final course revisions, etc.).`;
+
+        try {
+            const response = await fetch('https://chat-api.tamu.ai/api/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'protected.gpt-4o',
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userMessage }
+                    ],
+                    temperature: 0.4,
+                    max_tokens: 4000,
+                    stream: true
+                })
+            });
+
+            if (!response.ok) {
+                let errMsg = `API returned status ${response.status}`;
+                try {
+                    const errText = await response.text();
+                    const errData = JSON.parse(errText);
+                    errMsg = errData.error?.message || errData.detail || errMsg;
+                } catch (_) {}
+                throw new Error(errMsg);
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let rawText = '';
+            let buffer = '';
+
+            outputArea.style.display = 'block';
+            outputArea.innerHTML = '<div style="color:var(--text-muted);font-style:italic;">Generating...</div>';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop();
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed || !trimmed.startsWith('data: ')) continue;
+                    const payload = trimmed.slice(6);
+                    if (payload === '[DONE]') continue;
+                    try {
+                        const chunk = JSON.parse(payload);
+                        const delta = chunk.choices?.[0]?.delta?.content;
+                        if (delta) {
+                            rawText += delta;
+                            outputArea.innerHTML = formatOutput(rawText);
+                        }
+                    } catch (_) {}
+                }
+            }
+
+            if (!rawText.trim()) throw new Error('The API returned an empty response. Please try again.');
+
+            window.__lastOutput = rawText;
+            outputArea.innerHTML = formatOutput(rawText);
+            outputArea.style.display = 'block';
+            loading.classList.remove('active');
+            actionBar.style.display = 'flex';
+            btn.disabled = false;
+            btn.textContent = 'Generate My Checklist';
+
+            document.getElementById('apiStatus').textContent = 'Connected to TAMU AI Chat';
+            document.getElementById('apiStatus').className = 'api-status connected';
+
+        } catch (err) {
+            loading.classList.remove('active');
+            outputArea.style.display = 'block';
+            outputArea.innerHTML = `<div style="color:#C0392B;"><strong>Error:</strong> ${err.message}</div><p style="margin-top:8px;font-size:13px;color:var(--text-muted);">Check that your API key is correct and that you have access to TAMU AI Chat.</p>`;
+            btn.disabled = false;
+            btn.textContent = 'Generate My Checklist';
+            document.getElementById('apiStatus').textContent = 'Connection failed. Check your API key.';
+            document.getElementById('apiStatus').className = 'api-status error';
+        }
+    }
+
+    function formatOutput(text) {
+        let html = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        // Headers
+        html = html.replace(/^#### (.*)$/gm, '<h4>$1</h4>');
+        html = html.replace(/^### (.*)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^## (.*)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^# (.*)$/gm, '<h3>$1</h3>');
+
+        // Bold and italic
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/(?<!\*)\*([^\*\n]+?)\*(?!\*)/g, '<em>$1</em>');
+
+        // Style the bracket tags in list items
+        html = html.replace(/\[CRITICAL\]/g, '<span class="priority-critical">Critical</span>');
+        html = html.replace(/\[RECOMMENDED\]/g, '<span class="priority-recommended">Recommended</span>');
+        html = html.replace(/\[OPTIONAL\]/g, '<span class="priority-recommended" style="background:#EEE;color:#555;">Optional</span>');
+        html = html.replace(/\[BLOCK A\]/g, '<span class="tag-block-a">Block A</span>');
+        html = html.replace(/\[BLOCK B\]/g, '<span class="tag-block-b">Block B</span>');
+        html = html.replace(/\[FACULTY\]/g, '<span class="tag-block-b" style="background:#EDE8F5;color:#5C4B8A;">Faculty</span>');
+        html = html.replace(/\[TLI\]/g, '<span class="tag-block-b" style="background:#E0F0E8;color:#2D6A4F;">TLI</span>');
+        html = html.replace(/\[SHARED\]/g, '<span class="tag-block-b" style="background:#FFF4E0;color:#8B6914;">Shared</span>');
+
+        // Bullets
+        html = html.replace(/^[\-\*] (.*)$/gm, '<li>$1</li>');
+        html = html.replace(/(<li>.*<\/li>\n?)+/gs, m => '<ul>' + m + '</ul>');
+
+        // Numbered lists (for summary points)
+        html = html.replace(/^(\d+)\. (.*)$/gm, '<li style="list-style:decimal;">$2</li>');
+
+        // Paragraphs
+        html = html.replace(/\n\n+/g, '</p><p>');
+        html = html.replace(/\n/g, '<br>');
+        html = '<p>' + html + '</p>';
+
+        // Cleanup
+        html = html.replace(/<p>\s*<\/p>/g, '');
+        html = html.replace(/<p>(<h3>.*?<\/h3>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<h4>.*?<\/h4>)<\/p>/g, '$1');
+        html = html.replace(/<p>(<ul>[\s\S]*?<\/ul>)<\/p>/g, '$1');
+        html = html.replace(/<br>(<h3>)/g, '$1');
+        html = html.replace(/<br>(<h4>)/g, '$1');
+        html = html.replace(/(<\/h3>)<br>/g, '$1');
+        html = html.replace(/(<\/h4>)<br>/g, '$1');
+
+        return html;
+    }
+
+    function copyOutput() {
+        const text = document.getElementById('outputArea').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = event.target;
+            const original = btn.textContent;
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
