@@ -2172,7 +2172,7 @@ async function generateBrandedDocx() {
   };
   QA_CATEGORIES.forEach(cat => {
     cat.criteria.forEach(cr => {
-      const autoHit = state.autoResults.find(r => r.criteriaId === cr.id);
+      const autoHit = state.autoResults.find(r => (r.criteriaIds || []).includes(cr.id));
       const manualStatus = state.checklist[cr.id];
       const effective = autoHit ? autoHit.status : manualStatus;
       if (effective) {
@@ -2192,9 +2192,9 @@ async function generateBrandedDocx() {
   // ─── Build body XML ─────────────────────────────────────────────
   const body = [];
 
-  // Title block
-  body.push(P("TLI QA Remediation Report", "Title"));
-  body.push(P(`${state.courseName || "Untitled Course"} · ${state.reviewDate}`, "Subtitle"));
+  // Title block — uses Mays template's DocTitle-Subtitle + DocSubtitle pair (report-appropriate, not 48pt cover title)
+  body.push(P("TLI QA Remediation Report", "DocTitle-Subtitle"));
+  body.push(P(`${state.courseName || "Untitled Course"} · ${state.reviewDate}`, "DocSubtitle"));
   body.push(Body(`Reviewer: ${state.reviewerName || "Not specified"}`));
   body.push(Spacer());
 
@@ -2228,7 +2228,7 @@ async function generateBrandedDocx() {
   } else {
     critical.forEach((f, i) => {
       const rem = getRemediation(f.id);
-      body.push(H2(`${i + 1}. ${f.text}`));
+      body.push(H2(`${i + 1}. ${f.label || f.id}`));
       body.push(Para([
         { text: "Status: ", bold: true }, { text: statusLabel(f.status) },
         { text: "   ·   Priority: ", bold: true }, { text: rem.priority },
@@ -2245,13 +2245,13 @@ async function generateBrandedDocx() {
   // WCAG / ADA Section
   body.push(H1("WCAG 2.1 AA & ADA Title II Compliance"));
   body.push(Body("ADA Title II digital accessibility requirements take effect April 24, 2026. This course must meet WCAG 2.1 AA conformance, including color contrast, heading structure, alt text, link purpose, captions, and keyboard accessibility."));
-  const wcagFindings = findings.filter(f => /^auto-wcag-|^auto-alt|^auto-heading|^auto-caption|^auto-color/.test(f.id) || /wcag|accessib|contrast|alt text|caption/i.test(f.text));
+  const wcagFindings = findings.filter(f => /^auto-wcag-|^auto-alt|^auto-heading|^auto-caption|^auto-color/.test(f.id) || /wcag|accessib|contrast|alt text|caption/i.test(f.label || ""));
   if (wcagFindings.length === 0) {
     body.push(Body("No accessibility findings recorded."));
   } else {
     body.push(Bold(`${wcagFindings.length} accessibility-related findings require action:`));
     wcagFindings.slice(0, 10).forEach(f => {
-      body.push(Bullet(`[${statusLabel(f.status)}] ${f.id} — ${f.text}`));
+      body.push(Bullet(`[${statusLabel(f.status)}] ${f.id} — ${f.label || ""}`));
     });
   }
 
@@ -2262,7 +2262,7 @@ async function generateBrandedDocx() {
     if (items.length === 0) return;
     body.push(H2(`${roleLabel(role)} (${items.length})`));
     items.slice(0, 15).forEach(f => {
-      body.push(Bullet(`[${statusLabel(f.status)}] ${f.id} — ${f.text}`));
+      body.push(Bullet(`[${statusLabel(f.status)}] ${f.id} — ${f.label || ""}`));
     });
     if (items.length > 15) body.push(Body(`...and ${items.length - 15} more. See full findings section.`));
   });
@@ -2280,7 +2280,7 @@ async function generateBrandedDocx() {
     let t=0, m=0, fl=0, nm=0;
     cat.criteria.forEach(cr => {
       t++;
-      const autoHit = state.autoResults.find(r => r.criteriaId === cr.id);
+      const autoHit = state.autoResults.find(r => (r.criteriaIds || []).includes(cr.id));
       const st = autoHit ? autoHit.status : state.checklist[cr.id];
       if (st === "pass") m++;
       else if (st === "flag") fl++;
@@ -2302,7 +2302,7 @@ async function generateBrandedDocx() {
   if (passed.length > 0) {
     body.push(H1("Passed Automated Checks"));
     body.push(Body(`${passed.length} automated checks passed without issue:`));
-    passed.forEach(p => body.push(Bullet(`${p.criteriaId} — ${p.text}`)));
+    passed.forEach(p => body.push(Bullet(`${(p.criteriaIds || []).join(", ") || p.id} — ${p.label || ""}`)));
   }
 
   // All findings with remediation (appendix)
@@ -2310,7 +2310,7 @@ async function generateBrandedDocx() {
     body.push(H1("All Findings — With Remediation"));
     findings.forEach((f, i) => {
       const rem = getRemediation(f.id);
-      body.push(H3(`${i + 1}. [${statusLabel(f.status)}] ${f.text}`));
+      body.push(H3(`${i + 1}. [${statusLabel(f.status)}] ${f.label || f.id}`));
       body.push(Para([
         { text: "Criterion: ", bold: true }, { text: f.id },
         { text: "   ·   Priority: ", bold: true }, { text: rem.priority },
