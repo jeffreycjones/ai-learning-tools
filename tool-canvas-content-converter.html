@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Canvas Content Converter | Learning Design Suite</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --gold: #D4A843;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --border: #ddd;
+            --white: #FFFFFF;
+            --accent-green: #2D6A4F;
+            --radius: 4px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Work Sans', Arial, sans-serif; color: var(--text-primary); background: var(--white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        a { color: var(--maroon); text-decoration: none; }
+
+        .site-header { background: var(--maroon); color: var(--white); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-md); }
+        .header-inner { max-width: 960px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; min-height: 52px; }
+        .header-titles h1 { font-family: 'Oswald', Arial, sans-serif; font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .header-titles .subtitle { font-family: 'Work Sans', Arial, sans-serif; font-size: 11px; opacity: 0.75; letter-spacing: 0.5px; }
+        .back-link { color: rgba(255,255,255,0.8); font-size: 13px; font-weight: 600; text-decoration: none; }
+        .back-link:hover { color: var(--white); }
+
+        .tool-hero { background: var(--maroon); color: var(--white); padding: 48px 24px 40px; text-align: center; }
+        .tool-hero .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 2px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+        .tool-hero h2 { font-family: 'Oswald', Arial, sans-serif; font-size: 34px; font-weight: 600; text-transform: uppercase; margin-bottom: 12px; }
+        .tool-hero p { font-size: 15px; font-weight: 300; opacity: 0.9; max-width: 620px; margin: 0 auto; }
+
+        .main { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+        @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+
+        .panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); }
+        .panel-title { font-family: 'Oswald', Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.3px; font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
+        .form-group .hint { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+        input[type="text"], input[type="password"], textarea, select {
+            width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px;
+            font-family: 'Work Sans', Arial, sans-serif; font-size: 14px; color: var(--text-primary);
+            background: var(--white); transition: border-color 0.2s;
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--maroon); }
+        textarea { resize: vertical; min-height: 80px; }
+        select { cursor: pointer; appearance: auto; }
+
+        .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip { padding: 6px 14px; border: 1px solid var(--border); border-radius: 2px; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; background: var(--white); user-select: none; }
+        .chip:hover { border-color: var(--maroon); color: var(--maroon); }
+        .chip.selected { background: var(--maroon); color: var(--white); border-color: var(--maroon); }
+
+        .btn-generate {
+            width: 100%; padding: 14px; border: none; border-radius: var(--radius);
+            background: var(--maroon); color: var(--white); font-family: 'Work Sans', Arial, sans-serif;
+            font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-top: 8px;
+        }
+        .btn-generate:hover { background: var(--maroon-light); }
+        .btn-generate:disabled { background: #999; cursor: not-allowed; }
+
+        /* Output Panel */
+        .output-area {
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 24px; min-height: 200px; font-size: 14px; line-height: 1.8; color: var(--text-primary);
+        }
+        .output-area h3 { font-family: 'Oswald', Arial, sans-serif; font-size: 18px; font-weight: 500; text-transform: uppercase; color: var(--maroon); margin: 20px 0 8px; }
+        .output-area h3:first-child { margin-top: 0; }
+        .output-area p { margin-bottom: 8px; }
+        .output-area ul, .output-area ol { margin: 8px 0 12px 20px; }
+        .output-area li { margin-bottom: 6px; }
+        .output-area strong { color: var(--text-primary); }
+        .output-area pre {
+            background: #1A1A1A; color: #E8E8E8; padding: 16px; border-radius: 4px;
+            font-family: 'SF Mono', 'Consolas', monospace; font-size: 12px; line-height: 1.6;
+            overflow-x: auto; margin: 12px 0; white-space: pre-wrap; word-wrap: break-word;
+        }
+        .output-area code {
+            background: #f4f4f4; padding: 2px 6px; border-radius: 3px;
+            font-family: 'SF Mono', 'Consolas', monospace; font-size: 12px; color: #C0392B;
+        }
+        .output-area pre code { background: transparent; color: inherit; padding: 0; font-size: 12px; }
+        .output-placeholder { color: #999; font-style: italic; }
+
+        .action-bar { display: flex; justify-content: flex-end; align-items: center; margin-top: 16px; gap: 12px; flex-wrap: wrap; }
+        .copy-btn {
+            padding: 10px 20px; border: none; border-radius: var(--radius);
+            background: var(--gold); color: var(--maroon-dark); font-family: 'Work Sans', Arial, sans-serif;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s;
+        }
+        .copy-btn:hover { background: #E0B64E; }
+        .copy-btn.copied { background: var(--accent-green); color: var(--white); }
+
+        /* Loading Spinner */
+        .loading { display: none; align-items: center; justify-content: center; gap: 12px; padding: 40px; color: var(--text-muted); }
+        .loading.active { display: flex; }
+        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--maroon); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* API Key Banner */
+        .api-banner {
+            background: #FFF8E8; border: 1px solid #E8D5A0; border-radius: var(--radius);
+            padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 16px;
+        }
+        .api-banner .api-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+        .api-banner .api-content { flex: 1; }
+        .api-banner .api-content p { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+        .api-banner input { max-width: 400px; }
+        .api-status { font-size: 12px; font-weight: 600; margin-top: 6px; }
+        .api-status.connected { color: var(--accent-green); }
+        .api-status.error { color: #C0392B; }
+
+        /* Tips */
+        .tips { margin-top: 40px; }
+        .tips h3 { font-family: 'Oswald', Arial, sans-serif; font-size: 20px; font-weight: 500; text-transform: uppercase; margin-bottom: 16px; }
+        .tips h3::before { content: ''; display: inline-block; width: 4px; height: 18px; background: var(--maroon); margin-right: 10px; vertical-align: middle; }
+        .tip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .tip-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; border-top: 3px solid var(--maroon); }
+        .tip-card h5 { font-family: 'Oswald', Arial, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 6px; }
+        .tip-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+        /* Workflow callout */
+        .workflow-callout {
+            background: #F4F0EA; border-left: 4px solid var(--maroon); padding: 16px 20px;
+            margin-top: 24px; border-radius: 0 4px 4px 0; font-size: 13px; color: var(--text-secondary);
+        }
+        .workflow-callout strong { color: var(--maroon); }
+
+        /* Footer */
+        footer { background: #313131; color: rgba(255,255,255,0.7); padding: 24px; font-size: 12px; margin-top: 48px; }
+        footer .footer-inner { max-width: 960px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        footer strong { font-family: 'Oswald', Arial, sans-serif; font-size: 14px; font-weight: 500; color: #fff; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<!-- University Bar -->
+<div style="background:#fff;border-bottom:1px solid #ddd;padding:8px 24px;">
+    <div style="max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
+        <a href="https://www.tamu.edu" target="_blank" style="display:flex;align-items:center;gap:10px;font-family:'Oswald',Arial,sans-serif;font-size:14px;font-weight:600;color:#500000;text-transform:uppercase;letter-spacing:0.5px;text-decoration:none;">
+            <span style="display:inline-flex;align-items:center;justify-content:center;background:#500000;color:#fff;width:28px;height:28px;font-size:11px;font-weight:700;border-radius:2px;">ATM</span>
+            Texas A&amp;M University
+        </a>
+        <a href="https://mays.tamu.edu" target="_blank" style="font-size:12px;color:#6B6B6B;font-weight:500;text-decoration:none;">Mays Business School</a>
+    </div>
+</div>
+
+<!-- Header -->
+<header class="site-header">
+    <div class="header-inner">
+        <div class="header-titles">
+            <h1>Teaching &amp; Learning Innovation</h1>
+            <div class="subtitle">Learning Design Suite</div>
+        </div>
+        <a href="index.html" class="back-link">&#8592; Back to AI Hub</a>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="tool-hero">
+    <div class="badge">Course Design</div>
+    <h2>Canvas Content Converter</h2>
+    <p>Paste content from Word, PDF, web pages, or plain text. Get back clean, accessible HTML formatted for Canvas pages and compatible with Cidi Labs Design Plus components used by TLI.</p>
+</section>
+
+<main class="main">
+
+    <!-- API Key Banner -->
+    <div class="api-banner">
+        <div class="api-icon">&#128273;</div>
+        <div class="api-content">
+            <p>This tool connects to <strong>TAMU AI Chat</strong> to convert your content directly. Enter your API key below. Your key is stored only in this browser session and is never saved or transmitted to any server other than TAMU AI Chat.</p>
+            <input type="password" id="apiKey" placeholder="Enter your TAMU AI Chat API key" value="">
+            <div class="api-status" id="apiStatus"></div>
+            <p style="margin-top:6px;margin-bottom:0;"><a href="https://tamu.ai/" target="_blank" style="font-size:12px;">Get your API key from TAMU AI Chat &#8594;</a></p>
+        </div>
+    </div>
+
+    <div class="two-col">
+
+        <!-- INPUT FORM -->
+        <div class="panel">
+            <div class="panel-title">Configure Your Conversion</div>
+
+            <div class="form-group">
+                <label>Source Content Type</label>
+                <select id="sourceType">
+                    <option value="">Select source type...</option>
+                    <option value="Microsoft Word document text">Microsoft Word document</option>
+                    <option value="PDF document text">PDF document</option>
+                    <option value="Web page or article">Web page / article</option>
+                    <option value="Plain text or notes">Plain text / notes</option>
+                    <option value="Existing Canvas page (cleanup)">Existing Canvas page (cleanup)</option>
+                    <option value="PowerPoint slide content">PowerPoint slide content</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Page Type in Canvas</label>
+                <select id="pageType">
+                    <option value="">Select page type...</option>
+                    <option value="Module overview / introduction">Module overview / introduction</option>
+                    <option value="Lecture content / reading">Lecture content / reading</option>
+                    <option value="Assignment instructions">Assignment instructions</option>
+                    <option value="Resource list / references">Resource list / references</option>
+                    <option value="Syllabus or policy page">Syllabus or policy page</option>
+                    <option value="Course welcome / orientation">Course welcome / orientation</option>
+                    <option value="General content page">General content page</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Course Context (optional)</label>
+                <input type="text" id="courseContext" placeholder="e.g., FINC 409 - Financial Management, Module 3">
+            </div>
+
+            <div class="form-group">
+                <label>Design Plus Components to Use</label>
+                <div class="hint">Select the components the AI should consider when structuring your content. Cidi Labs Design Plus components used by TLI.</div>
+                <div class="chip-group" id="dpChips">
+                    <span class="chip" data-value="content blocks (titled, color-banded sections)">Content Blocks</span>
+                    <span class="chip" data-value="callout boxes (info, warning, key takeaway)">Callouts</span>
+                    <span class="chip" data-value="accordion (collapsible sections)">Accordion</span>
+                    <span class="chip" data-value="tabs (tabbed content)">Tabs</span>
+                    <span class="chip" data-value="icon boxes / cards (visual highlights)">Icon Boxes</span>
+                    <span class="chip" data-value="banner / header image with title">Banner</span>
+                    <span class="chip" data-value="grid layout (multi-column responsive)">Grid Layout</span>
+                    <span class="chip" data-value="buttons (call-to-action links)">Buttons</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Accessibility Priorities</label>
+                <div class="chip-group" id="a11yChips">
+                    <span class="chip selected" data-value="proper heading hierarchy (H2 down, no skipped levels)">Heading Hierarchy</span>
+                    <span class="chip selected" data-value="alt text placeholders for any images mentioned">Alt Text Placeholders</span>
+                    <span class="chip selected" data-value="descriptive link text (no &quot;click here&quot;)">Descriptive Links</span>
+                    <span class="chip selected" data-value="semantic lists (ul/ol) instead of dashes or numbers in paragraphs">Semantic Lists</span>
+                    <span class="chip" data-value="table headers with scope attribute">Table Headers</span>
+                    <span class="chip" data-value="abbreviations expanded on first use">Expand Abbreviations</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Source Content to Convert</label>
+                <div class="hint">Paste the content you want to convert. Strip any obvious page numbers, headers, or footers from PDFs first for best results.</div>
+                <textarea id="sourceContent" style="min-height: 220px;" placeholder="Paste your content here..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Additional Instructions (optional)</label>
+                <textarea id="additionalNotes" style="min-height: 70px;" placeholder="e.g., Break into 3 sections, add a key takeaway callout at the end, link to FINC 409 syllabus..."></textarea>
+            </div>
+
+            <button class="btn-generate" onclick="generate()">Convert to Canvas HTML</button>
+        </div>
+
+        <!-- OUTPUT PANEL -->
+        <div class="panel">
+            <div class="panel-title">Canvas-Ready HTML</div>
+            <div class="loading" id="loading"><div class="spinner"></div><span>Converting with TAMU AI Chat...</span></div>
+            <div class="output-area" id="outputArea">
+                <span class="output-placeholder">Your Canvas-ready HTML will appear here. Complete the form and click "Convert to Canvas HTML" to begin.</span>
+            </div>
+            <div class="action-bar" id="actionBar" style="display:none;">
+                <button class="copy-btn" onclick="copyHtmlOnly()">Copy HTML Only</button>
+                <button class="copy-btn" onclick="copyOutput()">Copy All</button>
+                <button class="copy-btn" onclick="generate()" style="background:var(--maroon);color:var(--white);">Regenerate</button>
+            </div>
+
+            <div class="workflow-callout">
+                <strong>How to use the output in Canvas:</strong> Copy the HTML, open your Canvas page editor, switch to the HTML view (the &lt;/&gt; icon in the rich content editor), and paste. Switch back to the rich text view to confirm formatting and Design Plus styling renders correctly. Always preview before publishing.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TIPS -->
+    <div class="tips">
+        <h3>Tips for Best Results</h3>
+        <div class="tip-grid">
+            <div class="tip-card">
+                <h5>Clean Source Content First</h5>
+                <p>Remove obvious page numbers, headers, footers, and references from PDFs before pasting. The cleaner the input, the cleaner the output.</p>
+            </div>
+            <div class="tip-card">
+                <h5>Match Components to Purpose</h5>
+                <p>Use callouts for warnings or key takeaways. Use accordions when content is reference-style. Use tabs when comparing parallel concepts. Do not over-use components.</p>
+            </div>
+            <div class="tip-card">
+                <h5>Always Preview in Canvas</h5>
+                <p>Design Plus styles only render when the page is viewed inside a course where the Design Plus theme is enabled. Preview before publishing to confirm styling.</p>
+            </div>
+            <div class="tip-card">
+                <h5>Verify Accessibility</h5>
+                <p>After pasting into Canvas, run UDOIT (the accessibility checker bundled with Design Plus) to confirm WCAG compliance. The AI gets you 90 percent of the way; UDOIT catches the rest.</p>
+            </div>
+            <div class="tip-card">
+                <h5>Heading Hierarchy Starts at H2</h5>
+                <p>Canvas page titles are H1. Your content headings must start at H2 and not skip levels. The tool follows this rule by default.</p>
+            </div>
+            <div class="tip-card">
+                <h5>Replace Alt Text Placeholders</h5>
+                <p>Where the AI inserts <code>[ALT TEXT NEEDED]</code>, replace with a real description before publishing. The Alt Text Generator tool can help.</p>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div>
+            <strong>Teaching &amp; Learning Innovation</strong><br>
+            <span style="font-size:12px;color:rgba(255,255,255,0.5);">Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <span style="font-size:12px;color:rgba(255,255,255,0.4);">&copy; 2026 Mays Business School &bull; Last updated April 2026</span>
+    </div>
+</footer>
+
+<script>
+    // Toggle chip selection
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => chip.classList.toggle('selected'));
+    });
+
+    function buildPrompt() {
+        const sourceType = document.getElementById('sourceType').value;
+        const pageType = document.getElementById('pageType').value;
+        const courseContext = document.getElementById('courseContext').value.trim();
+        const sourceContent = document.getElementById('sourceContent').value.trim();
+        const additionalNotes = document.getElementById('additionalNotes').value.trim();
+
+        const dpComponents = Array.from(document.querySelectorAll('#dpChips .chip.selected')).map(c => c.dataset.value);
+        const a11yPriorities = Array.from(document.querySelectorAll('#a11yChips .chip.selected')).map(c => c.dataset.value);
+
+        if (!sourceType) { alert('Please select a Source Content Type.'); return null; }
+        if (!pageType) { alert('Please select a Page Type in Canvas.'); return null; }
+        if (!sourceContent || sourceContent.length < 30) { alert('Please paste at least a paragraph of source content to convert.'); return null; }
+
+        let userMessage = `CONVERT THE FOLLOWING CONTENT TO CANVAS-READY HTML.
+
+CONVERSION CONTEXT:
+- Source type: ${sourceType}
+- Target page type: ${pageType}`;
+
+        if (courseContext) userMessage += `\n- Course context: ${courseContext}`;
+
+        if (dpComponents.length > 0) {
+            userMessage += `\n\nDESIGN PLUS COMPONENTS TO CONSIDER (use only where they improve the content; do not force them):\n` + dpComponents.map(c => `- ${c}`).join('\n');
+        } else {
+            userMessage += `\n\nDESIGN PLUS COMPONENTS: None selected. Produce clean semantic Canvas HTML without Design Plus components.`;
+        }
+
+        if (a11yPriorities.length > 0) {
+            userMessage += `\n\nACCESSIBILITY PRIORITIES (must apply):\n` + a11yPriorities.map(p => `- ${p}`).join('\n');
+        }
+
+        if (additionalNotes) userMessage += `\n\nADDITIONAL INSTRUCTIONS:\n${additionalNotes}`;
+
+        userMessage += `\n\nSOURCE CONTENT:\n"""\n${sourceContent}\n"""`;
+
+        return userMessage;
+    }
+
+    async function generate() {
+        const apiKey = document.getElementById('apiKey').value.trim();
+        if (!apiKey) {
+            document.getElementById('apiStatus').textContent = 'Please enter your TAMU AI Chat API key above.';
+            document.getElementById('apiStatus').className = 'api-status error';
+            return;
+        }
+
+        const userMessage = buildPrompt();
+        if (!userMessage) return;
+
+        const outputArea = document.getElementById('outputArea');
+        const loading = document.getElementById('loading');
+        const actionBar = document.getElementById('actionBar');
+        const btn = document.querySelector('.btn-generate');
+
+        outputArea.style.display = 'none';
+        loading.classList.add('active');
+        actionBar.style.display = 'none';
+        btn.disabled = true;
+        btn.textContent = 'Converting...';
+
+        const systemPrompt = `You are an expert Canvas LMS content designer for Mays Business School at Texas A&M University. Teaching & Learning Innovation (TLI) uses Cidi Labs Design Plus, a Canvas LTI tool that provides accessible, branded HTML components activated by specific CSS class names.
+
+YOUR TASK:
+Convert the user's source content into clean, accessible HTML that is ready to paste directly into the Canvas rich content editor (HTML view). Where appropriate and where the user has selected them, leverage Cidi Labs Design Plus components.
+
+DESIGN PLUS COMPONENT REFERENCE (use these HTML patterns when the user asks for the corresponding component):
+
+1. CONTENT BLOCK (titled, color-banded section):
+<div class="dp-wrapper dp-content-block dp-bg-light">
+  <div class="dp-header-block dp-bg-primary"><h2>Section Title</h2></div>
+  <div class="dp-content"><p>Section body content.</p></div>
+</div>
+
+2. CALLOUT BOX (info, warning, key takeaway):
+<div class="dp-callout dp-callout-primary">
+  <p><strong>Key Takeaway:</strong> The main point of this section.</p>
+</div>
+Variants: dp-callout-info, dp-callout-warning, dp-callout-success, dp-callout-danger
+
+3. ACCORDION (collapsible sections):
+<div class="dp-accordion-wrapper">
+  <div class="dp-accordion">
+    <h3 class="dp-accordion-header">Question or Topic Title</h3>
+    <div class="dp-accordion-panel"><p>Hidden content revealed when expanded.</p></div>
+  </div>
+</div>
+
+4. TABS:
+<div class="dp-tabs-wrapper">
+  <div class="dp-tabs">
+    <h3 class="dp-tab-header">Tab 1 Label</h3>
+    <div class="dp-tab-panel"><p>Tab 1 content.</p></div>
+    <h3 class="dp-tab-header">Tab 2 Label</h3>
+    <div class="dp-tab-panel"><p>Tab 2 content.</p></div>
+  </div>
+</div>
+
+5. ICON BOX / CARD:
+<div class="dp-icon-box">
+  <div class="dp-icon-box-icon"><i class="icon-Solid icon-Lightbulb"></i></div>
+  <div class="dp-icon-box-content"><h3>Card Title</h3><p>Card description.</p></div>
+</div>
+
+6. BANNER:
+<div class="dp-banner dp-bg-primary">
+  <h2>Banner Title</h2>
+  <p>Subtitle or short description.</p>
+</div>
+
+7. GRID LAYOUT (multi-column):
+<div class="dp-grid">
+  <div class="dp-grid-col-2"><h3>Column 1</h3><p>Content.</p></div>
+  <div class="dp-grid-col-2"><h3>Column 2</h3><p>Content.</p></div>
+</div>
+Use dp-grid-col-3 for thirds, dp-grid-col-4 for quarters.
+
+8. BUTTON:
+<a class="dp-btn dp-btn-primary" href="URL_HERE">Button Label</a>
+
+CRITICAL RULES:
+1. Canvas page titles are H1. Your content must start at H2. Do not use H1 anywhere. Do not skip heading levels.
+2. Use semantic HTML: <ul>, <ol>, <strong>, <em>, <p>. Never use dashes or numbers in paragraphs to fake lists.
+3. For images mentioned in the source, insert <img src="[IMAGE URL NEEDED]" alt="[ALT TEXT NEEDED: brief description]" /> as a placeholder.
+4. For links, use descriptive link text. Never write "click here" or "this link." Example: <a href="URL">View the FINC 409 syllabus</a> not <a href="URL">click here</a>.
+5. For tables, always include <thead>, <tbody>, and <th scope="col"> or <th scope="row"> as appropriate.
+6. Strip out source artifacts: page numbers, running headers, footnote markers (unless meaningful), watermarks.
+7. If the source has obvious typos or formatting noise from OCR, clean them silently.
+8. Do NOT include <html>, <head>, <body>, or <style> tags. Output only the inner content that goes into the Canvas page editor.
+9. Do NOT use inline styles unless absolutely necessary. Design Plus styles render via class names.
+10. Preserve the substantive meaning of the source. Do not summarize or rewrite for length unless the user explicitly asks.
+
+OUTPUT FORMAT:
+First, provide a brief summary (2-3 sentences) of what you converted and which Design Plus components you applied (or skipped, with reasoning).
+
+Then, provide the full Canvas-ready HTML inside a single fenced code block tagged as html, like this:
+\`\`\`html
+<your converted HTML here>
+\`\`\`
+
+Finally, include a short "What to verify" checklist (3-5 bullets) of items the user should review before publishing in Canvas (alt text replacements, link URLs, accessibility checks, etc.).`;
+
+        try {
+            const response = await fetch('https://chat-api.tamu.ai/api/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'protected.gpt-4o',
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userMessage }
+                    ],
+                    temperature: 0.4,
+                    max_tokens: 4000,
+                    stream: true
+                })
+            });
+
+            if (!response.ok) {
+                let errMsg = `API returned status ${response.status}`;
+                try {
+                    const errText = await response.text();
+                    const errData = JSON.parse(errText);
+                    errMsg = errData.error?.message || errData.detail || errMsg;
+                } catch (_) {}
+                throw new Error(errMsg);
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let rawText = '';
+            let buffer = '';
+
+            outputArea.style.display = 'block';
+            outputArea.innerHTML = '<div style="color:var(--text-muted);font-style:italic;">Converting...</div>';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop();
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed || !trimmed.startsWith('data: ')) continue;
+                    const payload = trimmed.slice(6);
+                    if (payload === '[DONE]') continue;
+                    try {
+                        const chunk = JSON.parse(payload);
+                        const delta = chunk.choices?.[0]?.delta?.content;
+                        if (delta) {
+                            rawText += delta;
+                            outputArea.innerHTML = formatOutput(rawText);
+                        }
+                    } catch (_) {}
+                }
+            }
+
+            if (!rawText.trim()) throw new Error('The API returned an empty response. Please try again.');
+
+            // Stash raw text for the "Copy HTML Only" button
+            window.__lastOutput = rawText;
+
+            outputArea.innerHTML = formatOutput(rawText);
+            outputArea.style.display = 'block';
+            loading.classList.remove('active');
+            actionBar.style.display = 'flex';
+            btn.disabled = false;
+            btn.textContent = 'Convert to Canvas HTML';
+
+            document.getElementById('apiStatus').textContent = 'Connected to TAMU AI Chat';
+            document.getElementById('apiStatus').className = 'api-status connected';
+
+        } catch (err) {
+            loading.classList.remove('active');
+            outputArea.style.display = 'block';
+            outputArea.innerHTML = `<div style="color:#C0392B;"><strong>Error:</strong> ${err.message}</div><p style="margin-top:8px;font-size:13px;color:var(--text-muted);">Check that your API key is correct and that you have access to TAMU AI Chat. You can get your API key at <a href="https://tamu.ai/" target="_blank">tamu.ai</a>.</p>`;
+            btn.disabled = false;
+            btn.textContent = 'Convert to Canvas HTML';
+            document.getElementById('apiStatus').textContent = 'Connection failed. Check your API key.';
+            document.getElementById('apiStatus').className = 'api-status error';
+        }
+    }
+
+    function formatOutput(text) {
+        // Escape HTML inside fenced code blocks first so the markup renders as code, not as live HTML
+        let html = text;
+
+        // Handle fenced code blocks: ```html ... ```
+        html = html.replace(/```(\w+)?\n?([\s\S]*?)```/g, function(match, lang, code) {
+            const escaped = code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+            return '<pre><code>' + escaped + '</code></pre>';
+        });
+
+        // If a code block was started but not closed (mid-stream), render it as best we can
+        if ((html.match(/```/g) || []).length === 1) {
+            html = html.replace(/```(\w+)?\n?([\s\S]*)$/, function(match, lang, code) {
+                const escaped = code
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+                return '<pre><code>' + escaped + '</code></pre>';
+            });
+        }
+
+        // Apply markdown formatting OUTSIDE code blocks only
+        // Simple approach: split on <pre>...</pre> blocks, format the text parts, rejoin
+        const parts = html.split(/(<pre><code>[\s\S]*?<\/code><\/pre>)/);
+        for (let i = 0; i < parts.length; i++) {
+            if (parts[i].startsWith('<pre>')) continue; // skip code blocks
+            parts[i] = parts[i]
+                .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/## (.*)/g, '<h3>$1</h3>')
+                .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n- /g, '<br>&#8226; ')
+                .replace(/\n(\d+)\. /g, '<br>$1. ');
+            parts[i] = '<p>' + parts[i] + '</p>';
+            parts[i] = parts[i].replace(/<p><h3>/g, '<h3>').replace(/<\/h3><\/p>/g, '</h3>');
+            parts[i] = parts[i].replace(/<p>\s*<\/p>/g, '');
+        }
+
+        return parts.join('');
+    }
+
+    function copyOutput() {
+        const text = document.getElementById('outputArea').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = event.target;
+            const original = btn.textContent;
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
+        });
+    }
+
+    function copyHtmlOnly() {
+        const raw = window.__lastOutput || '';
+        // Extract the first ```html ... ``` block
+        const match = raw.match(/```(?:html)?\n?([\s\S]*?)```/);
+        const htmlOnly = match ? match[1].trim() : raw;
+        navigator.clipboard.writeText(htmlOnly).then(() => {
+            const btn = event.target;
+            const original = btn.textContent;
+            btn.textContent = 'HTML Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
