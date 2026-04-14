@@ -332,6 +332,7 @@
         .tag-both { background: #FFF4E0; color: #8B6914; }
         .tag-policy { background: #FDEAEA; color: #8A1E1E; }
         .tag-tool { background: #E8F0F8; color: var(--accent-blue); }
+        .tag-media { background: #FDE8D8; color: #9C4A0A; }
         .card h4 {
             font-family: var(--font-heading);
             font-size: 18px;
@@ -855,12 +856,13 @@
         <div class="section-header">
             <h3>Learning Design Tools</h3>
         </div>
-        <p>Interactive, AI-powered tools for course design, content generation, accessibility, and student interaction. Each tool connects directly to <a href="https://tamu.ai/" target="_blank">TAMU AI Chat</a> to generate results on the page.</p>
+        <p>Interactive, AI-powered tools for course design, content generation, learning media, accessibility, and student interaction. Each tool connects directly to <a href="https://tamu.ai/" target="_blank">TAMU AI Chat</a> to generate results on the page.</p>
 
         <div class="audience-toggle" id="designToolToggle">
             <button class="active" onclick="filterDesignTools('all')">All Tools</button>
             <button onclick="filterDesignTools('course-design')">Course Design</button>
             <button onclick="filterDesignTools('content')">Content Generation</button>
+            <button onclick="filterDesignTools('media')">Learning Media</button>
             <button onclick="filterDesignTools('accessibility')">Accessibility</button>
             <button onclick="filterDesignTools('interaction')">Student Interaction</button>
             <button onclick="filterDesignTools('quality')">Quality</button>
@@ -908,6 +910,24 @@
                 <h4>Assessment Question Generator</h4>
                 <p>Generate quiz and exam questions across multiple formats, mapped to learning objectives and Bloom's levels.</p>
                 <a href="tool-assessment-question-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="media">
+                <span class="card-tag tag-media">Learning Media</span>
+                <h4>Lecture Video Script Writer</h4>
+                <p>Turn an outline, rough notes, or slides into a camera-ready script with pacing, visual cues, and clean transitions.</p>
+                <a href="tool-lecture-video-script-writer.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="media">
+                <span class="card-tag tag-media">Learning Media</span>
+                <h4>Storyboard Generator</h4>
+                <p>Paste a finalized script and get back a shot-by-shot visual plan ready to hand to Learning Media for production.</p>
+                <a href="tool-storyboard-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="media">
+                <span class="card-tag tag-media">Learning Media</span>
+                <h4>Caption Cleanup &amp; Speaker Attribution</h4>
+                <p>Clean up auto-generated captions from Zoom, YouTube, or Canvas Studio with speaker labels, punctuation, and error correction.</p>
+                <a href="tool-caption-cleanup.html" class="card-link">Access Tool &#8594;</a>
             </div>
             <div class="card" data-category="accessibility">
                 <span class="card-tag tag-tli">Accessibility</span>
