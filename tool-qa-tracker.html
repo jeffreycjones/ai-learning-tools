@@ -2102,9 +2102,9 @@ async function generateBrandedDocx() {
   }
 
   // XML escape helper
+  // XML text content only requires < > & to be escaped. Apostrophes and double quotes pass through cleanly in w:t content.
   const esc = (s) => String(s == null ? "" : s)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   // Paragraph builders that reference TEMPLATE styles by ID.
   // Style IDs (verified against Template.docx styles.xml):
@@ -2199,7 +2199,7 @@ async function generateBrandedDocx() {
   body.push(Spacer());
 
   // Executive Summary
-  body.push(H1("Executive Summary"));
+  body.push(H2("Executive Summary"));
   body.push(Body(`This report documents the quality assurance review of ${state.courseName || "the course"} against the TLI 123-criteria rubric. Automated checks cover 29 criteria; the remaining 94 require reviewer judgment.`));
 
   // Stats table (5 cells)
@@ -2222,17 +2222,17 @@ async function generateBrandedDocx() {
   ]));
 
   // Critical Fixes
-  body.push(H1("Critical Fixes — Prioritized"));
+  body.push(H2("Critical Fixes — Prioritized"));
   if (critical.length === 0) {
     body.push(Body("No critical findings. Address flagged items and complete remaining manual criteria."));
   } else {
     critical.forEach((f, i) => {
       const rem = getRemediation(f.id);
-      body.push(H2(`${i + 1}. ${f.label || f.id}`));
+      body.push(H3(`${i + 1}. ${f.label || f.id}`));
       body.push(Para([
         { text: "Status: ", bold: true }, { text: statusLabel(f.status) },
         { text: "   ·   Priority: ", bold: true }, { text: rem.priority },
-        { text: "   ·   Criterion: ", bold: true }, { text: f.id },
+        { text: "   ·   Criteria: ", bold: true }, { text: (f.criteriaIds && f.criteriaIds.length ? f.criteriaIds.join(", ") : f.id) },
         { text: "   ·   Role: ", bold: true }, { text: roleLabel(rem.role) },
       ]));
       if (f.detail) body.push(Body(`Detail: ${f.detail}`));
@@ -2243,7 +2243,7 @@ async function generateBrandedDocx() {
   }
 
   // WCAG / ADA Section
-  body.push(H1("WCAG 2.1 AA & ADA Title II Compliance"));
+  body.push(H2("WCAG 2.1 AA & ADA Title II Compliance"));
   body.push(Body("ADA Title II digital accessibility requirements take effect April 24, 2026. This course must meet WCAG 2.1 AA conformance, including color contrast, heading structure, alt text, link purpose, captions, and keyboard accessibility."));
   const wcagFindings = findings.filter(f => /^auto-wcag-|^auto-alt|^auto-heading|^auto-caption|^auto-color/.test(f.id) || /wcag|accessib|contrast|alt text|caption/i.test(f.label || ""));
   if (wcagFindings.length === 0) {
@@ -2251,24 +2251,26 @@ async function generateBrandedDocx() {
   } else {
     body.push(Bold(`${wcagFindings.length} accessibility-related findings require action:`));
     wcagFindings.slice(0, 10).forEach(f => {
-      body.push(Bullet(`[${statusLabel(f.status)}] ${f.id} — ${f.label || ""}`));
+      const critIds = (f.criteriaIds && f.criteriaIds.length) ? f.criteriaIds.join(", ") : f.id;
+      body.push(Bullet(`[${statusLabel(f.status)}] ${critIds} — ${f.label || ""}`));
     });
   }
 
   // Remediation by Role
-  body.push(H1("Remediation by Role"));
+  body.push(H2("Remediation by Role"));
   ["id","sme","tech"].forEach(role => {
     const items = byRole[role];
     if (items.length === 0) return;
-    body.push(H2(`${roleLabel(role)} (${items.length})`));
+    body.push(H3(`${roleLabel(role)} (${items.length})`));
     items.slice(0, 15).forEach(f => {
-      body.push(Bullet(`[${statusLabel(f.status)}] ${f.id} — ${f.label || ""}`));
+      const critIds = (f.criteriaIds && f.criteriaIds.length) ? f.criteriaIds.join(", ") : f.id;
+      body.push(Bullet(`[${statusLabel(f.status)}] ${critIds} — ${f.label || ""}`));
     });
     if (items.length > 15) body.push(Body(`...and ${items.length - 15} more. See full findings section.`));
   });
 
   // Category Breakdown
-  body.push(H1("Category Breakdown"));
+  body.push(H2("Category Breakdown"));
   const catRows = [Row([
     Cell(4680, "Section", { bold: true, white: true, shading: "500000" }),
     Cell(1170, "Total", { bold: true, white: true, shading: "500000", align: "center" }),
@@ -2300,19 +2302,19 @@ async function generateBrandedDocx() {
   // Passed Automated Checks
   const passed = state.autoResults.filter(r => r.status === "pass");
   if (passed.length > 0) {
-    body.push(H1("Passed Automated Checks"));
+    body.push(H2("Passed Automated Checks"));
     body.push(Body(`${passed.length} automated checks passed without issue:`));
     passed.forEach(p => body.push(Bullet(`${(p.criteriaIds || []).join(", ") || p.id} — ${p.label || ""}`)));
   }
 
   // All findings with remediation (appendix)
   if (findings.length > 0) {
-    body.push(H1("All Findings — With Remediation"));
+    body.push(H2("All Findings — With Remediation"));
     findings.forEach((f, i) => {
       const rem = getRemediation(f.id);
       body.push(H3(`${i + 1}. [${statusLabel(f.status)}] ${f.label || f.id}`));
       body.push(Para([
-        { text: "Criterion: ", bold: true }, { text: f.id },
+        { text: "Criteria: ", bold: true }, { text: (f.criteriaIds && f.criteriaIds.length ? f.criteriaIds.join(", ") : f.id) },
         { text: "   ·   Priority: ", bold: true }, { text: rem.priority },
         { text: "   ·   Role: ", bold: true }, { text: roleLabel(rem.role) },
       ]));
