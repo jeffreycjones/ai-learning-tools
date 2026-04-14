@@ -1,0 +1,2491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TLI QA Tracker | Mays AI Learning Design Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root {
+    /* Mays primary palette — matches mays.tamu.edu and Mays Brand Standards */
+    --maroon: #500000;
+    --maroon-dark: #330000;
+    --maroon-light: #6b1d1d;
+    --navy: #003c71;
+    --cream: #faf7f0;        /* Warm off-white used in Mays hero sections */
+    --gray-light: #f4f2ee;
+    --gray-mid: #d8d4cc;
+    --gray-border: #bfb9ad;
+    --gray-dark: #5f5f5f;    /* Mays H3 body gray */
+    --body: #595959;         /* Mays Normal body color */
+    --text: #1a1a1a;
+    --white: #fff;
+    --pass: #2e7d32;
+    --pass-bg: #e8f5e9;
+    --flag: #b35c00;
+    --flag-bg: #fbeed7;
+    --fail: #9a1b1b;
+    --fail-bg: #f7e3e3;
+    --info: #1a5a8f;
+    --info-bg: #e4eef7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--body);
+    background: var(--cream);
+    line-height: 1.55;
+    font-size: 15px;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Oswald', 'Open Sans', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--maroon);
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  /* ── Header: Mays-style solid maroon band ── */
+  header.site {
+    background: var(--maroon);
+    color: var(--white);
+    padding: 28px 40px 24px;
+    border-bottom: 1px solid var(--maroon-dark);
+    position: relative;
+  }
+  header.site .eyebrow {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-bottom: 8px;
+  }
+  header.site h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  header.site .sub {
+    font-size: 13px;
+    opacity: 0.92;
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: 0.01em;
+    max-width: 760px;
+  }
+  header.site a.back {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--white);
+    font-size: 11px;
+    text-decoration: none;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    border: 1px solid rgba(255,255,255,0.55);
+    padding: 6px 14px;
+    border-radius: 0;
+    transition: all 0.2s;
+  }
+  header.site a.back:hover { background: var(--white); color: var(--maroon); border-color: var(--white); }
+
+  /* ── Tab bar: clean underlined nav, Oswald caps ── */
+  .tabs {
+    display: flex;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-mid);
+    padding: 0 32px;
+    overflow-x: auto;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .tabs button {
+    padding: 16px 22px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    color: var(--gray-dark);
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .tabs button:hover:not(:disabled) { color: var(--maroon); }
+  .tabs button.active { color: var(--maroon); font-weight: 500; border-bottom-color: var(--maroon); }
+  .tabs button:disabled { opacity: 0.35; cursor: default; }
+
+  main { max-width: 1140px; margin: 0 auto; padding: 32px 40px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── Cards: sharper corners, maroon side-rule accent like Mays web ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-radius: 2px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(80,0,0,0.04);
+    border-top: 3px solid var(--maroon);
+  }
+  .card h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    color: var(--maroon);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .card h2::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 2px;
+    background: var(--maroon);
+    margin-top: 10px;
+    margin-bottom: 16px;
+  }
+  .card h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    color: var(--maroon);
+    letter-spacing: 0.1em;
+    margin: 14px 0 10px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  label {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--maroon);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  input[type="text"], textarea, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-mid);
+    border-radius: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--maroon);
+    box-shadow: 0 0 0 2px rgba(80,0,0,0.15);
+  }
+  textarea { min-height: 180px; resize: vertical; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.45; }
+
+  /* ── Buttons: squared, Oswald caps ── */
+  .btn {
+    display: inline-block;
+    padding: 11px 22px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: var(--maroon);
+    color: var(--white);
+    border: 1px solid var(--maroon);
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .btn:hover { background: var(--maroon-dark); border-color: var(--maroon-dark); }
+  .btn.secondary { background: transparent; color: var(--maroon); border: 1px solid var(--maroon); }
+  .btn.secondary:hover { background: var(--maroon); color: var(--white); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+
+  .form-row { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 20px; }
+  .form-row > div { flex: 1 1 240px; }
+
+  /* ── Badges: squared, Oswald caps ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 0;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .badge.pass { color: var(--pass); background: var(--pass-bg); border-color: var(--pass); }
+  .badge.flag { color: var(--flag); background: var(--flag-bg); border-color: var(--flag); }
+  .badge.fail { color: var(--fail); background: var(--fail-bg); border-color: var(--fail); }
+  .badge.info { color: var(--info); background: var(--info-bg); border-color: var(--info); }
+  .badge.na   { color: var(--gray-dark); background: var(--gray-light); border-color: var(--gray-border); }
+
+  .auto-finding {
+    border-left: 4px solid var(--gray-border);
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    background: var(--white);
+    border-radius: 0;
+    border-top: 1px solid var(--gray-mid);
+    border-right: 1px solid var(--gray-mid);
+    border-bottom: 1px solid var(--gray-mid);
+  }
+  .auto-finding.pass { border-left-color: var(--pass); }
+  .auto-finding.flag { border-left-color: var(--flag); }
+  .auto-finding.fail { border-left-color: var(--fail); }
+  .auto-finding.info { border-left-color: var(--info); }
+  .auto-finding .title {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .auto-finding .detail { font-size: 13px; color: var(--body); }
+  .auto-finding ul { margin: 8px 0 0 22px; font-size: 12px; color: var(--gray-dark); }
+
+  /* ── Category blocks: cleaner Mays-style row ── */
+  .cat-block {
+    border: 1px solid var(--gray-mid);
+    border-left: 3px solid var(--maroon);
+    border-radius: 0;
+    margin-bottom: 14px;
+    background: var(--white);
+    overflow: hidden;
+  }
+  .cat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 22px;
+    background: var(--maroon);
+    color: var(--white);
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid var(--maroon-dark);
+  }
+  .cat-header h3 {
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .cat-header .meta {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    opacity: 0.95;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cat-header .meta .badge { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.35); color: var(--white); }
+
+  .cat-body { padding: 0; background: var(--white); }
+  .criterion {
+    display: grid;
+    grid-template-columns: 90px 1fr 120px 110px;
+    gap: 14px;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--gray-mid);
+    align-items: center;
+  }
+  .criterion:last-child { border-bottom: none; }
+  .criterion:hover { background: var(--cream); }
+  .criterion .cid {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--maroon);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .criterion .text { font-size: 13px; color: var(--text); line-height: 1.45; }
+  .criterion .roles {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    color: var(--gray-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  .criterion select { font-size: 12px; padding: 6px 8px; }
+  .criterion.auto-hint { background: #fbf9f3; }
+  .criterion.auto-hint .cid::before { content: "⚙ "; color: var(--maroon); }
+
+  /* ── Stats: squared, Mays hero-numeral style ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  .stat {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-top: 3px solid var(--maroon);
+    border-radius: 0;
+    padding: 22px 16px 18px;
+    text-align: center;
+  }
+  .stat .num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 44px;
+    font-weight: 500;
+    color: var(--maroon);
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+  .stat .label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    color: var(--gray-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-top: 10px;
+  }
+  .stat.pass { border-top-color: var(--pass); } .stat.pass .num { color: var(--pass); }
+  .stat.flag { border-top-color: var(--flag); } .stat.flag .num { color: var(--flag); }
+  .stat.fail { border-top-color: var(--fail); } .stat.fail .num { color: var(--fail); }
+
+  /* ── Upload zone: Mays cream with maroon accents ── */
+  .upload-zone {
+    border: 2px dashed var(--gray-border);
+    border-radius: 0;
+    padding: 32px 24px;
+    text-align: center;
+    background: var(--cream);
+    transition: all 0.2s;
+  }
+  .upload-zone:hover { border-color: var(--maroon); background: var(--white); }
+  .upload-zone.ok { border-color: var(--pass); background: var(--pass-bg); border-style: solid; }
+  .upload-zone.err { border-color: var(--fail); background: var(--fail-bg); border-style: solid; }
+  .upload-zone p { margin: 6px 0; font-size: 13px; color: var(--body); }
+  .upload-zone .filename { font-family: 'Open Sans', sans-serif; font-weight: 600; color: var(--text); }
+  .upload-zone label[for], .upload-zone label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    color: var(--maroon);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hint {
+    font-size: 12px;
+    color: var(--gray-dark);
+    font-style: normal;
+    line-height: 1.5;
+    border-left: 2px solid var(--maroon);
+    padding-left: 10px;
+    margin: 8px 0;
+  }
+  .divider { height: 1px; background: var(--gray-mid); margin: 26px 0; border: none; }
+
+  textarea#reportOut { min-height: 300px; font-size: 11px; line-height: 1.5; }
+
+  /* Summary table */
+  .summary-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .summary-table th {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--maroon);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 500;
+  }
+  .summary-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-mid);
+    font-size: 13px;
+    color: var(--text);
+  }
+  .summary-table tr:nth-child(even) td { background: var(--cream); }
+
+  @media (max-width: 760px) {
+    .criterion { grid-template-columns: 1fr; gap: 6px; padding: 14px; }
+    .criterion .cid, .criterion .roles { font-size: 10px; }
+    main { padding: 18px; }
+    header.site { padding: 20px 22px; }
+    header.site h1 { font-size: 24px; }
+    .card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="eyebrow">Mays Business School · Teaching &amp; Learning Innovation</div>
+  <h1>TLI QA Tracker</h1>
+  <div class="sub">A 123-criterion Canvas course review instrument with automated IMSCC scanning and WCAG 2.1 AA compliance checks for ADA Title II (April 2026).</div>
+  <a class="back" href="index.html">&larr; Return to Suite</a>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button data-tab="input" class="active">Course &amp; Input</button>
+  <button data-tab="auto" id="tab-auto" disabled>Auto Analysis</button>
+  <button data-tab="checklist">Manual Checklist</button>
+  <button data-tab="summary">Summary &amp; Export</button>
+</nav>
+
+<main>
+  <!-- ───────── INPUT PANEL ───────── -->
+  <section class="panel active" data-panel="input">
+    <div class="card">
+      <h2>Course Information</h2>
+      <div class="form-row">
+        <div>
+          <label for="courseName">Course Name</label>
+          <input type="text" id="courseName" placeholder="e.g., MGMT 640 — Flex Online" />
+        </div>
+        <div>
+          <label for="reviewerName">Reviewer</label>
+          <input type="text" id="reviewerName" placeholder="Your name" />
+        </div>
+        <div>
+          <label for="reviewDate">Review Date</label>
+          <input type="text" id="reviewDate" />
+        </div>
+      </div>
+      <p class="hint">Progress auto-saves to your browser, keyed by course name. Enter a consistent course name to resume later.</p>
+      <div class="btn-row">
+        <button class="btn secondary" id="loadSaved">Load Saved Progress</button>
+        <button class="btn secondary" id="clearSaved">Clear This Course</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Content Source</h2>
+      <h3>Option A — Upload Canvas Export (.imscc)</h3>
+      <p class="hint">Export from Canvas → Settings → Export Course Content → Course. Fully parses modules, assignments, late policy, grading scheme, nav tabs, discussions, pages.</p>
+      <div class="upload-zone" id="imsccZone">
+        <p>Drop .imscc here or <label style="color:var(--maroon);cursor:pointer;text-decoration:underline"><input type="file" id="imsccInput" accept=".imscc,.zip" hidden>browse</label></p>
+        <p class="filename" id="imsccStatus">No file loaded</p>
+      </div>
+
+      <hr class="divider" />
+
+      <h3>Option B — Paste HTML Content</h3>
+      <p class="hint">Paste raw HTML from a Canvas page, assignment, or module. Runs all HTML-based automated checks.</p>
+      <label for="htmlPaste">HTML Content</label>
+      <textarea id="htmlPaste" placeholder="&lt;div class=&quot;dp-wrapper&quot;&gt; ...paste here..."></textarea>
+
+      <div class="btn-row">
+        <button class="btn" id="runAnalysis">Run Automated Checks</button>
+        <button class="btn secondary" id="skipToChecklist">Skip to Manual Checklist</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── AUTO ANALYSIS PANEL ───────── -->
+  <section class="panel" data-panel="auto">
+    <div class="card">
+      <h2>Automated Findings</h2>
+      <p class="hint">Auto-scanned criteria. Flagged items should be reviewed manually. The manual checklist will pre-populate with these results.</p>
+      <div class="summary-grid">
+        <div class="stat pass"><div class="num" id="autoPassCt">0</div><div class="label">Pass</div></div>
+        <div class="stat flag"><div class="num" id="autoFlagCt">0</div><div class="label">Flag</div></div>
+        <div class="stat fail"><div class="num" id="autoFailCt">0</div><div class="label">Fail</div></div>
+        <div class="stat"><div class="num" id="autoInfoCt">0</div><div class="label">Info</div></div>
+      </div>
+      <div id="autoFindings"></div>
+      <div class="btn-row">
+        <button class="btn" id="goChecklist">Continue to Manual Checklist →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── CHECKLIST PANEL ───────── -->
+  <section class="panel" data-panel="checklist">
+    <div class="card">
+      <h2>Manual Checklist — 123 Criteria</h2>
+      <p class="hint">⚙ = Auto-populated by IMSCC scan. Override any field. Status: <span class="badge pass">PASS</span> <span class="badge flag">FLAG</span> <span class="badge fail">FAIL</span> <span class="badge na">N/A</span></p>
+      <div class="btn-row">
+        <button class="btn secondary" id="expandAll">Expand All</button>
+        <button class="btn secondary" id="collapseAll">Collapse All</button>
+      </div>
+    </div>
+    <div id="categoryContainer"></div>
+  </section>
+
+  <!-- ───────── SUMMARY PANEL ───────── -->
+  <section class="panel" data-panel="summary">
+    <div class="card">
+      <h2>Review Summary</h2>
+      <div class="summary-grid">
+        <div class="stat"><div class="num" id="sumReviewed">0</div><div class="label">Reviewed / 123</div></div>
+        <div class="stat pass"><div class="num" id="sumPass">0</div><div class="label">Met</div></div>
+        <div class="stat flag"><div class="num" id="sumFlag">0</div><div class="label">Flagged</div></div>
+        <div class="stat fail"><div class="num" id="sumFail">0</div><div class="label">Not Met</div></div>
+      </div>
+      <div id="categoryBreakdown"></div>
+    </div>
+
+    <div class="card">
+      <h2>Export</h2>
+      <div class="btn-row">
+        <button class="btn" id="btnExportDocx">Download Branded .docx Report</button>
+        <button class="btn secondary" id="btnExportXlsx">Download .xlsx Tracker</button>
+        <button class="btn secondary" id="btnExportTxt">Download .txt Report</button>
+        <button class="btn secondary" id="btnCopyReport">Copy Report to Clipboard</button>
+      </div>
+      <label for="reportOut" style="margin-top:14px;">Report Preview</label>
+      <textarea id="reportOut" readonly></textarea>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   TLI QA Tracker — vanilla JS port of tli-content-qa-checker.jsx
+   Self-contained. No backend. localStorage persistence keyed by course.
+   ═══════════════════════════════════════════════════════════════════ */
+
+// ─── QA Categories (full 12 sections, 123 criteria) ───
+const QA_CATEGORIES = [
+  { id:"s01", name:"01 – Overall Design, Content & Files", reviewers:["id","sme","tech"], criteria:[
+    {id:"s01-01",text:"Modules open Sat 12:01 AM, close Sun 11:59 PM (GS+M1 open Day 1; MBA: 2 at a time)",roles:["id","tech"],auto:false},
+    {id:"s01-02",text:"CLOs in Getting Started; MLOs in Learning Materials pages (M1–M8)",roles:["id","sme"],auto:false},
+    {id:"s01-03",text:"Link Validator returns no errors",roles:["id","tech"],auto:false},
+    {id:"s01-04",text:"All course elements published except Instructor Resources and its contents",roles:["id","tech"],auto:false},
+    {id:"s01-05",text:"Unused Pages, Assignments, Quizzes, Discussions, and Files removed",roles:["id","tech"],auto:false},
+    {id:"s01-06",text:"Accessibility Report yields only institutional template errors; all docs have dark green Ally icon",roles:["id","tech"],auto:false},
+    {id:"s01-07",text:"All course elements and uploaded documents use standard Concise English Writing",roles:["id","tech"],auto:false},
+    {id:"s01-08",text:"Course Files organized by module using naming conventions",roles:["id","tech"],auto:false},
+    {id:"s01-09",text:"Uploaded content moved to appropriate Files folder; 'Uploaded Media' folder deleted",roles:["id","tech"],auto:false},
+    {id:"s01-10",text:"Content-appropriate images organized in Canvas Files using naming conventions",roles:["id","tech"],auto:false},
+    {id:"s01-11",text:"No placeholders remain in course (unless media noted in ID Reviewer Notes)",roles:["id","tech"],auto:false},
+    {id:"s01-12",text:"Interactive Lesson knowledge check questions include feedback responses",roles:["id","tech"],auto:false},
+    {id:"s01-13",text:"Course content documents linked to course files, not OneDrive or Google Drive",roles:["id","tech"],auto:false},
+    {id:"s01-14",text:"Appropriate copyright permissions and fair use followed; proper citations used",roles:["id","sme"],auto:false},
+  ]},
+  { id:"s02", name:"02 – Pages", reviewers:["id","tech"], criteria:[
+    {id:"s02-01",text:"Template applied (Overview, Guidelines, Rubrics, Technical Support)",roles:["id","tech"],auto:true},
+    {id:"s02-02",text:"All Pages use standard Concise English Writing",roles:["id","tech"],auto:false},
+    {id:"s02-03",text:"Formatting: consistent font, size, spacing (no extra returns)",roles:["id","tech"],auto:false},
+    {id:"s02-04",text:"Follows Course Style Guide",roles:["id","tech"],auto:false},
+    {id:"s02-05",text:"Consistent graphic elements and thumbnails",roles:["id","tech"],auto:false},
+    {id:"s02-06",text:"Navigation to and from (within module)",roles:["id","tech"],auto:false},
+    {id:"s02-07",text:"Working links",roles:["id","tech"],auto:true},
+    {id:"s02-08",text:"Uses correct naming conventions",roles:["id","tech"],auto:true},
+    {id:"s02-09",text:"Home page: custom image, FO Template, linked buttons (GS, Syllabus, Student Resources)",roles:["id","tech"],auto:false},
+    {id:"s02-10",text:"Interactive lessons linked from tabs and configured consistently",roles:["id","tech"],auto:false},
+    {id:"s02-11",text:"To-Do tab content listed chronologically; due dates verified",roles:["id","tech"],auto:false},
+  ]},
+  { id:"s03", name:"03 – Assignments & Assessments", reviewers:["id","sme","tech"], criteria:[
+    {id:"s03-01",text:"Template applied (Overview, Guidelines, Rubrics, Technical Support)",roles:["id","tech"],auto:true},
+    {id:"s03-02",text:"Overview & Guidelines clear, sequenced, support RSI, provide relevance",roles:["id","tech"],auto:false},
+    {id:"s03-03",text:"Due dates set and chronologically sequenced on Module To Do list",roles:["id","tech"],auto:true},
+    {id:"s03-04",text:"Rubric linked and point values explained clearly",roles:["id","tech"],auto:true},
+    {id:"s03-05",text:"Formatting: consistent font, size, spacing",roles:["id","tech"],auto:false},
+    {id:"s03-06",text:"All Assignments use standard Concise English Writing",roles:["id","tech"],auto:false},
+    {id:"s03-07",text:"Follows Course Style Guide",roles:["id","tech"],auto:false},
+    {id:"s03-08",text:"Consistent, accessible graphic elements/thumbnails",roles:["id","tech"],auto:false},
+    {id:"s03-09",text:"Navigation to and from (within module)",roles:["id","tech"],auto:false},
+    {id:"s03-10",text:"Working links",roles:["id","tech"],auto:false},
+    {id:"s03-11",text:"Assignments follow naming conventions",roles:["id","tech"],auto:true},
+    {id:"s03-12",text:"Assignments/Assessments align with MLOs and CLOs",roles:["id","sme"],auto:false},
+    {id:"s03-13",text:"Variety of Assignments/Assessments that are engaging and interactive",roles:["id","sme"],auto:false},
+    {id:"s03-14",text:"Course has formative & summative assessments appropriate for course level",roles:["id","sme"],auto:false},
+    {id:"s03-15",text:"Assignment Groups configured and match Syllabus",roles:["id","sme"],auto:true},
+    {id:"s03-16",text:"TPTs correctly set up and use TPT template page",roles:["id","sme"],auto:false},
+    {id:"s03-17",text:"TPTs support mastery of CLOs and MLOs",roles:["id","sme"],auto:false},
+    {id:"s03-18",text:"Assignments split for pre/post-Cohort session as appropriate",roles:["id","sme"],auto:false},
+    {id:"s03-19",text:"Rise embedded assignments have template banner/text and next/previous buttons",roles:["id","sme"],auto:false},
+    {id:"s03-20",text:"TPT assignments contain rubric within the tool",roles:["id","sme"],auto:false},
+  ]},
+  { id:"s04", name:"04 – Quizzes", reviewers:["id","sme","tech"], criteria:[
+    {id:"s04-01",text:"Templated: Guidelines provide clear instructions including Quiz security requirements",roles:["id","tech"],auto:false},
+    {id:"s04-02",text:"Formatting: consistent font, size, spacing",roles:["id","tech"],auto:false},
+    {id:"s04-03",text:"All Quizzes use standard Concise English Writing",roles:["id","tech"],auto:false},
+    {id:"s04-04",text:"Follows Course Style Guide",roles:["id","tech"],auto:false},
+    {id:"s04-05",text:"Settings: Due Date, Attempts, Time Limit, Answer access configured",roles:["id","tech"],auto:false},
+    {id:"s04-06",text:"Navigation to and from (within module)",roles:["id","tech"],auto:false},
+    {id:"s04-07",text:"Quiz questions provide feedback",roles:["id","tech"],auto:false},
+    {id:"s04-08",text:"Formative and summative Quizzes used as appropriate, suited to course level",roles:["id","sme"],auto:false},
+    {id:"s04-09",text:"Quizzes aligned with MLOs and CLOs",roles:["id","sme"],auto:false},
+  ]},
+  { id:"s05", name:"05 – Discussions", reviewers:["id","sme","tech"], criteria:[
+    {id:"s05-01",text:"Template applied (Prompt, Guidelines, Rubrics, Technical Support)",roles:["id","tech"],auto:true},
+    {id:"s05-02",text:"Formatting: consistent font, size, spacing",roles:["id","tech"],auto:false},
+    {id:"s05-03",text:"All Discussions use standard Concise English Writing",roles:["id","tech"],auto:false},
+    {id:"s05-04",text:"Follows Course Style Guide",roles:["id","tech"],auto:false},
+    {id:"s05-05",text:"Intermediate (Wed) and Final (Sun) due dates set and clearly explained",roles:["id","tech"],auto:false},
+    {id:"s05-06",text:"Navigation to and from (within module)",roles:["id","tech"],auto:false},
+    {id:"s05-07",text:"Working links",roles:["id","tech"],auto:false},
+    {id:"s05-08",text:"Naming conventions followed",roles:["id","tech"],auto:false},
+    {id:"s05-09",text:"Discussions are varied, engaging, and interactive",roles:["id","sme"],auto:false},
+    {id:"s05-10",text:"Discussions aligned with MLOs and CLOs",roles:["id","sme"],auto:false},
+  ]},
+  { id:"s06", name:"06 – Announcements", reviewers:["id","tech"], criteria:[
+    {id:"s06-01",text:"Template used",roles:["id","tech"],auto:false},
+    {id:"s06-02",text:"Formatting: consistent font, size, spacing",roles:["id","tech"],auto:false},
+    {id:"s06-03",text:"All announcements use standard Concise English Writing",roles:["id","tech"],auto:false},
+    {id:"s06-04",text:"Announcement message is clear",roles:["id","tech"],auto:false},
+    {id:"s06-05",text:"Survey Announcements contain links to Survey Pages",roles:["id","tech"],auto:false},
+    {id:"s06-06",text:"Available from date scheduled (Welcome: Day 1; Surveys: M6 & M8)",roles:["id","tech"],auto:false},
+  ]},
+  { id:"s07", name:"07 – Modules", reviewers:["id","tech"], criteria:[
+    {id:"s07-01",text:"Getting Started contains full onboarding components",roles:["id","tech"],auto:false},
+    {id:"s07-02",text:"Content modules follow naming conventions",roles:["id","tech"],auto:true},
+    {id:"s07-03",text:"Modules have Learning Materials and Learning Activities sections, appropriately indented",roles:["id","tech"],auto:false},
+    {id:"s07-04",text:"All module components have Requirements (view, submit, etc.)",roles:["id","tech"],auto:true},
+    {id:"s07-05",text:"Module components order matches To Do list",roles:["id","tech"],auto:false},
+    {id:"s07-06",text:"Availability dates set",roles:["id","tech"],auto:false},
+    {id:"s07-07",text:"Learning Materials Pages present and use naming conventions",roles:["id","tech"],auto:false},
+    {id:"s07-08",text:"Media thumbnails or placeholders present",roles:["id","tech"],auto:false},
+    {id:"s07-09",text:"Student Experience Survey page added to Module 6",roles:["id","tech"],auto:true},
+    {id:"s07-10",text:"End of Course Evaluation Survey page added to Module 8",roles:["id","tech"],auto:true},
+  ]},
+  { id:"s08", name:"08 – Grades", reviewers:["id","tech"], criteria:[
+    {id:"s08-01",text:"Grading Scheme matches Syllabus",roles:["id","tech"],auto:true},
+    {id:"s08-02",text:"Missing/Late work policies set and match Syllabus Grading Policy",roles:["id","tech"],auto:true},
+    {id:"s08-03",text:"Grade Distribution (Grading Scheme) matches Syllabus",roles:["id","tech"],auto:true},
+    {id:"s08-04",text:"Grade Posting policy set to Manually Post Grades",roles:["id","tech"],auto:false},
+  ]},
+  { id:"s09", name:"09 – Media & Images", reviewers:["id","tech"], criteria:[
+    {id:"s09-01",text:"Videos follow FO style pages",roles:["id","tech"],auto:false},
+    {id:"s09-02",text:"Embedded media uses TLI thumbnail with correct title, program, and course name",roles:["id","tech"],auto:false},
+    {id:"s09-03",text:"All videos embedded as 560×315",roles:["id","tech"],auto:true},
+    {id:"s09-04",text:"All Media use standard Concise English Writing",roles:["id","tech"],auto:false},
+    {id:"s09-05",text:"All videos contain closed captioning",roles:["id","tech"],auto:false},
+    {id:"s09-06",text:"All audio-only media accompanied by transcripts",roles:["id","tech"],auto:false},
+    {id:"s09-07",text:"Media is free of errors, plays smoothly, does not auto-play",roles:["id","tech"],auto:false},
+    {id:"s09-08",text:"Content-appropriate images have high resolution and are tagged with alt-text",roles:["id","tech"],auto:true},
+    {id:"s09-09",text:"Images with text include the text within the alt-text",roles:["id","tech"],auto:false},
+    {id:"s09-10",text:"Tables: title, description, header row/column, no merged cells",roles:["id","tech"],auto:true},
+  ]},
+  { id:"s10", name:"10 – Syllabus", reviewers:["id","sme","tech"], criteria:[
+    {id:"s10-01",text:"OneDrive: Syllabus .docx file in course folders",roles:["id","tech"],auto:false},
+    {id:"s10-02",text:"Simple Syllabus tool enabled in Navigation menu",roles:["id","tech"],auto:true},
+    {id:"s10-03",text:"Canvas Syllabus tool disabled",roles:["id","tech"],auto:true},
+    {id:"s10-04",text:"Simple Syllabus matches .docx syllabus document",roles:["id","tech"],auto:false},
+    {id:"s10-05",text:"Current syllabus template used (Mays FO Policies); consistent fonts, spacing",roles:["id","tech"],auto:false},
+    {id:"s10-06",text:"Instructor contact information provided",roles:["id","tech"],auto:false},
+    {id:"s10-07",text:"All Syllabus components use standard Concise English Writing",roles:["id","tech"],auto:false},
+    {id:"s10-08",text:"Prerequisite information completed",roles:["id","tech"],auto:false},
+    {id:"s10-09",text:"Course Schedule: Module Start Dates correct",roles:["id","tech"],auto:false},
+    {id:"s10-10",text:"Links are active",roles:["id","tech"],auto:false},
+    {id:"s10-11",text:"Live shell: Simple Syllabus from Home links to updated Syllabus",roles:["id"],auto:false},
+  ]},
+  { id:"s11", name:"11 – Student View", reviewers:["id","tech"], criteria:[
+    {id:"s11-01",text:"Learners can access Syllabus, Getting Started, and Student Resources from Home",roles:["id","tech"],auto:false},
+    {id:"s11-02",text:"All content and Navigation menu tools open and function as expected",roles:["id","tech"],auto:false},
+  ]},
+  { id:"s12", name:"12 – WCAG 2.1 AA Compliance (ADA Title II — April 2026)", reviewers:["id","tech"], criteria:[
+    {id:"s12-01",text:"1.4.3 Color contrast: text/background meets 4.5:1 ratio (3:1 for large text)",roles:["id","tech"],auto:true},
+    {id:"s12-02",text:"1.4.11 Non-text contrast: UI components and graphical objects meet 3:1 ratio",roles:["id","tech"],auto:false},
+    {id:"s12-03",text:"3.1.1 Language of page: lang attribute set on HTML content",roles:["tech"],auto:true},
+    {id:"s12-04",text:"3.1.2 Language of parts: content in other languages has lang attribute",roles:["id","tech"],auto:false},
+    {id:"s12-05",text:"1.3.1 List markup: list content uses proper <ul>/<ol> elements",roles:["tech"],auto:true},
+    {id:"s12-06",text:"4.1.2 Name/Role/Value: custom interactive elements have ARIA roles and accessible names",roles:["tech"],auto:true},
+    {id:"s12-07",text:"1.2.2 Captions: all prerecorded video has synchronized captions",roles:["id","tech"],auto:true},
+    {id:"s12-08",text:"1.2.5 Audio description: prerecorded video has audio descriptions for visual-only content",roles:["id","tech"],auto:false},
+    {id:"s12-09",text:"1.4.4 Resize text: content readable and functional at 200% zoom",roles:["id","tech"],auto:false},
+    {id:"s12-10",text:"1.4.10 Reflow: content reflows at 320px width without horizontal scrolling",roles:["id","tech"],auto:false},
+    {id:"s12-11",text:"1.4.12 Text spacing: no content loss when line-height, letter-spacing, word-spacing adjusted",roles:["tech"],auto:true},
+    {id:"s12-12",text:"1.4.13 Content on hover/focus: popover content dismissable, hoverable, persistent",roles:["tech"],auto:false},
+    {id:"s12-13",text:"2.1.1 Keyboard accessible: all functionality operable via keyboard alone",roles:["id","tech"],auto:false},
+    {id:"s12-14",text:"2.4.7 Focus visible: keyboard focus indicator visible on all interactive elements",roles:["tech"],auto:false},
+    {id:"s12-15",text:"1.3.4 Orientation: content not locked to portrait or landscape",roles:["tech"],auto:false},
+    {id:"s12-16",text:"1.3.5 Identify input purpose: form inputs have autocomplete attributes where applicable",roles:["tech"],auto:true},
+  ]},
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// Remediation Dictionary — maps auto-check IDs and criterion IDs to
+// Canvas-native click-path instructions. Extend as rubric evolves.
+// ═══════════════════════════════════════════════════════════════════
+const REMEDIATION = {
+  // ── Automated check remediations ──
+  "auto-alt": { priority: "HIGH", role: "tech", steps: [
+    "Open each flagged page in Canvas RCE (Rich Content Editor).",
+    "Click the image, then click the image icon in the toolbar → Image Options.",
+    "Enter descriptive alt text. For decorative images, check 'Decorative image' instead.",
+    "Save the page. Re-run the Accessibility Checker to confirm."
+  ]},
+  "auto-headings": { priority: "HIGH", role: "tech", steps: [
+    "Canvas page titles render as H1 — body content must start at H2.",
+    "In the RCE, select the offending text and use the Paragraph dropdown to reset heading levels.",
+    "Do not skip levels (H2 → H4). Use H2 for section, H3 for subsection."
+  ]},
+  "auto-links": { priority: "STANDARD", role: "tech", steps: [
+    "In the RCE, click each external link, then the link icon → Link Options.",
+    "Check 'Open in a new tab' (target=\"_blank\")."
+  ]},
+  "auto-videoinline": { priority: "STANDARD", role: "tech", steps: [
+    "For DesignPLUS templates, video links should have the 'inline_disabled' class to prevent auto-thumbnail insertion.",
+    "Edit the page in HTML view. Add class=\"inline_disabled\" to the <a> tag wrapping the video URL."
+  ]},
+  "auto-tables": { priority: "HIGH", role: "tech", steps: [
+    "Open the page with the flagged table in the RCE.",
+    "Click the table → Table Properties → mark first row/column as Header.",
+    "Unmerge any cells with colspan/rowspan; break data into separate rows/columns if possible.",
+    "Add a caption via Table Properties → Advanced."
+  ]},
+  "auto-templateheader": { priority: "MEDIUM", role: "id", steps: [
+    "Apply the DesignPLUS template via the DesignPLUS sidebar → Templates → select approved TLI template.",
+    "Alternative: copy the template HTML from an approved page and paste into HTML view."
+  ]},
+  "auto-fonts": { priority: "MEDIUM", role: "id", steps: [
+    "Mays Style Guide specifies Lato. Open the page in HTML view.",
+    "Remove inline font-family declarations unless they specify 'Lato'.",
+    "DesignPLUS applies Lato via CSS classes — confirm dp-wrapper is present."
+  ]},
+  "auto-footer": { priority: "STANDARD", role: "id", steps: [
+    "Every content page should close with the standard 'Click next (below) to proceed to…' navigation text.",
+    "Add via the DesignPLUS footer component, or paste the standard footer HTML snippet."
+  ]},
+  "auto-videosize": { priority: "STANDARD", role: "tech", steps: [
+    "Canvas video embeds should render at 560×315 for consistency.",
+    "In HTML view, update width=\"560\" height=\"315\" on the <iframe> tag."
+  ]},
+  "auto-colormeaning": { priority: "HIGH", role: "tech", steps: [
+    "WCAG 1.4.1: Color cannot be the only way meaning is conveyed.",
+    "For text using color to signal status, add bold, italic, underline, or an icon.",
+    "Review inline color styles and pair each with a non-color indicator."
+  ]},
+  "auto-emptylinks": { priority: "HIGH", role: "tech", steps: [
+    "Empty <a> tags break screen readers.",
+    "In HTML view, either remove the empty <a> tag or add visible link text inside it."
+  ]},
+  "auto-wcag-contrast": { priority: "CRITICAL", role: "tech", steps: [
+    "WCAG 1.4.3: text/background must meet 4.5:1 contrast (3:1 for large text ≥18pt or ≥14pt bold).",
+    "Use the WebAIM Contrast Checker to verify the flagged color pairs.",
+    "Approved TAMU maroon (#500000) on white = 15.9:1 ✓. White (#fff) on maroon = 15.9:1 ✓.",
+    "Adjust any flagged inline styles to meet minimum ratio."
+  ]},
+  "auto-wcag-lang": { priority: "HIGH", role: "tech", steps: [
+    "WCAG 3.1.1: language of page must be programmatically set.",
+    "Canvas applies lang=\"en\" at the course level. Verify in live course: right-click → Inspect → check <html> tag.",
+    "If missing, file a ticket with Canvas admin to set course locale."
+  ]},
+  "auto-wcag-lists": { priority: "HIGH", role: "tech", steps: [
+    "WCAG 1.3.1: list content must use <ul>/<ol>/<li>, not manual bullets.",
+    "In the RCE, select the fake-list text and click the bullet or numbered list button.",
+    "Alternatively, in HTML view, wrap each line in <li> and the block in <ul> or <ol>."
+  ]},
+  "auto-wcag-aria": { priority: "HIGH", role: "tech", steps: [
+    "WCAG 4.1.2: custom interactive elements need ARIA role and accessible name.",
+    "Avoid <div onclick>. Use <button> instead.",
+    "If <div>/<span> with onclick is required, add role=\"button\", tabindex=\"0\", and aria-label=\"…\"."
+  ]},
+  "auto-wcag-captions": { priority: "CRITICAL", role: "id", steps: [
+    "WCAG 1.2.2: all prerecorded video needs synchronized captions.",
+    "For Kaltura/MediaSite: open the video → Actions → Captions & Enrich → Order Captions.",
+    "For YouTube: verify CC toggle shows accurate captions, not auto-generated only.",
+    "For Vimeo: Video Settings → Distribution → Subtitles → Upload .vtt.",
+    "Log each video reviewed in your QA notes."
+  ]},
+  "auto-wcag-textspacing": { priority: "MEDIUM", role: "tech", steps: [
+    "WCAG 1.4.12: content must not break when users adjust text spacing.",
+    "Remove inline line-height, letter-spacing, word-spacing declarations set in px/pt.",
+    "Use DesignPLUS template classes which allow user-agent overrides."
+  ]},
+  "auto-wcag-inputpurpose": { priority: "MEDIUM", role: "tech", steps: [
+    "WCAG 1.3.5: identity inputs need autocomplete attributes.",
+    "For any <input type='email|tel|name|…'>, add autocomplete=\"email\" / autocomplete=\"name\" / etc.",
+    "See WCAG 1.3.5 autocomplete value list."
+  ]},
+  "auto-module-gs": { priority: "CRITICAL", role: "id", steps: [
+    "Every TLI course requires a 'Getting Started' module as the first module.",
+    "Canvas → Modules → Create Module → name it 'Getting Started'.",
+    "Populate with: Overview, Faculty Welcome, Policies, Instructor Info, Tech Requirements, Intro Discussion."
+  ]},
+  "auto-module-reqs": { priority: "HIGH", role: "id", steps: [
+    "Every instructional module needs completion requirements for module progression.",
+    "Canvas → Modules → edit module → Requirements section.",
+    "Set at least one item per module (e.g., 'view' the overview page, 'submit' the module assignment)."
+  ]},
+  "auto-rubrics": { priority: "HIGH", role: "sme", steps: [
+    "Every Canvas assignment should have a rubric linked.",
+    "Canvas → Assignments → open assignment → +Rubric → Find a Rubric or Create New.",
+    "Check 'Use this rubric for assignment grading'."
+  ]},
+  "auto-duedates": { priority: "HIGH", role: "id", steps: [
+    "All Canvas assignments must have due dates set — these populate the To-Do list.",
+    "Canvas → Assignments → edit → set Due date, Available from, Until dates.",
+    "Confirm dates match Simple Syllabus and course schedule."
+  ]},
+  "auto-surveys": { priority: "MEDIUM", role: "id", steps: [
+    "Module 6 requires a Student Experience Survey page.",
+    "Module 8 requires a Course Evaluation page.",
+    "Copy the standard survey pages from the FO Master course or the TLI template library."
+  ]},
+  "auto-welcome": { priority: "MEDIUM", role: "id", steps: [
+    "Getting Started module should contain a Faculty Welcome page.",
+    "Add a page named 'Welcome' or 'Faculty Welcome' with intro video + text.",
+    "Link it from the Home page and Getting Started module."
+  ]},
+  "auto-late-policy": { priority: "HIGH", role: "id", steps: [
+    "Canvas → Grades → Settings gear → Late Policies tab.",
+    "Enable 'Automatically apply deduction to late submissions' and 'Missing submission policy'.",
+    "Set deduction % per TLI standard (typically 10%/day for late, 100% for missing).",
+    "Verify policy matches what's written in the Syllabus."
+  ]},
+  "auto-grading-scheme": { priority: "HIGH", role: "id", steps: [
+    "Canvas → Settings → Course Details → check 'Enable course grading scheme'.",
+    "Click 'view grading scheme' → select or create the Mays standard scheme.",
+    "Verify grade tiers match Syllabus (A: 90-100, B: 80-89, etc.)."
+  ]},
+  "auto-canvas-syllabus-disabled": { priority: "CRITICAL", role: "tech", steps: [
+    "Canvas native Syllabus tab must be disabled — students should use Simple Syllabus only.",
+    "Canvas → Settings → Navigation tab.",
+    "Drag 'Syllabus' from the top list to the bottom 'hidden' list.",
+    "Click Save at the bottom."
+  ]},
+  "auto-simple-syllabus-enabled": { priority: "HIGH", role: "tech", steps: [
+    "Simple Syllabus must appear in the left nav.",
+    "Canvas → Settings → Navigation tab.",
+    "If 'Simple Syllabus' is in the hidden list, drag it up to the visible list.",
+    "If absent entirely, contact Canvas admin — the LTI tool may not be installed in this course."
+  ]},
+  "auto-module-naming": { priority: "STANDARD", role: "id", steps: [
+    "Modules should follow 'Module N: Title' convention.",
+    "Canvas → Modules → click the ⋮ menu on the module → Edit → rename."
+  ]},
+  "auto-assignment-groups": { priority: "HIGH", role: "id", steps: [
+    "Canvas → Assignments → + Group to create assignment groups.",
+    "For each group, click settings → set weight (%).",
+    "Ensure weights total 100% and match the Syllabus weighting scheme."
+  ]},
+  "auto-page-naming": { priority: "STANDARD", role: "id", steps: [
+    "Page names should be readable (e.g., 'Module 1: Overview'), not url-slug style.",
+    "Canvas → Pages → click ⋮ on flagged page → Edit → update Title."
+  ]},
+  "auto-assignment-naming": { priority: "STANDARD", role: "id", steps: [
+    "Assignments should follow: 'Module N: Assignment Type – Topic'.",
+    "Canvas → Assignments → edit → update title."
+  ]},
+  "auto-template-page": { priority: "MEDIUM", role: "id", steps: [
+    "Apply DesignPLUS template to flagged pages via DesignPLUS sidebar → Templates.",
+    "Or: copy the template HTML from an approved page."
+  ]},
+  "auto-template-assignment": { priority: "MEDIUM", role: "id", steps: [
+    "Apply DesignPLUS template to assignment descriptions (Overview, Guidelines, Rubrics, Tech Support blocks)."
+  ]},
+  "auto-template-discussion": { priority: "MEDIUM", role: "id", steps: [
+    "Apply DesignPLUS template to discussions (Prompt, Guidelines, Rubrics, Tech Support blocks)."
+  ]},
+
+  // ── High-impact manual criteria ──
+  "s01-03": { priority: "HIGH", role: "tech", steps: [
+    "Canvas → Settings → Validate Links in Content. Fix any 404s before publishing."
+  ]},
+  "s01-04": { priority: "HIGH", role: "tech", steps: [
+    "Canvas → Modules → verify publish state (green checkmark) on every module and item.",
+    "Instructor Resources module should remain unpublished."
+  ]},
+  "s01-06": { priority: "CRITICAL", role: "tech", steps: [
+    "Canvas → Settings → Accessibility Report (Ally).",
+    "Fix every non-template flag. Target: dark green Ally icon on every file."
+  ]},
+  "s07-01": { priority: "CRITICAL", role: "id", steps: [
+    "Build complete Getting Started module per TLI standard.",
+    "Include: Overview, Faculty Welcome, Start Here instructions, Policies, Instructor Info, Expectations, Tech Requirements, Intro Discussion, General Q&A."
+  ]},
+  "s10-05": { priority: "HIGH", role: "id", steps: [
+    "Use the current Mays FO Policies syllabus template.",
+    "Verify consistent fonts, spacing, and that no images are broken."
+  ]},
+  "s11-01": { priority: "HIGH", role: "id", steps: [
+    "Test in Canvas → Student View.",
+    "Confirm Home page buttons link to Syllabus, Getting Started, and Student Resources."
+  ]},
+  "s11-02": { priority: "HIGH", role: "tech", steps: [
+    "In Student View, click every navigation item.",
+    "Confirm each loads without error and functions as expected."
+  ]},
+};
+
+// Catch-all by category prefix for criteria without specific remediation
+const CATEGORY_REMEDIATION = {
+  "s01": "Review against Overall Design standard. Open Canvas → Modules and inspect the item in context.",
+  "s02": "Review the flagged page in Canvas RCE. Apply DesignPLUS template and verify formatting.",
+  "s03": "Review the flagged assignment. Verify Overview/Guidelines/Rubrics/Tech Support blocks and due date.",
+  "s04": "Review the flagged quiz. Verify template, settings (attempts, time limit), and feedback configuration.",
+  "s05": "Review the flagged discussion. Verify template, prompt, rubric, and intermediate/final due dates.",
+  "s06": "Review the announcement. Verify template, timing, and scheduled availability date.",
+  "s07": "Review module structure. Verify naming, indentation, requirements, and availability dates.",
+  "s08": "Review grade setup. Verify scheme, late/missing policy, distribution, and posting policy.",
+  "s09": "Review media asset. Verify embed size, captions/transcripts, alt-text, and table markup.",
+  "s10": "Review Simple Syllabus. Verify template, instructor info, schedule, and live-shell links.",
+  "s11": "Test in Canvas Student View. Verify home page buttons and all nav tools function.",
+  "s12": "Apply WCAG 2.1 AA compliance check. Legal deadline: April 24, 2026 (ADA Title II)."
+};
+
+function getRemediation(id) {
+  if (REMEDIATION[id]) return REMEDIATION[id];
+  // Category fallback
+  const prefix = (id || "").split("-")[0];
+  if (CATEGORY_REMEDIATION[prefix]) {
+    return { priority: "STANDARD", role: "id", steps: [CATEGORY_REMEDIATION[prefix]] };
+  }
+  return { priority: "STANDARD", role: "id", steps: ["Manual review required. Consult the TLI QA rubric."] };
+}
+
+// ─── State ───
+const state = {
+  courseName: "",
+  reviewerName: "",
+  reviewDate: new Date().toISOString().slice(0,10),
+  checklist: {},      // { criterionId: "pass"|"flag"|"fail"|"na" }
+  notes: {},          // { criterionId: "note text" }
+  autoResults: [],
+  imsccData: null,
+  htmlContent: "",
+};
+
+// ─── localStorage ───
+const STORAGE_PREFIX = "tli-qa-tracker:";
+function storageKey(name) { return STORAGE_PREFIX + (name || "default").trim().toLowerCase().replace(/\s+/g, "-"); }
+
+function saveState() {
+  if (!state.courseName) return;
+  const payload = {
+    courseName: state.courseName,
+    reviewerName: state.reviewerName,
+    reviewDate: state.reviewDate,
+    checklist: state.checklist,
+    notes: state.notes,
+    savedAt: new Date().toISOString(),
+  };
+  try { localStorage.setItem(storageKey(state.courseName), JSON.stringify(payload)); } catch(e) {}
+}
+function loadState(name) {
+  try {
+    const raw = localStorage.getItem(storageKey(name));
+    if (!raw) return false;
+    const p = JSON.parse(raw);
+    state.courseName = p.courseName || "";
+    state.reviewerName = p.reviewerName || "";
+    state.reviewDate = p.reviewDate || state.reviewDate;
+    state.checklist = p.checklist || {};
+    state.notes = p.notes || {};
+    return true;
+  } catch(e) { return false; }
+}
+
+// ─── Utility: decode HTML entities ───
+function decodeHtmlEntities(str) {
+  const entities = { "&amp;":"&","&lt;":"<","&gt;":">","&quot;":'"',"&#39;":"'","&nbsp;":" " };
+  return str.replace(/&amp;|&lt;|&gt;|&quot;|&#39;|&nbsp;/g, m => entities[m] || m);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// IMSCC Parser — ported from extractImsccContent in JSX
+// ═══════════════════════════════════════════════════════════════════
+async function extractImsccContent(file) {
+  const zip = await JSZip.loadAsync(await file.arrayBuffer());
+  let courseTitle = "";
+  const manifestFile = zip.file("imsmanifest.xml");
+  if (manifestFile) {
+    const manifestXml = await manifestFile.async("string");
+    const titleMatch = manifestXml.match(/<(?:lomimscc:)?string>\s*([^<]+)\s*<\/(?:lomimscc:)?string>/i);
+    if (titleMatch) courseTitle = titleMatch[1].trim();
+  }
+
+  // Modules
+  const modules = [];
+  const moduleMetaFile = zip.file("course_settings/module_meta.xml");
+  if (moduleMetaFile) {
+    const metaXml = await moduleMetaFile.async("string");
+    const moduleRegex = /<module\b[^>]*>([\s\S]*?)<\/module>/gi;
+    const seen = new Set();
+    let mm;
+    while ((mm = moduleRegex.exec(metaXml)) !== null) {
+      const block = mm[1];
+      const title = (block.match(/<title>([^<]*)<\/title>/i) || [])[1] || "";
+      const identifier = (block.match(/<identifier>([^<]*)<\/identifier>/i) || [])[1] || title;
+      if (seen.has(identifier || title)) continue;
+      seen.add(identifier || title);
+      const items = block.match(/<item\b/gi) || [];
+      const reqs = block.match(/<completionRequirement/gi) || [];
+      modules.push({ title: title.replace(/&amp;/g,"&"), itemCount: items.length, completionReqCount: reqs.length });
+    }
+  }
+
+  // Assignments
+  const allFiles = [];
+  const assignmentSettingsFiles = [];
+  const seenPaths = new Set();
+  zip.forEach((relativePath, zipEntry) => {
+    if (!seenPaths.has(relativePath)) { allFiles.push(relativePath); seenPaths.add(relativePath); }
+    if (!zipEntry.dir && relativePath.endsWith("/assignment_settings.xml")) {
+      assignmentSettingsFiles.push({ path: relativePath, entry: zipEntry });
+    }
+  });
+  const assignments = [];
+  const seenTitles = new Set();
+  for (const asf of assignmentSettingsFiles) {
+    try {
+      const xml = await asf.entry.async("string");
+      const title = (xml.match(/<title>([^<]*)<\/title>/i) || [])[1] || asf.path;
+      const clean = title.replace(/&amp;/g,"&").replace(/&#39;/g,"'");
+      if (seenTitles.has(clean)) continue;
+      seenTitles.add(clean);
+      const hasRubric = /<rubric_identifierref>[^<]+<\/rubric_identifierref>/i.test(xml);
+      const dueAt = (xml.match(/<due_at>([^<]*)<\/due_at>/i) || [])[1] || "";
+      const pointsMatch = xml.match(/<points_possible>([^<]*)<\/points_possible>/i);
+      assignments.push({ title: clean, hasRubric, hasDueDate: dueAt.trim().length > 0, dueDate: dueAt, points: pointsMatch ? pointsMatch[1] : "" });
+    } catch(e){}
+  }
+
+  // Late policy
+  let latePolicy = null;
+  const lpFile = zip.file("course_settings/late_policy.xml");
+  if (lpFile) {
+    const xml = await lpFile.async("string");
+    latePolicy = {
+      missingEnabled: /<missing_submission_deduction_enabled>true/i.test(xml),
+      missingDeduction: (xml.match(/<missing_submission_deduction>([\d.]+)/i) || [])[1] || "0",
+      lateEnabled: /<late_submission_deduction_enabled>true/i.test(xml),
+      lateDeduction: (xml.match(/<late_submission_deduction>([\d.]+)/i) || [])[1] || "0",
+      lateInterval: (xml.match(/<late_submission_interval>(\w+)/i) || [])[1] || "",
+    };
+  }
+
+  // Assignment groups
+  const assignmentGroups = [];
+  const agFile = zip.file("course_settings/assignment_groups.xml");
+  if (agFile) {
+    const xml = await agFile.async("string");
+    const agRegex = /<assignmentGroup\b[^>]*>([\s\S]*?)<\/assignmentGroup>/gi;
+    const seenGroups = new Set();
+    let agm;
+    while ((agm = agRegex.exec(xml)) !== null) {
+      const block = agm[1];
+      const title = ((block.match(/<title>(.*?)<\/title>/i) || [])[1] || "").trim();
+      if (seenGroups.has(title)) continue;
+      seenGroups.add(title);
+      const weight = (block.match(/<group_weight>([\d.]+)/i) || [])[1] || "0";
+      assignmentGroups.push({ title, weight: parseFloat(weight) });
+    }
+  }
+
+  // Grading standard
+  let gradingStandard = null;
+  const gsFile = zip.file("course_settings/grading_standards.xml");
+  if (gsFile) {
+    const xml = await gsFile.async("string");
+    const titleMatch = xml.match(/<title>(.*?)<\/title>/i);
+    const dataMatch = xml.match(/<data>(.*?)<\/data>/i);
+    if (titleMatch) {
+      const tiers = [];
+      if (dataMatch) {
+        const schemeRegex = /<scheme>\s*<name>(.*?)<\/name>\s*<value>(.*?)<\/value>\s*<\/scheme>/gi;
+        let sm;
+        while ((sm = schemeRegex.exec(dataMatch[1])) !== null) tiers.push([sm[1].trim(), sm[2].trim()]);
+      }
+      gradingStandard = { title: titleMatch[1], data: tiers };
+    }
+  }
+
+  // Tab configuration
+  let tabConfig = null;
+  const csFile = zip.file("course_settings/course_settings.xml");
+  if (csFile) {
+    const xml = await csFile.async("string");
+    const tabMatch = xml.match(/<tab_configuration>([\s\S]*?)<\/tab_configuration>/i);
+    if (tabMatch) {
+      try {
+        const tabs = JSON.parse(tabMatch[1]);
+        const TAB_NAMES = {0:"Home",1:"Discussions",2:"Grades",3:"People",4:"Pages",5:"Files",6:"Syllabus",8:"Quizzes",10:"Modules",11:"Outcomes",14:"Announcements",15:"Rubrics",16:"Settings",18:"New Quizzes"};
+        tabConfig = tabs.map(t => ({ id: t.id, name: TAB_NAMES[t.id] || (typeof t.id === "string" ? "External Tool" : `Tab ${t.id}`), hidden: !!t.hidden }));
+      } catch(e){}
+    }
+  }
+
+  // Module naming issues
+  const namingIssues = [];
+  modules.forEach(m => {
+    if (/^module\s+\d/i.test(m.title) && !/^Module \d+:\s+\S/i.test(m.title)) {
+      namingIssues.push(`Module title format: "${m.title}" — expected "Module N: Title"`);
+    }
+  });
+
+  // HTML files
+  const htmlFiles = [];
+  const seenHtmlPaths = new Set();
+  zip.forEach((relativePath, zipEntry) => {
+    if (!zipEntry.dir && /\.(html?|htm)$/i.test(relativePath) && !seenHtmlPaths.has(relativePath)) {
+      seenHtmlPaths.add(relativePath);
+      htmlFiles.push({ path: relativePath, entry: zipEntry });
+    }
+  });
+
+  // XML content files (discussions, quiz topics)
+  const xmlContentFiles = [];
+  const seenXmlPaths = new Set();
+  zip.forEach((relativePath, zipEntry) => {
+    if (!zipEntry.dir && /\.xml$/i.test(relativePath) &&
+        !relativePath.startsWith("course_settings/") &&
+        relativePath !== "imsmanifest.xml" &&
+        !relativePath.endsWith("/assignment_settings.xml") &&
+        !seenXmlPaths.has(relativePath)) {
+      seenXmlPaths.add(relativePath);
+      xmlContentFiles.push({ path: relativePath, entry: zipEntry });
+    }
+  });
+
+  const extractedFiles = [];
+  for (const hf of htmlFiles) {
+    try {
+      const htmlContent = await hf.entry.async("string");
+      if (htmlContent.length < 50) continue;
+      const label = hf.path.split("/").pop().replace(/\.html?$/i,"").replace(/-/g," ");
+      extractedFiles.push({ path: hf.path, content: htmlContent, type: "html", size: htmlContent.length, label });
+    } catch(e){}
+  }
+  for (const xf of xmlContentFiles) {
+    try {
+      const xmlContent = await xf.entry.async("string");
+      const titleMatch = xmlContent.match(/<title>([^<]*)<\/title>/i);
+      const textMatch = xmlContent.match(/<text\b[^>]*>([\s\S]*?)<\/text>/i);
+      if (textMatch && textMatch[1].trim().length > 50) {
+        const decoded = decodeHtmlEntities(textMatch[1]);
+        const label = titleMatch ? titleMatch[1].replace(/&amp;/g,"&") : xf.path;
+        extractedFiles.push({ path: xf.path, content: decoded, type: "html", size: decoded.length, label });
+      }
+    } catch(e){}
+  }
+  extractedFiles.sort((a,b) => b.size - a.size);
+  const pagesList = extractedFiles.map(f => f.label || f.path);
+
+  return {
+    courseTitle,
+    totalFiles: allFiles.length,
+    htmlFileCount: extractedFiles.length,
+    files: extractedFiles,
+    meta: {
+      modules, assignments, pagesList, latePolicy, assignmentGroups, gradingStandard, tabConfig, namingIssues,
+      contentFiles: extractedFiles.map(f => ({
+        path: f.path,
+        label: f.label,
+        content: f.content,
+        contentType: f.path.startsWith("wiki_content/") ? "page"
+          : /^g\d+\//.test(f.path) && !f.path.endsWith(".xml") ? "assignment"
+          : /^g\d+\.xml$/i.test(f.path) ? "discussion"
+          : "other",
+      })),
+    },
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Automated Checks — ported from runAutomatedChecks in JSX
+// ═══════════════════════════════════════════════════════════════════
+function runAutomatedChecks(html, imsccMeta) {
+  if (!html || !html.trim()) return [];
+  const results = [];
+  const lower = html.toLowerCase();
+
+  // 1. Alt text
+  const imgs = html.match(/<img\b[^>]*>/gi) || [];
+  const nonDecorative = imgs.filter(i => !/role\s*=\s*["']presentation["']/i.test(i) && !/data-decorative\s*=\s*["']true["']/i.test(i));
+  const missingAlt = nonDecorative.filter(i => !/alt\s*=\s*["'][^"']+["']/i.test(i) || /alt\s*=\s*["']\s*["']/i.test(i));
+  results.push({
+    id:"auto-alt", criteriaIds:["s09-08"], label:"Images missing alt-text",
+    status: missingAlt.length === 0 ? (nonDecorative.length > 0 ? "pass":"info") : "fail",
+    detail: imgs.length===0 ? "No images found" : missingAlt.length===0 ? `All ${nonDecorative.length} content image(s) have alt-text` : `${missingAlt.length} of ${nonDecorative.length} image(s) missing alt-text`,
+    items: missingAlt.map(m => m.substring(0,120))
+  });
+
+  // 2. Headings
+  const headings = []; let hm;
+  const hre = /<h([1-6])\b[^>]*>/gi;
+  while ((hm = hre.exec(html)) !== null) headings.push(parseInt(hm[1]));
+  const hIssues = [];
+  if (headings.length > 0) {
+    if (headings[0] === 1) hIssues.push("Body content starts with H1 — Canvas page titles are H1; body should start at H2");
+    for (let i=1;i<headings.length;i++) if (headings[i] > headings[i-1]+1) hIssues.push(`Heading skips from H${headings[i-1]} to H${headings[i]}`);
+  }
+  results.push({
+    id:"auto-headings", criteriaIds:["s09-08b"], label:"Heading hierarchy",
+    status: headings.length===0 ? "info" : hIssues.length===0 ? "pass" : "flag",
+    detail: headings.length===0 ? "No headings found" : hIssues.length===0 ? `${headings.length} heading(s) with correct hierarchy` : `${hIssues.length} heading issue(s)`,
+    items: hIssues
+  });
+
+  // 3. Links target=_blank
+  const links = html.match(/<a\b[^>]*>/gi) || [];
+  const missingTarget = links.filter(l => !/target\s*=\s*["']_blank["']/i.test(l) && /href\s*=/i.test(l) && !/href\s*=\s*["']#/i.test(l));
+  results.push({
+    id:"auto-links", criteriaIds:["s02-07"], label:'Links opening in new tab (target="_blank")',
+    status: links.length===0 ? "info" : missingTarget.length===0 ? "pass" : "flag",
+    detail: links.length===0 ? "No links found" : missingTarget.length===0 ? `All ${links.length} link(s) open in new tab` : `${missingTarget.length} of ${links.length} link(s) missing target="_blank"`,
+    items: missingTarget.slice(0,15).map(l => l.substring(0,120))
+  });
+
+  // 4. Video inline_disabled
+  const videoLinks = html.match(/<a\b[^>]*href\s*=\s*["'][^"']*(youtube|vimeo|youtu\.be|wistia|mediasite)[^"']*["'][^>]*>/gi) || [];
+  const missingInline = videoLinks.filter(l => !/class\s*=\s*["'][^"']*inline_disabled/i.test(l));
+  if (videoLinks.length > 0) {
+    results.push({
+      id:"auto-videoinline", criteriaIds:["s09-01"], label:"Video links with inline_disabled class",
+      status: missingInline.length===0 ? "pass" : "flag",
+      detail: missingInline.length===0 ? `All ${videoLinks.length} video link(s) have inline_disabled` : `${missingInline.length} video link(s) missing inline_disabled`,
+      items:[]
+    });
+  }
+
+  // 5. Tables
+  const tables = html.match(/<table\b[^>]*>[\s\S]*?<\/table>/gi) || [];
+  const tIssues = [];
+  tables.forEach((t,i) => {
+    if (!/<th\b/i.test(t)) tIssues.push(`Table ${i+1}: Missing header cells (<th>)`);
+    if (/colspan\s*=|rowspan\s*=/i.test(t)) tIssues.push(`Table ${i+1}: Contains merged cells`);
+  });
+  results.push({
+    id:"auto-tables", criteriaIds:["s09-10"], label:"Table accessibility",
+    status: tables.length===0 ? "info" : tIssues.length===0 ? "pass" : "fail",
+    detail: tables.length===0 ? "No tables found" : tIssues.length===0 ? `${tables.length} table(s) pass` : `${tIssues.length} table issue(s)`,
+    items: tIssues
+  });
+
+  // 6. Template detection
+  const hasDp = /dp-wrapper/i.test(html) && /dp-heading/i.test(html);
+  const hasGradient = /linear-gradient\s*\(\s*to\s+right\s*,\s*#500000\s*,\s*#003c71\s*\)/i.test(html);
+  const hasBanner = /dp-banner-image/i.test(html);
+  if (lower.includes("<h2")) {
+    results.push({
+      id:"auto-templateheader", criteriaIds:["s02-01"], label:"Canvas template detection",
+      status: hasDp || hasGradient ? "pass" : "flag",
+      detail: hasDp ? `DesignPLUS template detected${hasBanner ? " (with banner)" : ""}` : hasGradient ? "FO gradient header template detected" : "No recognized template pattern",
+      items:[]
+    });
+  }
+
+  // 7. Fonts
+  const hasLato = /lato/i.test(html);
+  const hasOther = /font-family\s*:\s*(?!.*lato)/i.test(html);
+  if (lower.includes("font-family") || lower.includes("font face")) {
+    results.push({
+      id:"auto-fonts", criteriaIds:["s02-03"], label:"Font: Lato family",
+      status: hasLato && !hasOther ? "pass" : hasLato ? "flag" : "fail",
+      detail: hasLato ? (hasOther ? "Lato detected but other fonts also present" : "Lato font family in use") : "Lato font not detected",
+      items:[]
+    });
+  }
+
+  // 8. Footer
+  const hasFooter = /click\s+next/i.test(html);
+  results.push({
+    id:"auto-footer", criteriaIds:["s02-06"], label:"Footer navigation text",
+    status: hasFooter ? "pass" : "flag",
+    detail: hasFooter ? "'Click next' footer text found" : "Footer text 'Click next (below) to proceed…' not detected",
+    items:[]
+  });
+
+  // 9. Video embed size
+  const iframes = html.match(/<iframe\b[^>]*>/gi) || [];
+  const vIframes = iframes.filter(f => /youtube|vimeo|mediasite|kaltura/i.test(f));
+  const wrongSize = vIframes.filter(f => {
+    const w = f.match(/width\s*=\s*["']?(\d+)/i); const h = f.match(/height\s*=\s*["']?(\d+)/i);
+    return (w && parseInt(w[1]) !== 560) || (h && parseInt(h[1]) !== 315);
+  });
+  if (vIframes.length > 0) {
+    results.push({
+      id:"auto-videosize", criteriaIds:["s09-03"], label:"Video embed dimensions (560×315)",
+      status: wrongSize.length===0 ? "pass" : "flag",
+      detail: wrongSize.length===0 ? `${vIframes.length} video embed(s) at correct size` : `${wrongSize.length} video embed(s) not at 560×315`,
+      items: wrongSize.slice(0,10).map(f => f.substring(0,120))
+    });
+  }
+
+  // 10. Color-only meaning
+  const colorStyles = html.match(/style\s*=\s*["'][^"']*color\s*:/gi) || [];
+  const boldColor = colorStyles.filter(s => /font-weight\s*:\s*bold|font-style|text-decoration/i.test(s));
+  if (colorStyles.length > 0) {
+    results.push({
+      id:"auto-colormeaning", criteriaIds:["s09-08c"], label:"Color used with additional indicators",
+      status: colorStyles.length === boldColor.length ? "pass" : "flag",
+      detail: colorStyles.length === boldColor.length ? "Colored text appears to include additional formatting" : `${colorStyles.length - boldColor.length} instance(s) may rely on color alone`,
+      items:[]
+    });
+  }
+
+  // 11. Empty links
+  const emptyLinks = html.match(/<a\b[^>]*>\s*<\/a>/gi) || [];
+  if (emptyLinks.length > 0) {
+    results.push({
+      id:"auto-emptylinks", criteriaIds:["s02-07"], label:"Empty links (no anchor text)",
+      status:"fail",
+      detail:`${emptyLinks.length} link(s) with no visible text`,
+      items: emptyLinks.slice(0,10).map(l => l.substring(0,100))
+    });
+  }
+
+  // ─── WCAG checks ───
+
+  // W1. Contrast
+  {
+    const styleRegex = /style\s*=\s*"([^"]*)"/gi;
+    const contrastIssues = [];
+    let sm;
+    while ((sm = styleRegex.exec(html)) !== null) {
+      const style = sm[1].toLowerCase();
+      const cm = style.match(/(?:^|;)\s*color\s*:\s*(#[0-9a-f]{3,8})/i);
+      const bm = style.match(/background(?:-color)?\s*:\s*(#[0-9a-f]{3,8})/i);
+      if (cm && bm) {
+        const hexToRgb = hex => {
+          let h = hex.replace("#","");
+          if (h.length === 3) h = h.split("").map(c => c+c).join("");
+          return [parseInt(h.substr(0,2),16), parseInt(h.substr(2,2),16), parseInt(h.substr(4,2),16)];
+        };
+        const lum = rgb => {
+          const [r,g,b] = rgb.map(v => { const s = v/255; return s <= 0.03928 ? s/12.92 : Math.pow((s+0.055)/1.055, 2.4); });
+          return 0.2126*r + 0.7152*g + 0.0722*b;
+        };
+        try {
+          const l1 = lum(hexToRgb(cm[1])); const l2 = lum(hexToRgb(bm[1]));
+          const ratio = (Math.max(l1,l2)+0.05) / (Math.min(l1,l2)+0.05);
+          if (ratio < 4.5) contrastIssues.push(`${cm[1]} on ${bm[1]} — ratio ${ratio.toFixed(1)}:1`);
+        } catch(e){}
+      }
+    }
+    results.push({
+      id:"auto-wcag-contrast", criteriaIds:["s12-01"], label:"1.4.3 Color contrast (inline styles)",
+      status: contrastIssues.length===0 ? "pass" : "flag",
+      detail: contrastIssues.length===0 ? "No inline color pairs below 4.5:1 contrast" : `${contrastIssues.length} inline color pair(s) may fail 4.5:1`,
+      items: contrastIssues.slice(0,15)
+    });
+  }
+
+  // W2. Lang
+  {
+    const hasLang = /lang\s*=\s*["'][a-z]{2}/i.test(html);
+    results.push({
+      id:"auto-wcag-lang", criteriaIds:["s12-03"], label:"3.1.1 Language of page",
+      status: hasLang ? "pass" : "flag",
+      detail: hasLang ? "lang attribute found" : "No lang attribute detected — verify in live course",
+      items:[]
+    });
+  }
+
+  // W3. List markup
+  {
+    const fake = html.match(/<(?:p|div|span)[^>]*>\s*(?:[•●○▪▸►–—-]\s|(?:\d{1,2})[.)]\s)/gi) || [];
+    const liCount = (html.match(/<li[\s>]/gi) || []).length;
+    results.push({
+      id:"auto-wcag-lists", criteriaIds:["s12-05"], label:"1.3.1 List markup",
+      status: fake.length===0 ? "pass" : "flag",
+      detail: fake.length===0 ? `All list content appears to use proper markup (${liCount} <li> elements)` : `${fake.length} text pattern(s) may be visual lists without proper markup`,
+      items: fake.slice(0,10).map(m => m.replace(/<[^>]*>/g,"").trim().substring(0,60))
+    });
+  }
+
+  // W4. ARIA
+  {
+    const divOnclick = html.match(/<(?:div|span)\s[^>]*onclick/gi) || [];
+    const missingRole = divOnclick.filter(el => !/role\s*=/i.test(el));
+    results.push({
+      id:"auto-wcag-aria", criteriaIds:["s12-06"], label:"4.1.2 Name/Role/Value",
+      status: missingRole.length===0 ? "pass" : "flag",
+      detail: missingRole.length===0 ? "No onclick handlers missing ARIA roles" : `${missingRole.length} element(s) with onclick but no ARIA role`,
+      items: missingRole.slice(0,10).map(el => el.substring(0,80))
+    });
+  }
+
+  // W5. Video captions indicator
+  {
+    const iv = html.match(/<iframe[^>]*src\s*=\s*"[^"]*(?:youtube|vimeo|kaltura|mediasite|yuja|panopto|wistia|brightcove)[^"]*"[^>]*>/gi) || [];
+    const vt = html.match(/<video[\s>]/gi) || [];
+    const total = iv.length + vt.length;
+    results.push({
+      id:"auto-wcag-captions", criteriaIds:["s12-07"], label:"1.2.2 Captions (prerecorded)",
+      status: total===0 ? "pass" : "flag",
+      detail: total===0 ? "No embedded video detected" : `${total} embedded video(s) — manual caption verification required`,
+      items: total>0 ? [`${iv.length} iframe embed(s)`,`${vt.length} <video> tag(s)`,"Verify captions enabled in hosting platform"] : []
+    });
+  }
+
+  // W6. Text spacing
+  {
+    const fixed = html.match(/style\s*=\s*"[^"]*(?:line-height\s*:\s*(?:\d+px|\d+pt)|letter-spacing\s*:\s*0|word-spacing\s*:\s*0)[^"]*"/gi) || [];
+    results.push({
+      id:"auto-wcag-textspacing", criteriaIds:["s12-11"], label:"1.4.12 Text spacing",
+      status: fixed.length===0 ? "pass" : "flag",
+      detail: fixed.length===0 ? "No fixed text spacing declarations" : `${fixed.length} inline style(s) set fixed spacing`,
+      items: fixed.slice(0,5).map(s => s.substring(0,80))
+    });
+  }
+
+  // W7. Input purpose
+  {
+    const inputs = html.match(/<input\b[^>]*>/gi) || [];
+    const identity = inputs.filter(i => /type\s*=\s*"(?:text|email|tel|url|name|password)"/i.test(i));
+    const missingAc = identity.filter(i => !/autocomplete\s*=/i.test(i));
+    if (identity.length > 0) {
+      results.push({
+        id:"auto-wcag-inputpurpose", criteriaIds:["s12-16"], label:"1.3.5 Identify input purpose",
+        status: missingAc.length===0 ? "pass" : "flag",
+        detail: missingAc.length===0 ? `All ${identity.length} identity input(s) have autocomplete` : `${missingAc.length} of ${identity.length} input(s) missing autocomplete`,
+        items: missingAc.slice(0,5).map(i => i.substring(0,80))
+      });
+    }
+  }
+
+  // ─── IMSCC Metadata Checks ───
+  if (imsccMeta) {
+    if (imsccMeta.modules && imsccMeta.modules.length > 0) {
+      const hasGS = imsccMeta.modules.some(m => /getting\s*started/i.test(m.title));
+      results.push({
+        id:"auto-module-gs", criteriaIds:["s07-01"], label:"Getting Started module present",
+        status: hasGS ? "pass" : "fail",
+        detail: hasGS ? `Getting Started found (${imsccMeta.modules.length} total modules)` : `No Getting Started module found — ${imsccMeta.modules.length} modules detected`,
+        items: imsccMeta.modules.map(m => m.title)
+      });
+
+      const nonInstr = /student\s*resources|instructor\s*resources|faculty\s*only|do\s*not\s*publish/i;
+      const instr = imsccMeta.modules.filter(m => !nonInstr.test(m.title));
+      const excluded = imsccMeta.modules.length - instr.length;
+      const withReqs = instr.filter(m => m.completionReqCount > 0);
+      const withoutReqs = instr.filter(m => m.completionReqCount === 0 && m.itemCount > 0);
+      const exNote = excluded > 0 ? ` (${excluded} resource module(s) excluded)` : "";
+      results.push({
+        id:"auto-module-reqs", criteriaIds:["s07-04"], label:"Module completion requirements",
+        status: withoutReqs.length===0 ? "pass" : "flag",
+        detail: withoutReqs.length===0 ? `All ${withReqs.length} instructional module(s) have completion requirements${exNote}` : `${withoutReqs.length} instructional module(s) missing completion requirements${exNote}`,
+        items: withoutReqs.map(m => m.title)
+      });
+    }
+
+    if (imsccMeta.assignments && imsccMeta.assignments.length > 0) {
+      const tpPat = /perusall|peerceptiv/i;
+      const canvasA = imsccMeta.assignments.filter(a => !tpPat.test(a.title));
+      const tpCt = imsccMeta.assignments.length - canvasA.length;
+      const withR = canvasA.filter(a => a.hasRubric);
+      const withoutR = canvasA.filter(a => !a.hasRubric);
+      const tpNote = tpCt > 0 ? ` (${tpCt} Perusall/Peerceptiv excluded)` : "";
+      results.push({
+        id:"auto-rubrics", criteriaIds:["s03-04"], label:"Assignment rubrics attached",
+        status: canvasA.length===0 ? "info" : withoutR.length===0 ? "pass" : "flag",
+        detail: canvasA.length===0 ? `All ${imsccMeta.assignments.length} assignments are third-party — N/A` : withoutR.length===0 ? `All ${withR.length} Canvas assignment(s) have rubrics${tpNote}` : `${withoutR.length} of ${canvasA.length} Canvas assignment(s) missing rubrics${tpNote}`,
+        items: withoutR.map(a => a.title)
+      });
+
+      const withDue = canvasA.filter(a => a.hasDueDate);
+      const withoutDue = canvasA.filter(a => !a.hasDueDate);
+      results.push({
+        id:"auto-duedates", criteriaIds:["s03-03"], label:"Assignment due dates configured",
+        status: canvasA.length===0 ? "info" : withoutDue.length===0 ? "pass" : "flag",
+        detail: canvasA.length===0 ? `All assignments are third-party — N/A` : withoutDue.length===0 ? `All ${withDue.length} Canvas assignment(s) have due dates${tpNote}` : `${withoutDue.length} of ${canvasA.length} Canvas assignment(s) missing due dates${tpNote}`,
+        items: withoutDue.map(a => a.title)
+      });
+
+      const badNames = imsccMeta.assignments.filter(a => /^[a-z]/.test(a.title || "") || (a.title || "").length < 5);
+      results.push({
+        id:"auto-assignment-naming", criteriaIds:["s03-11"], label:"Assignment naming conventions",
+        status: badNames.length===0 ? "pass" : "flag",
+        detail: badNames.length===0 ? `All ${imsccMeta.assignments.length} assignment(s) follow naming conventions` : `${badNames.length} assignment(s) may need naming review`,
+        items: badNames.map(a => a.title)
+      });
+    }
+
+    if (imsccMeta.pagesList && imsccMeta.pagesList.length > 0) {
+      const hasSurvey = imsccMeta.pagesList.some(p => /survey|course\s*experience/i.test(p));
+      const hasEval = imsccMeta.pagesList.some(p => /evaluation|course\s*eval/i.test(p));
+      results.push({
+        id:"auto-surveys", criteriaIds:["s07-09","s07-10"], label:"Student survey pages",
+        status: hasSurvey && hasEval ? "pass" : hasSurvey || hasEval ? "flag" : "fail",
+        detail: hasSurvey && hasEval ? "Student experience survey and course evaluation pages found" : hasSurvey ? "Student survey found; course evaluation not detected" : hasEval ? "Course evaluation found; student survey not detected" : "Neither student survey nor course evaluation detected",
+        items:[]
+      });
+
+      const hasWelcome = imsccMeta.pagesList.some(p => /welcome/i.test(p));
+      results.push({
+        id:"auto-welcome", criteriaIds:["s07-01b"], label:"Welcome page present",
+        status: hasWelcome ? "pass" : "flag",
+        detail: hasWelcome ? "Welcome page found" : "No welcome page detected",
+        items:[]
+      });
+    }
+
+    if (imsccMeta.latePolicy) {
+      const lp = imsccMeta.latePolicy;
+      const hasLate = lp.lateEnabled === true;
+      const hasMissing = lp.missingEnabled === true;
+      const configured = hasLate || hasMissing;
+      const details = [];
+      if (hasLate) details.push(`Late: −${lp.lateDeduction}% per ${lp.lateInterval || "day"}`);
+      if (hasMissing) details.push(`Missing: −${lp.missingDeduction}%`);
+      results.push({
+        id:"auto-late-policy", criteriaIds:["s08-02"], label:"Late/missing work policy configured",
+        status: configured ? "pass" : "fail",
+        detail: configured ? `Policy active — ${details.join("; ")}` : "No late or missing work policy configured",
+        items: configured ? details : []
+      });
+    } else {
+      results.push({ id:"auto-late-policy", criteriaIds:["s08-02"], label:"Late/missing work policy configured", status:"fail", detail:"late_policy.xml not found in export", items:[] });
+    }
+
+    if (imsccMeta.gradingStandard) {
+      const gs = imsccMeta.gradingStandard;
+      const hasData = gs.data && gs.data.length > 0;
+      results.push({
+        id:"auto-grading-scheme", criteriaIds:["s08-01","s08-03"], label:"Grading scheme present",
+        status: hasData ? "pass" : "flag",
+        detail: hasData ? `Grading standard "${gs.title}" with ${gs.data.length} grade tier(s) found` : `Grading standard "${gs.title}" found but no grade tiers defined`,
+        items: hasData ? gs.data.map(d => `${d[0]}: ${d[1]}`) : []
+      });
+    } else {
+      results.push({ id:"auto-grading-scheme", criteriaIds:["s08-01","s08-03"], label:"Grading scheme present", status:"flag", detail:"No grading standard found in export", items:[] });
+    }
+
+    if (imsccMeta.tabConfig && imsccMeta.tabConfig.length > 0) {
+      const tabs = imsccMeta.tabConfig;
+      const canvasSyl = tabs.find(t => t.id === "1" || (t.name && /^syllabus$/i.test(t.name) && !/simple/i.test(t.name)));
+      const simpleSyl = tabs.find(t => t.name && /simple\s*syllabus/i.test(t.name));
+
+      const canvasHidden = canvasSyl ? canvasSyl.hidden : true;
+      results.push({
+        id:"auto-canvas-syllabus-disabled", criteriaIds:["s10-03"], label:"Canvas Syllabus tool disabled",
+        status: canvasHidden ? "pass" : "fail",
+        detail: canvasHidden ? "Canvas native Syllabus tab is hidden — correct" : "Canvas native Syllabus tab is visible — should be disabled",
+        items:[]
+      });
+
+      const simpleVisible = simpleSyl ? !simpleSyl.hidden : false;
+      results.push({
+        id:"auto-simple-syllabus-enabled", criteriaIds:["s10-02"], label:"Simple Syllabus tool enabled",
+        status: simpleVisible ? "pass" : "flag",
+        detail: simpleVisible ? "Simple Syllabus tab is visible" : "Simple Syllabus not detected in navigation tabs",
+        items: tabs.map(t => `${t.name || `Tab ${t.id}`}${t.hidden ? " (hidden)" : " (visible)"}`)
+      });
+    }
+
+    if (imsccMeta.namingIssues) {
+      results.push({
+        id:"auto-module-naming", criteriaIds:["s07-02"], label:"Module naming conventions",
+        status: imsccMeta.namingIssues.length===0 ? "pass" : "flag",
+        detail: imsccMeta.namingIssues.length===0 ? "All module titles follow 'Module N: Title' convention" : `${imsccMeta.namingIssues.length} module title(s) may not follow naming conventions`,
+        items: imsccMeta.namingIssues
+      });
+    }
+
+    if (imsccMeta.assignmentGroups && imsccMeta.assignmentGroups.length > 0) {
+      const groups = imsccMeta.assignmentGroups;
+      const hasWeights = groups.some(g => g.weight > 0);
+      const total = groups.reduce((s,g) => s + (g.weight || 0), 0);
+      const warn = hasWeights && Math.abs(total - 100) > 0.5;
+      results.push({
+        id:"auto-assignment-groups", criteriaIds:["s03-15"], label:"Assignment groups configured with weights",
+        status: !hasWeights ? "fail" : warn ? "flag" : "pass",
+        detail: !hasWeights ? `${groups.length} assignment group(s) found but no weights assigned` : warn ? `Weights total ${total.toFixed(1)}% — should equal 100%` : `${groups.length} group(s) with weights totaling ${total.toFixed(1)}%`,
+        items: groups.map(g => `${g.title}: ${g.weight}%`)
+      });
+    }
+
+    if (imsccMeta.contentFiles && imsccMeta.contentFiles.length > 0) {
+      const pages = imsccMeta.contentFiles.filter(f => f.contentType === "page");
+      if (pages.length > 0) {
+        const bad = pages.filter(p => { const n = p.label || ""; return /^[a-z0-9-]+$/.test(n) && n.includes("-"); });
+        results.push({
+          id:"auto-page-naming", criteriaIds:["s02-08"], label:"Page naming conventions",
+          status: bad.length===0 ? "pass" : "flag",
+          detail: bad.length===0 ? `All ${pages.length} page(s) have properly formatted titles` : `${bad.length} page(s) may have URL-slug style names`,
+          items: bad.map(p => p.label)
+        });
+      }
+
+      const dpPat = /dp-wrapper|dp-heading|dp-header|dp-card/i;
+      const checkTypes = [
+        {type:"page",label:"Pages",cid:"s02-01"},
+        {type:"assignment",label:"Assignments",cid:"s03-01"},
+        {type:"discussion",label:"Discussions",cid:"s05-01"},
+      ];
+      checkTypes.forEach(({type,label,cid}) => {
+        const fot = imsccMeta.contentFiles.filter(f => f.contentType === type);
+        if (fot.length === 0) return;
+        const wt = fot.filter(f => dpPat.test(f.content));
+        const wot = fot.filter(f => !dpPat.test(f.content));
+        results.push({
+          id:`auto-template-${type}`, criteriaIds:[cid], label:`${label}: DesignPLUS template applied`,
+          status: wot.length===0 ? "pass" : wt.length > 0 ? "flag" : "fail",
+          detail: wot.length===0 ? `All ${fot.length} ${type}(s) use DesignPLUS template` : wt.length > 0 ? `${wot.length} of ${fot.length} ${type}(s) missing DesignPLUS template` : `No ${type}s have DesignPLUS template applied`,
+          items: wot.map(f => f.label || f.path)
+        });
+      });
+    }
+  }
+
+  return results;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// UI Wiring
+// ═══════════════════════════════════════════════════════════════════
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+function switchTab(name) {
+  $$(".tabs button").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+  $$(".panel").forEach(p => p.classList.toggle("active", p.dataset.panel === name));
+  if (name === "checklist") renderChecklist();
+  if (name === "summary") renderSummary();
+}
+$$(".tabs button").forEach(b => b.addEventListener("click", () => {
+  if (b.disabled) return;
+  switchTab(b.dataset.tab);
+}));
+
+// Init date
+$("#reviewDate").value = state.reviewDate;
+
+// Input bindings
+$("#courseName").addEventListener("input", e => { state.courseName = e.target.value; saveState(); });
+$("#reviewerName").addEventListener("input", e => { state.reviewerName = e.target.value; saveState(); });
+$("#reviewDate").addEventListener("input", e => { state.reviewDate = e.target.value; saveState(); });
+$("#htmlPaste").addEventListener("input", e => { state.htmlContent = e.target.value; });
+
+// Load / Clear saved
+$("#loadSaved").addEventListener("click", () => {
+  const name = $("#courseName").value.trim();
+  if (!name) { alert("Enter a course name first."); return; }
+  if (loadState(name)) {
+    $("#courseName").value = state.courseName;
+    $("#reviewerName").value = state.reviewerName;
+    $("#reviewDate").value = state.reviewDate;
+    alert(`Loaded saved progress for "${state.courseName}".`);
+  } else {
+    alert(`No saved progress found for "${name}".`);
+  }
+});
+$("#clearSaved").addEventListener("click", () => {
+  const name = $("#courseName").value.trim();
+  if (!name) return;
+  if (confirm(`Clear all saved progress for "${name}"? This cannot be undone.`)) {
+    try { localStorage.removeItem(storageKey(name)); } catch(e){}
+    state.checklist = {}; state.notes = {};
+    alert("Cleared.");
+  }
+});
+
+// IMSCC upload
+const imsccZone = $("#imsccZone");
+const imsccInput = $("#imsccInput");
+["dragover","dragenter"].forEach(ev => imsccZone.addEventListener(ev, e => { e.preventDefault(); imsccZone.style.background="var(--gray-light)"; }));
+["dragleave","drop"].forEach(ev => imsccZone.addEventListener(ev, e => { e.preventDefault(); imsccZone.style.background=""; }));
+imsccZone.addEventListener("drop", e => {
+  const f = e.dataTransfer.files[0]; if (f) handleImsccFile(f);
+});
+imsccInput.addEventListener("change", e => { const f = e.target.files[0]; if (f) handleImsccFile(f); });
+
+async function handleImsccFile(file) {
+  imsccZone.classList.remove("ok","err");
+  $("#imsccStatus").textContent = `Loading ${file.name}...`;
+  try {
+    const data = await extractImsccContent(file);
+    state.imsccData = data;
+    imsccZone.classList.add("ok");
+    $("#imsccStatus").innerHTML = `<strong>${file.name}</strong><br>Course: ${data.courseTitle || "(untitled)"} · ${data.meta.modules.length} modules · ${data.meta.assignments.length} assignments · ${data.htmlFileCount} content files`;
+    // Auto-fill course name if empty
+    if (!$("#courseName").value && data.courseTitle) {
+      $("#courseName").value = data.courseTitle;
+      state.courseName = data.courseTitle;
+    }
+  } catch (err) {
+    console.error(err);
+    imsccZone.classList.add("err");
+    $("#imsccStatus").textContent = `Error: ${err.message}`;
+  }
+}
+
+// Run analysis
+$("#runAnalysis").addEventListener("click", () => {
+  let combinedHtml = state.htmlContent || $("#htmlPaste").value || "";
+  if (state.imsccData && state.imsccData.files.length > 0) {
+    // Concatenate all IMSCC HTML files
+    combinedHtml = state.imsccData.files.map(f => `<!-- ═══ FILE: ${f.path} ═══ -->\n${f.content}`).join("\n\n");
+  }
+  if (!combinedHtml.trim()) { alert("Upload an .imscc or paste HTML content first."); return; }
+  const meta = state.imsccData ? state.imsccData.meta : null;
+  state.autoResults = runAutomatedChecks(combinedHtml, meta);
+
+  // Pre-populate checklist from auto results
+  state.autoResults.forEach(r => {
+    (r.criteriaIds || []).forEach(cid => {
+      if (!state.checklist[cid] || state.checklist[cid] === "") {
+        state.checklist[cid] = r.status === "pass" ? "pass" : r.status === "fail" ? "fail" : r.status === "flag" ? "flag" : "";
+      }
+    });
+  });
+
+  renderAuto();
+  $("#tab-auto").disabled = false;
+  switchTab("auto");
+  saveState();
+});
+
+$("#skipToChecklist").addEventListener("click", () => switchTab("checklist"));
+$("#goChecklist").addEventListener("click", () => switchTab("checklist"));
+
+// Render auto findings
+function renderAuto() {
+  const container = $("#autoFindings");
+  const pass = state.autoResults.filter(r => r.status === "pass").length;
+  const flag = state.autoResults.filter(r => r.status === "flag").length;
+  const fail = state.autoResults.filter(r => r.status === "fail").length;
+  const info = state.autoResults.filter(r => r.status === "info").length;
+  $("#autoPassCt").textContent = pass;
+  $("#autoFlagCt").textContent = flag;
+  $("#autoFailCt").textContent = fail;
+  $("#autoInfoCt").textContent = info;
+
+  const order = {fail:0, flag:1, pass:2, info:3};
+  const sorted = [...state.autoResults].sort((a,b) => (order[a.status]||9) - (order[b.status]||9));
+
+  container.innerHTML = sorted.map(r => `
+    <div class="auto-finding ${r.status}">
+      <div class="title">
+        <span class="badge ${r.status}">${r.status.toUpperCase()}</span>
+        ${escapeHtml(r.label)}
+        <span style="font-size:11px;color:var(--gray-dark);margin-left:8px;">→ ${(r.criteriaIds||[]).join(", ")}</span>
+      </div>
+      <div class="detail">${escapeHtml(r.detail)}</div>
+      ${r.items && r.items.length > 0 ? `<ul>${r.items.slice(0,10).map(it => `<li>${escapeHtml(String(it))}</li>`).join("")}</ul>` : ""}
+    </div>
+  `).join("");
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+// Render checklist
+function renderChecklist() {
+  const container = $("#categoryContainer");
+  container.innerHTML = QA_CATEGORIES.map(cat => {
+    const pass = cat.criteria.filter(c => state.checklist[c.id] === "pass").length;
+    const flag = cat.criteria.filter(c => state.checklist[c.id] === "flag").length;
+    const fail = cat.criteria.filter(c => state.checklist[c.id] === "fail").length;
+    const reviewed = cat.criteria.filter(c => state.checklist[c.id] && state.checklist[c.id] !== "").length;
+    return `
+      <div class="cat-block" data-cat="${cat.id}">
+        <div class="cat-header" onclick="toggleCat('${cat.id}')">
+          <h3>${escapeHtml(cat.name)}</h3>
+          <div class="meta">
+            ${reviewed}/${cat.criteria.length} reviewed
+            · <span class="badge pass">${pass}</span>
+            <span class="badge flag">${flag}</span>
+            <span class="badge fail">${fail}</span>
+          </div>
+        </div>
+        <div class="cat-body">
+          ${cat.criteria.map(cr => `
+            <div class="criterion${cr.auto ? " auto-hint" : ""}">
+              <div class="cid">${cr.id}</div>
+              <div class="text">${escapeHtml(cr.text)}</div>
+              <div class="roles">${cr.roles.join(" / ").toUpperCase()}</div>
+              <select data-crit="${cr.id}">
+                <option value="">—</option>
+                <option value="pass"${state.checklist[cr.id]==="pass"?" selected":""}>PASS</option>
+                <option value="flag"${state.checklist[cr.id]==="flag"?" selected":""}>FLAG</option>
+                <option value="fail"${state.checklist[cr.id]==="fail"?" selected":""}>FAIL</option>
+                <option value="na"${state.checklist[cr.id]==="na"?" selected":""}>N/A</option>
+              </select>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  container.querySelectorAll("select[data-crit]").forEach(sel => {
+    sel.addEventListener("change", e => {
+      state.checklist[e.target.dataset.crit] = e.target.value;
+      saveState();
+      renderChecklist();
+    });
+  });
+}
+
+window.toggleCat = function(id) {
+  const body = document.querySelector(`[data-cat="${id}"] .cat-body`);
+  if (!body) return;
+  body.style.display = body.style.display === "none" ? "" : "none";
+};
+
+$("#expandAll").addEventListener("click", () => $$(".cat-body").forEach(b => b.style.display = ""));
+$("#collapseAll").addEventListener("click", () => $$(".cat-body").forEach(b => b.style.display = "none"));
+
+// Summary
+function computeSummary() {
+  const total = QA_CATEGORIES.reduce((s,c) => s + c.criteria.length, 0);
+  let reviewed = 0, pass = 0, flag = 0, fail = 0, na = 0;
+  QA_CATEGORIES.forEach(cat => {
+    cat.criteria.forEach(cr => {
+      const v = state.checklist[cr.id];
+      if (v && v !== "") reviewed++;
+      if (v === "pass") pass++;
+      else if (v === "flag") flag++;
+      else if (v === "fail") fail++;
+      else if (v === "na") na++;
+    });
+  });
+  return { total, reviewed, pass, flag, fail, na };
+}
+
+function renderSummary() {
+  const s = computeSummary();
+  $("#sumReviewed").textContent = s.reviewed;
+  $("#sumPass").textContent = s.pass;
+  $("#sumFlag").textContent = s.flag;
+  $("#sumFail").textContent = s.fail;
+
+  const rows = QA_CATEGORIES.map(cat => {
+    const p = cat.criteria.filter(c => state.checklist[c.id]==="pass").length;
+    const f = cat.criteria.filter(c => state.checklist[c.id]==="flag").length;
+    const x = cat.criteria.filter(c => state.checklist[c.id]==="fail").length;
+    const pct = cat.criteria.length > 0 ? Math.round((p/cat.criteria.length)*100) : 0;
+    return `<tr>
+      <td>${escapeHtml(cat.name)}</td>
+      <td style="text-align:right;font-family:'Oswald',sans-serif;color:var(--maroon);font-weight:500;">${pct}%</td>
+      <td style="text-align:center;"><span class="badge pass">${p}</span></td>
+      <td style="text-align:center;"><span class="badge flag">${f}</span></td>
+      <td style="text-align:center;"><span class="badge fail">${x}</span></td>
+      <td style="text-align:center;color:var(--gray-dark);">${cat.criteria.length}</td>
+    </tr>`;
+  }).join("");
+
+  $("#categoryBreakdown").innerHTML = `
+    <h3 style="margin-top:22px;">Category Breakdown</h3>
+    <table class="summary-table">
+      <thead><tr>
+        <th>Section</th>
+        <th style="text-align:right;">%</th>
+        <th style="text-align:center;">Pass</th>
+        <th style="text-align:center;">Flag</th>
+        <th style="text-align:center;">Fail</th>
+        <th style="text-align:center;">Total</th>
+      </tr></thead><tbody>${rows}</tbody></table>
+  `;
+
+  $("#reportOut").value = generateReportText();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Triage Engine — identifies top critical fixes
+// ═══════════════════════════════════════════════════════════════════
+const PRIORITY_RANK = { "CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "STANDARD": 3 };
+
+function getAllFindings() {
+  // Unified list of flagged/failed items from both auto and manual
+  const findings = [];
+
+  // From auto results
+  state.autoResults.forEach(r => {
+    if (r.status === "fail" || r.status === "flag") {
+      const critIds = (r.criteriaIds && r.criteriaIds.length > 0) ? r.criteriaIds : [r.id];
+      const rem = getRemediation(r.id) || getRemediation(critIds[0]);
+      findings.push({
+        source: "auto",
+        id: r.id,
+        criteriaIds: critIds,
+        label: r.label,
+        detail: r.detail,
+        items: r.items || [],
+        status: r.status,
+        priority: rem.priority,
+        role: rem.role,
+        steps: rem.steps,
+      });
+    }
+  });
+
+  // From manual checklist
+  QA_CATEGORIES.forEach(cat => {
+    cat.criteria.forEach(cr => {
+      const st = state.checklist[cr.id];
+      if (st === "fail" || st === "flag") {
+        // Skip if auto finding for this criterion already captured
+        const hasAuto = findings.some(f => f.source === "auto" && f.criteriaIds.includes(cr.id));
+        if (hasAuto) return;
+        const rem = getRemediation(cr.id);
+        findings.push({
+          source: "manual",
+          id: cr.id,
+          criteriaIds: [cr.id],
+          label: cr.text,
+          detail: cat.name,
+          items: [],
+          status: st,
+          priority: rem.priority,
+          role: rem.role,
+          steps: rem.steps,
+        });
+      }
+    });
+  });
+
+  return findings;
+}
+
+function getCriticalFixes(findings, limit = 3) {
+  // Sort by priority then by FAIL > FLAG
+  const sorted = [...findings].sort((a, b) => {
+    const pa = PRIORITY_RANK[a.priority] ?? 9;
+    const pb = PRIORITY_RANK[b.priority] ?? 9;
+    if (pa !== pb) return pa - pb;
+    // FAIL before FLAG
+    if (a.status !== b.status) return a.status === "fail" ? -1 : 1;
+    return 0;
+  });
+  return sorted.slice(0, limit);
+}
+
+function groupByRole(findings) {
+  const byRole = { id: [], sme: [], tech: [] };
+  findings.forEach(f => {
+    const role = f.role || "id";
+    if (byRole[role]) byRole[role].push(f);
+    else byRole.id.push(f);
+  });
+  return byRole;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Text Report — restructured to match branded .docx pattern
+// ═══════════════════════════════════════════════════════════════════
+function generateReportText() {
+  const s = computeSummary();
+  const findings = getAllFindings();
+  const critical = getCriticalFixes(findings, 3);
+  const byRole = groupByRole(findings);
+  const lines = [];
+
+  lines.push("═══════════════════════════════════════════════════════════════");
+  lines.push("  TLI CONTENT QA REPORT");
+  lines.push("  Mays Business School · Teaching & Learning Innovation");
+  lines.push("═══════════════════════════════════════════════════════════════");
+  lines.push("");
+  lines.push(`Course:     ${state.courseName || "Unknown"}`);
+  lines.push(`Reviewer:   ${state.reviewerName || "—"}`);
+  lines.push(`Date:       ${state.reviewDate}`);
+  lines.push("");
+
+  // Executive Summary
+  lines.push("─── EXECUTIVE SUMMARY ─────────────────────────────────────────");
+  const healthPct = s.reviewed > 0 ? Math.round((s.pass / s.reviewed) * 100) : 0;
+  const health = s.fail > 0 ? "ACTION REQUIRED" : s.flag > 0 ? "NEEDS REVIEW" : s.reviewed === s.total ? "READY" : "IN PROGRESS";
+  lines.push(`Review status:    ${health}`);
+  lines.push(`Scope covered:    ${s.reviewed} of ${s.total} criteria (${Math.round((s.reviewed/s.total)*100)}%)`);
+  lines.push(`Health score:     ${healthPct}% pass rate on reviewed criteria`);
+  lines.push(`Met:              ${s.pass}`);
+  lines.push(`Flagged:          ${s.flag}`);
+  lines.push(`Not Met:          ${s.fail}`);
+  lines.push(`N/A:              ${s.na}`);
+  lines.push(`Remaining:        ${s.total - s.reviewed}`);
+  lines.push("");
+
+  // Critical Fixes
+  if (critical.length > 0) {
+    lines.push("─── CRITICAL FIXES (PRIORITIZED) ──────────────────────────────");
+    critical.forEach((f, i) => {
+      lines.push("");
+      lines.push(`[${i+1}] [${f.priority}] [${f.status.toUpperCase()}] ${f.label}`);
+      lines.push(`    → ${f.criteriaIds.join(", ")}  |  role: ${f.role.toUpperCase()}`);
+      if (f.detail) lines.push(`    ${f.detail}`);
+      lines.push("    Remediation steps:");
+      (f.steps || []).forEach((step, j) => lines.push(`      ${j+1}. ${step}`));
+    });
+    lines.push("");
+  }
+
+  // WCAG Section
+  const wcagFindings = findings.filter(f => f.criteriaIds.some(c => c.startsWith("s12-")) || f.id.includes("wcag"));
+  lines.push("─── WCAG 2.1 AA COMPLIANCE (ADA Title II — April 2026) ────────");
+  if (wcagFindings.length === 0) {
+    lines.push("No WCAG compliance issues flagged in reviewed criteria.");
+  } else {
+    wcagFindings.forEach(f => {
+      lines.push(`[${f.status.toUpperCase()}] ${f.label}`);
+      if (f.detail) lines.push(`    ${f.detail}`);
+    });
+  }
+  lines.push("");
+
+  // Remediation By Role
+  lines.push("─── REMEDIATION BY ROLE ───────────────────────────────────────");
+  const roleLabels = { id: "Instructional Designer", sme: "Subject Matter Expert", tech: "Technical QA" };
+  ["id", "sme", "tech"].forEach(role => {
+    if (byRole[role].length === 0) return;
+    lines.push("");
+    lines.push(`▸ ${roleLabels[role]} (${byRole[role].length} items)`);
+    byRole[role].forEach(f => {
+      lines.push(`  [${f.status.toUpperCase()}] [${f.priority}] ${f.label}`);
+    });
+  });
+  lines.push("");
+
+  // All Findings
+  lines.push("─── ALL FINDINGS WITH REMEDIATION ─────────────────────────────");
+  const fails = findings.filter(f => f.status === "fail");
+  const flags = findings.filter(f => f.status === "flag");
+  if (fails.length > 0) {
+    lines.push("");
+    lines.push("▸ NOT MET");
+    fails.forEach(f => {
+      lines.push(`  [FAIL] [${f.priority}] ${f.label}  (${f.criteriaIds.join(", ")})`);
+      if (f.detail) lines.push(`    ${f.detail}`);
+      (f.steps || []).slice(0,3).forEach(step => lines.push(`    → ${step}`));
+    });
+  }
+  if (flags.length > 0) {
+    lines.push("");
+    lines.push("▸ FLAGGED");
+    flags.forEach(f => {
+      lines.push(`  [FLAG] [${f.priority}] ${f.label}  (${f.criteriaIds.join(", ")})`);
+      if (f.detail) lines.push(`    ${f.detail}`);
+      (f.steps || []).slice(0,3).forEach(step => lines.push(`    → ${step}`));
+    });
+  }
+  lines.push("");
+
+  // Passed auto checks
+  const autoPasses = state.autoResults.filter(r => r.status === "pass");
+  if (autoPasses.length > 0) {
+    lines.push("─── PASSED AUTOMATED CHECKS ───────────────────────────────────");
+    autoPasses.forEach(r => lines.push(`  [PASS] ${r.label}: ${r.detail}`));
+    lines.push("");
+  }
+
+  // Category Breakdown
+  lines.push("─── CATEGORY BREAKDOWN ────────────────────────────────────────");
+  QA_CATEGORIES.forEach(cat => {
+    const p = cat.criteria.filter(c => state.checklist[c.id]==="pass").length;
+    const f = cat.criteria.filter(c => state.checklist[c.id]==="flag").length;
+    const x = cat.criteria.filter(c => state.checklist[c.id]==="fail").length;
+    const pct = cat.criteria.length > 0 ? Math.round((p/cat.criteria.length)*100) : 0;
+    lines.push(`  ${cat.name.padEnd(56)} ${String(pct).padStart(3)}%  (${p}P / ${f}F / ${x}X of ${cat.criteria.length})`);
+  });
+  lines.push("");
+  lines.push("═══════════════════════════════════════════════════════════════");
+  lines.push("END OF REPORT");
+  lines.push("═══════════════════════════════════════════════════════════════");
+  return lines.join("\n");
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Branded .docx Generator — mirrors MGMT 640 / BUSN 460 format
+// ═══════════════════════════════════════════════════════════════════
+const TEMPLATE_DOCX_B64 = "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";
+
+async function generateBrandedDocx() {
+  if (typeof JSZip === "undefined") {
+    alert("JSZip library did not load. Check your network connection and reload the page.");
+    return;
+  }
+
+  // XML escape helper
+  const esc = (s) => String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+
+  // Paragraph builders that reference TEMPLATE styles by ID.
+  // Style IDs (verified against Template.docx styles.xml):
+  //   Title, Subtitle, DocTitle-Subtitle, DocSubtitle,
+  //   Heading1, Heading2, Heading3, Heading4, Heading5,
+  //   Normal, BodyText2, NoSpacing, ListBullet, ListNumber,
+  //   TableGrid, TableHeading, TableText, Hyperlink, Strong, Emphasis
+  const P = (text, style, extraRpr) => {
+    const styleRef = style ? `<w:pStyle w:val="${style}"/>` : "";
+    const rpr = extraRpr ? `<w:rPr>${extraRpr}</w:rPr>` : "";
+    return `<w:p><w:pPr>${styleRef}</w:pPr><w:r>${rpr}<w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p>`;
+  };
+  const H1 = (t) => P(t, "Heading1");
+  const H2 = (t) => P(t, "Heading2");
+  const H3 = (t) => P(t, "Heading3");
+  const H4 = (t) => P(t, "Heading4");
+  const Body = (t) => P(t, "Normal");
+  const Bold = (t) => `<w:p><w:pPr><w:pStyle w:val="Normal"/></w:pPr><w:r><w:rPr><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">${esc(t)}</w:t></w:r></w:p>`;
+  const Bullet = (t) => P(t, "ListBullet");
+  const Spacer = () => `<w:p><w:pPr><w:pStyle w:val="Normal"/></w:pPr></w:p>`;
+  // Multi-run paragraph: runs is [{text, bold, color, italic}]
+  const Para = (runs, style) => {
+    const styleRef = style ? `<w:pStyle w:val="${style}"/>` : `<w:pStyle w:val="Normal"/>`;
+    const r = runs.map(run => {
+      const rpr = [];
+      if (run.bold) rpr.push("<w:b/><w:bCs/>");
+      if (run.italic) rpr.push("<w:i/><w:iCs/>");
+      if (run.color) rpr.push(`<w:color w:val="${run.color}"/>`);
+      const rprBlock = rpr.length ? `<w:rPr>${rpr.join("")}</w:rPr>` : "";
+      return `<w:r>${rprBlock}<w:t xml:space="preserve">${esc(run.text)}</w:t></w:r>`;
+    }).join("");
+    return `<w:p><w:pPr>${styleRef}</w:pPr>${r}</w:p>`;
+  };
+
+  // Table builders
+  const cellPr = (widthDxa, shading) => {
+    const shadingXml = shading ? `<w:shd w:val="clear" w:color="auto" w:fill="${shading}"/>` : "";
+    return `<w:tcPr><w:tcW w:w="${widthDxa}" w:type="dxa"/>${shadingXml}</w:tcPr>`;
+  };
+  const cellPara = (text, opts = {}) => {
+    const rpr = [];
+    if (opts.bold) rpr.push("<w:b/><w:bCs/>");
+    if (opts.color) rpr.push(`<w:color w:val="${opts.color}"/>`);
+    if (opts.white) rpr.push(`<w:color w:val="FFFFFF"/>`);
+    const rprBlock = rpr.length ? `<w:rPr>${rpr.join("")}</w:rPr>` : "";
+    const align = opts.align ? `<w:jc w:val="${opts.align}"/>` : "";
+    const pstyle = opts.style || "Normal";
+    return `<w:p><w:pPr><w:pStyle w:val="${pstyle}"/>${align}</w:pPr><w:r>${rprBlock}<w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p>`;
+  };
+  const Cell = (widthDxa, text, opts = {}) =>
+    `<w:tc>${cellPr(widthDxa, opts.shading)}${cellPara(text, opts)}</w:tc>`;
+  const Row = (cells) => `<w:tr>${cells.join("")}</w:tr>`;
+  const Table = (rows, totalWidth = 9360) => {
+    const tblPr = `<w:tblPr><w:tblStyle w:val="TableGrid"/><w:tblW w:w="${totalWidth}" w:type="dxa"/><w:tblBorders><w:top w:val="single" w:sz="4" w:space="0" w:color="D1D1D1"/><w:left w:val="single" w:sz="4" w:space="0" w:color="D1D1D1"/><w:bottom w:val="single" w:sz="4" w:space="0" w:color="D1D1D1"/><w:right w:val="single" w:sz="4" w:space="0" w:color="D1D1D1"/><w:insideH w:val="single" w:sz="4" w:space="0" w:color="D1D1D1"/><w:insideV w:val="single" w:sz="4" w:space="0" w:color="D1D1D1"/></w:tblBorders><w:tblLook w:val="04A0"/></w:tblPr>`;
+    return `<w:tbl>${tblPr}${rows.join("")}</w:tbl>${Spacer()}`;
+  };
+
+  // ─── Gather data ────────────────────────────────────────────────
+  const findings = getAllFindings();
+  const critical = getCriticalFixes(findings, 3);
+  const byRole = groupByRole(findings);
+
+  const counts = {
+    reviewed: 0, met: 0, flagged: 0, notmet: 0, remaining: 0
+  };
+  QA_CATEGORIES.forEach(cat => {
+    cat.criteria.forEach(cr => {
+      const autoHit = state.autoResults.find(r => r.criteriaId === cr.id);
+      const manualStatus = state.checklist[cr.id];
+      const effective = autoHit ? autoHit.status : manualStatus;
+      if (effective) {
+        counts.reviewed++;
+        if (effective === "pass") counts.met++;
+        else if (effective === "flag") counts.flagged++;
+        else if (effective === "fail") counts.notmet++;
+      } else {
+        counts.remaining++;
+      }
+    });
+  });
+
+  const statusLabel = (st) => ({pass:"MET", flag:"FLAGGED", fail:"NOT MET", na:"N/A"})[st] || "—";
+  const roleLabel = (r) => ({id:"Instructional Designer", sme:"Subject Matter Expert", tech:"Technical QA"})[r] || r.toUpperCase();
+
+  // ─── Build body XML ─────────────────────────────────────────────
+  const body = [];
+
+  // Title block
+  body.push(P("TLI QA Remediation Report", "Title"));
+  body.push(P(`${state.courseName || "Untitled Course"} · ${state.reviewDate}`, "Subtitle"));
+  body.push(Body(`Reviewer: ${state.reviewerName || "Not specified"}`));
+  body.push(Spacer());
+
+  // Executive Summary
+  body.push(H1("Executive Summary"));
+  body.push(Body(`This report documents the quality assurance review of ${state.courseName || "the course"} against the TLI 123-criteria rubric. Automated checks cover 29 criteria; the remaining 94 require reviewer judgment.`));
+
+  // Stats table (5 cells)
+  const statCellW = 1872; // 5 × 1872 = 9360
+  body.push(Table([
+    Row([
+      Cell(statCellW, "Reviewed", { bold: true, white: true, shading: "500000", align: "center" }),
+      Cell(statCellW, "Met", { bold: true, white: true, shading: "500000", align: "center" }),
+      Cell(statCellW, "Flagged", { bold: true, white: true, shading: "500000", align: "center" }),
+      Cell(statCellW, "Not Met", { bold: true, white: true, shading: "500000", align: "center" }),
+      Cell(statCellW, "Remaining", { bold: true, white: true, shading: "500000", align: "center" }),
+    ]),
+    Row([
+      Cell(statCellW, String(counts.reviewed), { bold: true, align: "center" }),
+      Cell(statCellW, String(counts.met), { bold: true, color: "2E7D32", align: "center" }),
+      Cell(statCellW, String(counts.flagged), { bold: true, color: "B35C00", align: "center" }),
+      Cell(statCellW, String(counts.notmet), { bold: true, color: "9A1B1B", align: "center" }),
+      Cell(statCellW, String(counts.remaining), { bold: true, align: "center" }),
+    ]),
+  ]));
+
+  // Critical Fixes
+  body.push(H1("Critical Fixes — Prioritized"));
+  if (critical.length === 0) {
+    body.push(Body("No critical findings. Address flagged items and complete remaining manual criteria."));
+  } else {
+    critical.forEach((f, i) => {
+      const rem = getRemediation(f.id);
+      body.push(H2(`${i + 1}. ${f.text}`));
+      body.push(Para([
+        { text: "Status: ", bold: true }, { text: statusLabel(f.status) },
+        { text: "   ·   Priority: ", bold: true }, { text: rem.priority },
+        { text: "   ·   Criterion: ", bold: true }, { text: f.id },
+        { text: "   ·   Role: ", bold: true }, { text: roleLabel(rem.role) },
+      ]));
+      if (f.detail) body.push(Body(`Detail: ${f.detail}`));
+      body.push(Bold("Remediation steps:"));
+      rem.steps.forEach(s => body.push(Bullet(s)));
+      body.push(Spacer());
+    });
+  }
+
+  // WCAG / ADA Section
+  body.push(H1("WCAG 2.1 AA & ADA Title II Compliance"));
+  body.push(Body("ADA Title II digital accessibility requirements take effect April 24, 2026. This course must meet WCAG 2.1 AA conformance, including color contrast, heading structure, alt text, link purpose, captions, and keyboard accessibility."));
+  const wcagFindings = findings.filter(f => /^auto-wcag-|^auto-alt|^auto-heading|^auto-caption|^auto-color/.test(f.id) || /wcag|accessib|contrast|alt text|caption/i.test(f.text));
+  if (wcagFindings.length === 0) {
+    body.push(Body("No accessibility findings recorded."));
+  } else {
+    body.push(Bold(`${wcagFindings.length} accessibility-related findings require action:`));
+    wcagFindings.slice(0, 10).forEach(f => {
+      body.push(Bullet(`[${statusLabel(f.status)}] ${f.id} — ${f.text}`));
+    });
+  }
+
+  // Remediation by Role
+  body.push(H1("Remediation by Role"));
+  ["id","sme","tech"].forEach(role => {
+    const items = byRole[role];
+    if (items.length === 0) return;
+    body.push(H2(`${roleLabel(role)} (${items.length})`));
+    items.slice(0, 15).forEach(f => {
+      body.push(Bullet(`[${statusLabel(f.status)}] ${f.id} — ${f.text}`));
+    });
+    if (items.length > 15) body.push(Body(`...and ${items.length - 15} more. See full findings section.`));
+  });
+
+  // Category Breakdown
+  body.push(H1("Category Breakdown"));
+  const catRows = [Row([
+    Cell(4680, "Section", { bold: true, white: true, shading: "500000" }),
+    Cell(1170, "Total", { bold: true, white: true, shading: "500000", align: "center" }),
+    Cell(1170, "Met", { bold: true, white: true, shading: "500000", align: "center" }),
+    Cell(1170, "Flagged", { bold: true, white: true, shading: "500000", align: "center" }),
+    Cell(1170, "Not Met", { bold: true, white: true, shading: "500000", align: "center" }),
+  ])];
+  QA_CATEGORIES.forEach((cat, idx) => {
+    let t=0, m=0, fl=0, nm=0;
+    cat.criteria.forEach(cr => {
+      t++;
+      const autoHit = state.autoResults.find(r => r.criteriaId === cr.id);
+      const st = autoHit ? autoHit.status : state.checklist[cr.id];
+      if (st === "pass") m++;
+      else if (st === "flag") fl++;
+      else if (st === "fail") nm++;
+    });
+    const shade = (idx % 2 === 0) ? undefined : "FAF7F0";
+    catRows.push(Row([
+      Cell(4680, cat.name, { shading: shade }),
+      Cell(1170, String(t), { align: "center", shading: shade }),
+      Cell(1170, String(m), { align: "center", color: "2E7D32", shading: shade }),
+      Cell(1170, String(fl), { align: "center", color: "B35C00", shading: shade }),
+      Cell(1170, String(nm), { align: "center", color: "9A1B1B", shading: shade }),
+    ]));
+  });
+  body.push(Table(catRows, 9360));
+
+  // Passed Automated Checks
+  const passed = state.autoResults.filter(r => r.status === "pass");
+  if (passed.length > 0) {
+    body.push(H1("Passed Automated Checks"));
+    body.push(Body(`${passed.length} automated checks passed without issue:`));
+    passed.forEach(p => body.push(Bullet(`${p.criteriaId} — ${p.text}`)));
+  }
+
+  // All findings with remediation (appendix)
+  if (findings.length > 0) {
+    body.push(H1("All Findings — With Remediation"));
+    findings.forEach((f, i) => {
+      const rem = getRemediation(f.id);
+      body.push(H3(`${i + 1}. [${statusLabel(f.status)}] ${f.text}`));
+      body.push(Para([
+        { text: "Criterion: ", bold: true }, { text: f.id },
+        { text: "   ·   Priority: ", bold: true }, { text: rem.priority },
+        { text: "   ·   Role: ", bold: true }, { text: roleLabel(rem.role) },
+      ]));
+      if (f.detail) body.push(Body(`Detail: ${f.detail}`));
+      rem.steps.slice(0, 6).forEach(s => body.push(Bullet(s)));
+    });
+  }
+
+  // Footer note
+  body.push(Spacer());
+  body.push(P(`Generated ${new Date().toLocaleString()} · TLI QA Tracker · Mays Business School · Texas A&M University`, "Normal", `<w:color w:val="707070"/><w:sz w:val="18"/>`));
+
+  // ─── Load template, splice body, strip attachedTemplate, repack ─
+  const binaryString = atob(TEMPLATE_DOCX_B64);
+  const templateBytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) templateBytes[i] = binaryString.charCodeAt(i);
+
+  const zip = await JSZip.loadAsync(templateBytes);
+
+  // Edit word/document.xml — replace content between <w:body> and <w:sectPr>
+  let docXml = await zip.file("word/document.xml").async("string");
+  const bodyStart = docXml.indexOf("<w:body>") + "<w:body>".length;
+  const sectPrStart = docXml.indexOf("<w:sectPr");
+  if (bodyStart === -1 + "<w:body>".length || sectPrStart === -1) {
+    throw new Error("Template document.xml structure unexpected — cannot locate body/sectPr boundaries.");
+  }
+  const newDocXml = docXml.slice(0, bodyStart) + body.join("") + docXml.slice(sectPrStart);
+  zip.file("word/document.xml", newDocXml);
+
+  // Strip attachedTemplate from word/settings.xml
+  let settingsXml = await zip.file("word/settings.xml").async("string");
+  settingsXml = settingsXml.replace(/<w:attachedTemplate[^/]*\/>/g, "");
+  zip.file("word/settings.xml", settingsXml);
+
+  // Strip attachedTemplate relationship from word/_rels/settings.xml.rels
+  let settingsRels = await zip.file("word/_rels/settings.xml.rels").async("string");
+  settingsRels = settingsRels.replace(/<Relationship\b[^>]*\/officeDocument\/2006\/relationships\/attachedTemplate[^>]*\/>/g, "");
+  zip.file("word/_rels/settings.xml.rels", settingsRels);
+
+  // Repack
+  const blob = await zip.generateAsync({
+    type: "blob",
+    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    compression: "DEFLATE",
+    compressionOptions: { level: 6 }
+  });
+
+  const courseSlug = (state.courseName || "course").replace(/\s+/g, "-").replace(/[^A-Za-z0-9_-]/g, "");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `QA-Remediation-${courseSlug}-${state.reviewDate}.docx`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+
+// Export branded .docx (primary)
+$("#btnExportDocx").addEventListener("click", async () => {
+  const btn = $("#btnExportDocx");
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Generating .docx…";
+  try {
+    await generateBrandedDocx();
+  } catch (err) {
+    console.error(err);
+    alert("Error generating .docx: " + (err && err.message ? err.message : err));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+});
+
+// Export .txt
+$("#btnExportTxt").addEventListener("click", () => {
+  const txt = generateReportText();
+  const blob = new Blob([txt], {type:"text/plain"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `QA-Report-${(state.courseName||"course").replace(/\s+/g,"-")}-${state.reviewDate}.txt`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+// Copy report
+$("#btnCopyReport").addEventListener("click", async () => {
+  const txt = generateReportText();
+  try {
+    await navigator.clipboard.writeText(txt);
+    alert("Report copied to clipboard.");
+  } catch(e) {
+    $("#reportOut").select(); document.execCommand("copy");
+    alert("Report copied.");
+  }
+});
+
+// Export .xlsx
+$("#btnExportXlsx").addEventListener("click", () => {
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: QA Criteria
+  const rows = [
+    ["ID","Section","Criterion","Roles","Automated?","Status","Reviewer","Date","Notes"]
+  ];
+  QA_CATEGORIES.forEach(cat => {
+    cat.criteria.forEach(cr => {
+      rows.push([
+        cr.id, cat.name, cr.text, cr.roles.join("/").toUpperCase(),
+        cr.auto ? "YES" : "NO",
+        (state.checklist[cr.id] || "").toUpperCase(),
+        state.reviewerName || "",
+        state.reviewDate || "",
+        state.notes[cr.id] || ""
+      ]);
+    });
+  });
+  const ws1 = XLSX.utils.aoa_to_sheet(rows);
+  ws1["!cols"] = [{wch:10},{wch:36},{wch:70},{wch:12},{wch:12},{wch:10},{wch:20},{wch:12},{wch:40}];
+  XLSX.utils.book_append_sheet(wb, ws1, "QA Criteria");
+
+  // Sheet 2: Summary
+  const s = computeSummary();
+  const sumRows = [
+    ["TLI CONTENT QA REPORT"],
+    ["Course", state.courseName || ""],
+    ["Reviewer", state.reviewerName || ""],
+    ["Date", state.reviewDate || ""],
+    [],
+    ["Total Criteria", s.total],
+    ["Reviewed", s.reviewed],
+    ["Met (PASS)", s.pass],
+    ["Flagged (FLAG)", s.flag],
+    ["Not Met (FAIL)", s.fail],
+    ["N/A", s.na],
+    [],
+    ["Section","%","Pass","Flag","Fail","Total"]
+  ];
+  QA_CATEGORIES.forEach(cat => {
+    const p = cat.criteria.filter(c => state.checklist[c.id]==="pass").length;
+    const f = cat.criteria.filter(c => state.checklist[c.id]==="flag").length;
+    const x = cat.criteria.filter(c => state.checklist[c.id]==="fail").length;
+    const pct = cat.criteria.length > 0 ? Math.round((p/cat.criteria.length)*100) : 0;
+    sumRows.push([cat.name, pct+"%", p, f, x, cat.criteria.length]);
+  });
+  const ws2 = XLSX.utils.aoa_to_sheet(sumRows);
+  ws2["!cols"] = [{wch:36},{wch:10},{wch:8},{wch:8},{wch:8},{wch:10}];
+  XLSX.utils.book_append_sheet(wb, ws2, "Summary");
+
+  // Sheet 3: Automated Findings
+  if (state.autoResults.length > 0) {
+    const autoRows = [["Status","Check","Criteria","Detail","Items"]];
+    state.autoResults.forEach(r => {
+      autoRows.push([
+        r.status.toUpperCase(),
+        r.label,
+        (r.criteriaIds || []).join(", "),
+        r.detail,
+        (r.items || []).join(" | ")
+      ]);
+    });
+    const ws3 = XLSX.utils.aoa_to_sheet(autoRows);
+    ws3["!cols"] = [{wch:10},{wch:50},{wch:14},{wch:70},{wch:80}];
+    XLSX.utils.book_append_sheet(wb, ws3, "Auto Findings");
+  }
+
+  const fname = `QA-Tracker-${(state.courseName||"course").replace(/\s+/g,"-")}-${state.reviewDate}.xlsx`;
+  XLSX.writeFile(wb, fname);
+});
+
+// Init
+renderChecklist();
+</script>
+</body>
+</html>
