@@ -139,6 +139,34 @@
             .lds-brand-suite { padding-left:14px; margin-left:14px; }
         }
     </style>
+
+<style id="tli-doc-uploader-styles">
+.doc-uploader { margin-bottom: 10px; font-family: 'Open Sans', Arial, sans-serif; }
+.doc-uploader .du-zone {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border: 1.5px dashed #C9A0A0; border-radius: 4px;
+    background: #FBF5F5; cursor: pointer;
+    transition: background .15s, border-color .15s;
+}
+.doc-uploader .du-zone:hover, .doc-uploader .du-zone.drag {
+    background: #F5E8E8; border-color: #500000;
+}
+.doc-uploader .du-icon { color: #500000; font-size: 20px; font-weight: 700; line-height: 1; }
+.doc-uploader .du-text { font-size: 13px; color: #4A4A4A; flex: 1; line-height: 1.4; }
+.doc-uploader .du-text strong { color: #500000; font-weight: 700; display: block; font-size: 13px; }
+.doc-uploader .du-sub { color: #6B6B6B; font-size: 12px; }
+.doc-uploader .du-btn {
+    padding: 7px 14px; font-family: 'Open Sans', Arial, sans-serif; font-size: 12px;
+    font-weight: 700; background: #500000; color: #fff; border: none; border-radius: 3px;
+    cursor: pointer; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap;
+}
+.doc-uploader .du-btn:hover { background: #6B1D1D; }
+.doc-uploader .du-btn:disabled { background: #999; cursor: not-allowed; }
+.doc-uploader .du-status { margin-top: 6px; font-size: 12px; min-height: 14px; font-family: 'Open Sans', Arial, sans-serif; }
+.doc-uploader .du-status.working { color: #6B1D1D; font-style: italic; }
+.doc-uploader .du-status.ok { color: #2E7D32; }
+.doc-uploader .du-status.err { color: #B71C1C; }
+</style>
 </head>
 <body>
 <!-- ════ TIER 1: Top Maroon Strip ════ -->
@@ -259,7 +287,19 @@
             </div>
 
             <div class="form-group">
-                <label>Raw Caption Text</label>
+                <div class="doc-uploader" data-target="rawCaptions">
+    <input type="file" class="du-file" accept=".docx,.pdf" hidden>
+    <div class="du-zone" tabindex="0" role="button" aria-label="Upload a Word or PDF document">
+        <span class="du-icon">&#11015;</span>
+        <span class="du-text">
+            <strong>Upload a Word (.docx) or PDF file</strong>
+            <span class="du-sub">or drag and drop &mdash; text extracts in your browser and fills the field below. Nothing leaves your computer until you click Generate.</span>
+        </span>
+        <button type="button" class="du-btn">Choose file</button>
+    </div>
+    <div class="du-status" aria-live="polite"></div>
+</div>
+                            <label>Raw Caption Text</label>
                 <div class="hint">Paste the full auto-generated caption text. Longer context helps with speaker attribution and error correction.</div>
                 <textarea id="rawCaptions" style="min-height: 240px;" placeholder="Paste raw captions here..."></textarea>
             </div>
@@ -570,6 +610,113 @@ OUTPUT FORMAT:
             setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
         });
     }
+
+    /* ═══════ TLI DOC UPLOADER (.docx + .pdf, client-side) ═══════ */
+    (function setupDocUploaders(){
+        if (window.__tliDocUploaderInit) return;
+        window.__tliDocUploaderInit = true;
+
+        const MAMMOTH_URL = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+        const PDFJS_URL   = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+        const PDFJS_WORKER_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let mammothPromise, pdfjsPromise;
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = src; s.onload = resolve; s.onerror = () => reject(new Error('Failed to load ' + src));
+                document.head.appendChild(s);
+            });
+        }
+        function loadMammoth() {
+            return mammothPromise = mammothPromise || loadScript(MAMMOTH_URL);
+        }
+        function loadPdfJs() {
+            return pdfjsPromise = pdfjsPromise || loadScript(PDFJS_URL).then(() => {
+                if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
+                }
+            });
+        }
+
+        async function extractDocx(file) {
+            await loadMammoth();
+            const buf = await file.arrayBuffer();
+            const result = await window.mammoth.extractRawText({ arrayBuffer: buf });
+            return (result && result.value) || '';
+        }
+        async function extractPdf(file) {
+            await loadPdfJs();
+            const buf = await file.arrayBuffer();
+            const pdf = await window.pdfjsLib.getDocument({ data: buf }).promise;
+            let out = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                const pageText = content.items.map(it => it.str).join(' ');
+                out += pageText + '\n\n';
+            }
+            return out;
+        }
+
+        async function handleFile(uploader, file) {
+            const status = uploader.querySelector('.du-status');
+            const btn    = uploader.querySelector('.du-btn');
+            const targetId = uploader.dataset.target;
+            const target = document.getElementById(targetId);
+            if (!target) { status.className = 'du-status err'; status.textContent = 'Target field not found on this page.'; return; }
+            const name = (file.name || '').toLowerCase();
+            status.className = 'du-status working';
+            status.textContent = 'Extracting ' + file.name + ' in your browser...';
+            btn.disabled = true;
+            try {
+                let text;
+                if (name.endsWith('.docx')) {
+                    text = await extractDocx(file);
+                } else if (name.endsWith('.pdf')) {
+                    text = await extractPdf(file);
+                } else {
+                    throw new Error('Unsupported file type. Upload a .docx or .pdf.');
+                }
+                text = (text || '').trim();
+                if (!text) throw new Error('No text could be extracted. The file may be a scanned image or protected.');
+                target.value = text;
+                target.dispatchEvent(new Event('input', { bubbles: true }));
+                target.focus();
+                status.className = 'du-status ok';
+                status.textContent = 'Loaded ' + file.name + ' (' + text.length.toLocaleString() + ' chars). Review and edit before generating.';
+            } catch (err) {
+                status.className = 'du-status err';
+                status.textContent = 'Error: ' + (err.message || err);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function wire(uploader) {
+            const input = uploader.querySelector('.du-file');
+            const btn   = uploader.querySelector('.du-btn');
+            const zone  = uploader.querySelector('.du-zone');
+            if (!input || !btn || !zone) return;
+            btn.addEventListener('click', e => { e.stopPropagation(); input.click(); });
+            zone.addEventListener('click', () => input.click());
+            zone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
+            input.addEventListener('change', e => {
+                if (e.target.files && e.target.files[0]) handleFile(uploader, e.target.files[0]);
+                input.value = '';
+            });
+            zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag'); });
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+            zone.addEventListener('drop', e => {
+                e.preventDefault(); zone.classList.remove('drag');
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(uploader, e.dataTransfer.files[0]);
+            });
+        }
+
+        document.querySelectorAll('.doc-uploader').forEach(wire);
+    })();
+    /* ═══════ END TLI DOC UPLOADER ═══════ */
+
 </script>
 
 </body>
