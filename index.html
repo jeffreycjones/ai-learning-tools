@@ -42,139 +42,220 @@
         a { color: var(--maroon); text-decoration: none; transition: color 0.2s; }
         a:hover { color: var(--maroon-light); text-decoration: underline; }
 
-        /* ── University Bar (top tier) ────────────────────── */
-        .university-bar {
-            background: var(--white);
-            border-bottom: 1px solid #ddd;
-            padding: 8px 24px;
+        /* ── Tier 1: Top Maroon Strip ─────────────────────── */
+        .top-strip {
+            background: var(--maroon);
+            color: var(--white);
+            font-size: 11px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
         }
-        .university-bar-inner {
-            max-width: 1200px;
+        .top-strip-inner {
+            max-width: 1280px;
             margin: 0 auto;
+            padding: 0 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            min-height: 32px;
         }
-        .university-bar a {
-            font-size: 12px;
-            color: var(--text-muted);
+        .top-strip-left {
+            font-family: var(--font-heading);
             font-weight: 500;
+            color: rgba(255,255,255,0.95);
+        }
+        .top-strip-links {
+            display: flex;
+            gap: 0;
+        }
+        .top-strip-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            padding: 8px 14px;
+            font-weight: 600;
+            transition: background 0.15s, color 0.15s;
+        }
+        .top-strip-links a:hover {
+            color: var(--white);
+            background: rgba(0,0,0,0.18);
             text-decoration: none;
         }
-        .university-bar a:hover { color: var(--maroon); text-decoration: underline; }
-        .tamu-mark {
+        .top-strip-links a + a {
+            border-left: 1px solid rgba(255,255,255,0.18);
+        }
+
+        /* ── Tier 2: Brand Band ───────────────────────────── */
+        .brand-band {
+            background: var(--white);
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .brand-band-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 18px 24px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-family: var(--font-heading);
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--maroon);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            justify-content: space-between;
+            gap: 32px;
+        }
+        .brand-lockup {
+            display: flex;
+            align-items: center;
             text-decoration: none;
         }
-        .tamu-mark:hover { color: var(--maroon); text-decoration: none; }
-        .tamu-mark .tamu-block {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--maroon);
-            color: var(--white);
-            width: 28px;
-            height: 28px;
-            font-size: 11px;
-            font-weight: 700;
-            border-radius: 2px;
-            letter-spacing: 0;
-        }
-        .tamu-mark .tamu-block-img {
-            height: 28px;
+        .brand-lockup:hover { text-decoration: none; }
+        .brand-lockup img {
+            height: 58px;
             width: auto;
             display: block;
         }
+        .brand-suite {
+            display: flex;
+            flex-direction: column;
+            padding-left: 18px;
+            margin-left: 18px;
+            border-left: 2px solid var(--maroon);
+        }
+        .brand-suite .suite-eyebrow {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--maroon);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .brand-suite .suite-title {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+        .brand-search {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .brand-search input {
+            font-family: var(--font-body);
+            font-size: 14px;
+            padding: 9px 42px 9px 14px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            width: 260px;
+            background: var(--white);
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .brand-search input:focus {
+            border-color: var(--maroon);
+            box-shadow: 0 0 0 2px rgba(80,0,0,0.12);
+        }
+        .brand-search button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 38px;
+            background: transparent;
+            border: none;
+            color: var(--maroon);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+        .brand-search button:hover { color: var(--maroon-dark); }
 
-        /* ── Mays Header (second tier) ────────────────────── */
-        .site-header {
-            background: var(--maroon);
-            color: var(--white);
+        /* ── Tier 3: Primary Navigation ───────────────────── */
+        .site-nav {
+            background: var(--white);
+            border-bottom: 2px solid var(--maroon);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: var(--shadow-md);
-        }
-        .header-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 56px;
-        }
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .header-brand h1 {
-            font-family: var(--font-heading);
-            font-size: 20px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        .header-brand .separator {
-            width: 1px;
-            height: 24px;
-            background: rgba(255,255,255,0.3);
-        }
-        .header-brand .suite-name {
-            font-family: var(--font-body);
-            font-size: 14px;
-            font-weight: 500;
-            opacity: 0.9;
-        }
-
-        /* ── Navigation ───────────────────────────────────── */
-        .site-nav {
-            background: var(--gray-dark);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
         .nav-inner {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 16px;
             display: flex;
             gap: 0;
             overflow-x: auto;
+            align-items: stretch;
         }
         .nav-inner a {
-            color: rgba(255,255,255,0.75);
-            padding: 14px 20px;
+            color: var(--text-primary);
+            padding: 16px 18px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             font-family: var(--font-body);
             white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             border-bottom: 3px solid transparent;
-            transition: all 0.2s;
+            margin-bottom: -2px;
+            transition: all 0.15s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .nav-inner a:hover {
+            color: var(--maroon);
             text-decoration: none;
         }
-        .nav-inner a:hover,
         .nav-inner a.active {
-            color: var(--white);
-            border-bottom-color: var(--white);
-            text-decoration: none;
+            color: var(--maroon);
+            border-bottom-color: var(--maroon);
         }
 
         /* ── Hero ─────────────────────────────────────────── */
         .hero {
-            background: var(--maroon);
+            background: linear-gradient(135deg, #3C0000 0%, #500000 45%, #6B1D1D 100%);
             color: var(--white);
-            padding: 64px 24px 56px;
-            text-align: center;
+            padding: 72px 24px 64px;
             position: relative;
+            overflow: hidden;
         }
-        .hero-content { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+        .hero-visual {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.42;
+        }
+        .hero-visual svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .hero-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 48px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-content { position: relative; z-index: 1; }
+        .hero-ai-art {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 260px;
+        }
         .hero-badge {
             display: inline-flex;
             align-items: center;
@@ -192,25 +273,24 @@
         }
         .hero h2 {
             font-family: var(--font-heading);
-            font-size: 42px;
+            font-size: 44px;
             font-weight: 600;
             letter-spacing: 0.5px;
-            line-height: 1.15;
-            margin-bottom: 16px;
+            line-height: 1.1;
+            margin-bottom: 18px;
             text-transform: uppercase;
         }
         .hero p {
             font-size: 16px;
             font-weight: 300;
-            opacity: 0.9;
+            opacity: 0.92;
             max-width: 580px;
-            margin: 0 auto 32px;
+            margin: 0 0 32px;
             line-height: 1.7;
         }
         .hero-actions {
             display: flex;
             gap: 12px;
-            justify-content: center;
             flex-wrap: wrap;
         }
         .btn {
@@ -661,18 +741,46 @@
             text-align: center;
         }
 
+        /* ── Search Empty State ───────────────────────────── */
+        .search-empty {
+            display: none;
+            padding: 32px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+            grid-column: 1 / -1;
+        }
+        .search-empty.show { display: block; }
+        mark.search-hit {
+            background: #FFF3B0;
+            color: inherit;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
         /* ── Responsive ───────────────────────────────────── */
+        @media (max-width: 900px) {
+            .hero-grid { grid-template-columns: 1fr; gap: 24px; }
+            .hero-ai-art { min-height: 180px; }
+            .brand-search input { width: 180px; }
+        }
         @media (max-width: 768px) {
-            .hero h2 { font-size: 28px; }
-            .hero { padding: 48px 20px 40px; }
+            .hero h2 { font-size: 30px; }
+            .hero { padding: 48px 20px 44px; }
             .main { padding: 32px 16px; }
             .card-grid { grid-template-columns: 1fr; }
             .process-steps { grid-template-columns: 1fr 1fr; }
             .framework-table { font-size: 13px; }
             .framework-table th, .framework-table td { padding: 10px 12px; }
             .stat-bar { grid-template-columns: 1fr 1fr; }
-            .header-brand .separator, .header-brand .suite-name { display: none; }
-            .university-bar { display: none; }
+            .top-strip-left { display: none; }
+            .brand-band-inner { flex-direction: column; align-items: flex-start; gap: 16px; padding: 14px 20px; }
+            .brand-search input { width: 100%; }
+            .brand-search { width: 100%; }
+            .brand-suite { padding-left: 14px; margin-left: 14px; }
+            .brand-lockup img { height: 46px; }
             .footer-inner { flex-direction: column; text-align: center; }
             .footer-links { justify-content: center; }
         }
@@ -685,57 +793,158 @@
 <body>
 
 <!-- ════════════════════════════════════════════════════════
-     UNIVERSITY BAR (top tier)
+     TIER 1: TOP MAROON STRIP
      ════════════════════════════════════════════════════════ -->
-<div class="university-bar">
-    <div class="university-bar-inner">
-        <a href="https://www.tamu.edu" target="_blank" class="tamu-mark">
-            <img src="assets/tamu-block.png" alt="Texas A&amp;M University" class="tamu-block-img">
-            Texas A&amp;M University
-        </a>
-        <a href="https://mays.tamu.edu" target="_blank">Mays Business School</a>
+<div class="top-strip">
+    <div class="top-strip-inner">
+        <span class="top-strip-left">Texas A&amp;M University</span>
+        <nav class="top-strip-links" aria-label="University links">
+            <a href="https://mays.tamu.edu" target="_blank" rel="noopener">Mays</a>
+            <a href="https://www.tamu.edu" target="_blank" rel="noopener">TAMU</a>
+            <a href="https://mays.tamu.edu/teaching-learning-innovation/" target="_blank" rel="noopener">TLI</a>
+            <a href="mailto:jeffrey.jones@tamu.edu?subject=Learning%20Design%20Suite%20Feedback">Feedback</a>
+        </nav>
     </div>
 </div>
 
 <!-- ════════════════════════════════════════════════════════
-     HEADER
+     TIER 2: BRAND BAND (logo + suite mark + search)
      ════════════════════════════════════════════════════════ -->
-<header class="site-header">
-    <div class="header-inner">
-        <div class="header-brand">
-            <h1>Teaching &amp; Learning Innovation</h1>
-            <div class="separator"></div>
-            <span class="suite-name">Learning Design Suite</span>
-        </div>
+<div class="brand-band">
+    <div class="brand-band-inner">
+        <a href="index.html" class="brand-lockup" aria-label="Mays Business School home">
+            <img src="assets/mays-primary-logo.png" alt="Mays Business School, Texas A&amp;M University">
+            <span class="brand-suite">
+                <span class="suite-eyebrow">Teaching &amp; Learning Innovation</span>
+                <span class="suite-title">Learning Design Suite</span>
+            </span>
+        </a>
+        <form class="brand-search" role="search" onsubmit="event.preventDefault(); runSearch(this.querySelector('input').value);">
+            <label for="suiteSearch" class="sr-only" style="position:absolute;left:-9999px;">Search tools</label>
+            <input type="search" id="suiteSearch" placeholder="Search tools, policies, resources" autocomplete="off" oninput="runSearch(this.value)">
+            <button type="submit" aria-label="Search">&#128269;</button>
+        </form>
     </div>
-</header>
+</div>
 
 <!-- ════════════════════════════════════════════════════════
-     NAVIGATION
+     TIER 3: PRIMARY NAVIGATION
      ════════════════════════════════════════════════════════ -->
-<nav class="site-nav">
+<nav class="site-nav" aria-label="Primary">
     <div class="nav-inner">
         <a href="#overview">Overview</a>
-        <a href="#tools" class="active">AI Tools</a>
-        <a href="#design-tools">Design Tools</a>
+        <a href="#tools">AI Tools</a>
+        <a href="#design-tools" class="active">Design Tools</a>
         <a href="#policy">Policy &amp; Governance</a>
-        <a href="#literacy">AI Literacy Framework</a>
-        <a href="#workflow">Integration Workflow</a>
+        <a href="#literacy">AI Literacy</a>
+        <a href="#workflow">Workflow</a>
         <a href="#resources">Resources</a>
     </div>
 </nav>
 
 <!-- ════════════════════════════════════════════════════════
-     HERO
+     HERO with AI-themed abstract visual
      ════════════════════════════════════════════════════════ -->
 <section class="hero" id="overview">
-    <div class="hero-content">
-        <div class="hero-badge">Powered by TAMU AI Chat</div>
-        <h2>AI-Informed Learning Design for Mays Business School</h2>
-        <p>A comprehensive resource for faculty and TLI staff to responsibly integrate artificial intelligence into course design, delivery, and quality assurance across the Flex Online and on-campus portfolio.</p>
-        <div class="hero-actions">
-            <a href="#design-tools" class="btn btn-primary">Explore Design Tools &#8594;</a>
-            <a href="#literacy" class="btn btn-secondary">View AI Literacy Framework</a>
+    <div class="hero-visual" aria-hidden="true">
+        <svg viewBox="0 0 1280 420" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <radialGradient id="glow1" cx="25%" cy="35%" r="45%">
+                    <stop offset="0%" stop-color="#D4A843" stop-opacity="0.55"/>
+                    <stop offset="60%" stop-color="#D4A843" stop-opacity="0"/>
+                </radialGradient>
+                <radialGradient id="glow2" cx="78%" cy="65%" r="55%">
+                    <stop offset="0%" stop-color="#FFB6B6" stop-opacity="0.35"/>
+                    <stop offset="70%" stop-color="#FFB6B6" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="line1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="rgba(255,255,255,0.0)"/>
+                    <stop offset="50%" stop-color="rgba(255,255,255,0.55)"/>
+                    <stop offset="100%" stop-color="rgba(255,255,255,0.0)"/>
+                </linearGradient>
+            </defs>
+            <rect width="1280" height="420" fill="url(#glow1)"/>
+            <rect width="1280" height="420" fill="url(#glow2)"/>
+            <!-- abstract neural mesh lines -->
+            <g stroke="url(#line1)" stroke-width="1" fill="none" opacity="0.55">
+                <path d="M0,60 C200,40 420,180 640,140 C860,100 1080,220 1280,200"/>
+                <path d="M0,140 C220,120 440,260 640,220 C840,180 1060,300 1280,280"/>
+                <path d="M0,220 C220,200 440,340 640,300 C840,260 1060,380 1280,360"/>
+                <path d="M0,300 C220,280 440,140 640,180 C840,220 1060,100 1280,120"/>
+                <path d="M0,380 C220,360 440,220 640,260 C840,300 1060,180 1280,200"/>
+            </g>
+            <!-- node dots -->
+            <g fill="rgba(255,255,255,0.75)">
+                <circle cx="120" cy="80"  r="3"/>
+                <circle cx="310" cy="160" r="2.5"/>
+                <circle cx="510" cy="110" r="3.5"/>
+                <circle cx="720" cy="230" r="2.5"/>
+                <circle cx="900" cy="150" r="3"/>
+                <circle cx="1100" cy="300" r="2.5"/>
+                <circle cx="230" cy="320" r="3"/>
+                <circle cx="480" cy="360" r="2.5"/>
+                <circle cx="820" cy="340" r="3.5"/>
+            </g>
+        </svg>
+    </div>
+    <div class="hero-grid">
+        <div class="hero-content">
+            <div class="hero-badge">Powered by TAMU AI Chat</div>
+            <h2>AI-Informed Learning Design for Mays Business School</h2>
+            <p>A comprehensive resource for faculty and TLI staff to responsibly integrate artificial intelligence into course design, delivery, and quality assurance across the Flex Online and on-campus portfolio.</p>
+            <div class="hero-actions">
+                <a href="#design-tools" class="btn btn-primary">Explore Design Tools &#8594;</a>
+                <a href="#literacy" class="btn btn-secondary">View AI Literacy Framework</a>
+            </div>
+        </div>
+        <div class="hero-ai-art" aria-hidden="true">
+            <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;height:auto;">
+                <defs>
+                    <linearGradient id="coreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#FFE9A8"/>
+                        <stop offset="60%" stop-color="#D4A843"/>
+                        <stop offset="100%" stop-color="#8A6A1A"/>
+                    </linearGradient>
+                    <radialGradient id="orbGlow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#FFF4D1" stop-opacity="0.9"/>
+                        <stop offset="55%" stop-color="#D4A843" stop-opacity="0.35"/>
+                        <stop offset="100%" stop-color="#D4A843" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <!-- outer glow -->
+                <circle cx="180" cy="150" r="140" fill="url(#orbGlow)"/>
+                <!-- orbital rings -->
+                <g fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1">
+                    <ellipse cx="180" cy="150" rx="130" ry="50" transform="rotate(20 180 150)"/>
+                    <ellipse cx="180" cy="150" rx="120" ry="42" transform="rotate(-25 180 150)"/>
+                    <ellipse cx="180" cy="150" rx="105" ry="34" transform="rotate(65 180 150)"/>
+                </g>
+                <!-- neural node constellation -->
+                <g stroke="rgba(255,255,255,0.7)" stroke-width="1.1" fill="none">
+                    <line x1="90" y1="90"  x2="180" y2="150"/>
+                    <line x1="270" y1="90" x2="180" y2="150"/>
+                    <line x1="80" y1="210" x2="180" y2="150"/>
+                    <line x1="280" y1="210" x2="180" y2="150"/>
+                    <line x1="180" y1="40" x2="180" y2="150"/>
+                    <line x1="180" y1="260" x2="180" y2="150"/>
+                    <line x1="90" y1="90"  x2="270" y2="90"/>
+                    <line x1="80" y1="210" x2="280" y2="210"/>
+                    <line x1="90" y1="90"  x2="80" y2="210"/>
+                    <line x1="270" y1="90" x2="280" y2="210"/>
+                </g>
+                <!-- outer nodes -->
+                <g fill="rgba(255,255,255,0.95)" stroke="#D4A843" stroke-width="1.2">
+                    <circle cx="90"  cy="90"  r="5"/>
+                    <circle cx="270" cy="90"  r="5"/>
+                    <circle cx="80"  cy="210" r="5"/>
+                    <circle cx="280" cy="210" r="5"/>
+                    <circle cx="180" cy="40"  r="5"/>
+                    <circle cx="180" cy="260" r="5"/>
+                </g>
+                <!-- core orb -->
+                <circle cx="180" cy="150" r="26" fill="url(#coreGrad)" stroke="#FFF4D1" stroke-width="1.5"/>
+                <circle cx="180" cy="150" r="10" fill="#FFF4D1" opacity="0.9"/>
+            </svg>
         </div>
     </div>
 </section>
@@ -1280,7 +1489,7 @@
     window.addEventListener('scroll', () => {
         let current = '';
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - 120;
+            const sectionTop = section.offsetTop - 140;
             if (window.scrollY >= sectionTop) current = section.getAttribute('id');
         });
         navLinks.forEach(link => {
@@ -1288,6 +1497,72 @@
             if (link.getAttribute('href') === '#' + current) link.classList.add('active');
         });
     });
+
+    /* ── Client-side search: filters tool cards + AI tool items + resource cards ── */
+    function runSearch(rawQuery) {
+        const q = (rawQuery || '').trim().toLowerCase();
+        const designGrid = document.getElementById('designToolGrid');
+        const toolList = document.getElementById('toolList');
+        const designCards = designGrid ? designGrid.querySelectorAll('.card') : [];
+        const aiTools = toolList ? toolList.querySelectorAll('.tool-item') : [];
+        const resourceCards = document.querySelectorAll('#resources .card');
+
+        let visibleCount = 0;
+        const matchEl = (el) => {
+            const text = el.innerText.toLowerCase();
+            const match = q === '' || text.includes(q);
+            el.style.display = match ? '' : 'none';
+            if (match && q !== '') visibleCount++;
+            return match;
+        };
+        designCards.forEach(matchEl);
+        aiTools.forEach(el => {
+            const text = el.innerText.toLowerCase();
+            const match = q === '' || text.includes(q);
+            el.style.display = match ? 'flex' : 'none';
+            if (match && q !== '') visibleCount++;
+        });
+        resourceCards.forEach(matchEl);
+
+        /* reset audience toggles to "all" so search doesn't conflict */
+        if (q !== '') {
+            document.querySelectorAll('#designToolToggle button').forEach((b, i) => b.classList.toggle('active', i === 0));
+            document.querySelectorAll('#toolAudienceToggle button').forEach((b, i) => b.classList.toggle('active', i === 0));
+            /* scroll to design-tools section on first typing */
+            if (!window._searchScrolled) {
+                document.getElementById('design-tools').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                window._searchScrolled = true;
+            }
+        } else {
+            window._searchScrolled = false;
+        }
+
+        /* empty-state */
+        let empty = document.getElementById('searchEmpty');
+        if (q !== '' && visibleCount === 0) {
+            if (!empty) {
+                empty = document.createElement('div');
+                empty.id = 'searchEmpty';
+                empty.className = 'search-empty show';
+                empty.innerHTML = 'No tools or resources match <strong></strong>. Try a different term.';
+                designGrid.appendChild(empty);
+            }
+            empty.querySelector('strong').textContent = '"' + rawQuery + '"';
+            empty.classList.add('show');
+        } else if (empty) {
+            empty.classList.remove('show');
+        }
+    }
+
+    /* read ?q= on page load to support redirects from tool pages */
+    (function initSearchFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const q = params.get('q');
+        if (q) {
+            const input = document.getElementById('suiteSearch');
+            if (input) { input.value = q; runSearch(q); }
+        }
+    })();
 </script>
 
 </body>
