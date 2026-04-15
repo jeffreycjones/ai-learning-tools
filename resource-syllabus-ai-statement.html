@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus AI Use Statement Template | Learning Design Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --text-primary: #313131;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --border: #ddd;
+            --gray-light: #f7f7f7;
+            --gray-bg: #eeeeee;
+            --sand: #F5F2EB;
+            --gold: #D4A843;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.65;
+            background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: var(--maroon); }
+        a:hover { color: var(--maroon-light); }
+
+        /* ── 3-tier header (same system as hub + tool pages) ── */
+        .lds-top-strip { background:#500000; color:#fff; font-size:11px; letter-spacing:0.8px; text-transform:uppercase; }
+        .lds-top-strip-inner { max-width:1280px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; min-height:32px; }
+        .lds-top-strip-left { font-family:'Oswald', Arial, sans-serif; font-weight:500; color:rgba(255,255,255,0.95); }
+        .lds-top-strip-links { display:flex; gap:0; }
+        .lds-top-strip-links a { color:rgba(255,255,255,0.85); text-decoration:none; padding:8px 14px; font-weight:600; font-family:'Open Sans',Arial,sans-serif; }
+        .lds-top-strip-links a:hover { color:#fff; background:rgba(0,0,0,0.18); }
+        .lds-top-strip-links a + a { border-left:1px solid rgba(255,255,255,0.18); }
+        .lds-brand-band { background:#fff; border-bottom:1px solid #e5e5e5; }
+        .lds-brand-band-inner { max-width:1280px; margin:0 auto; padding:18px 24px; display:flex; align-items:center; justify-content:space-between; gap:32px; }
+        .lds-brand-lockup { display:flex; align-items:center; text-decoration:none; }
+        .lds-brand-lockup img { height:58px; width:auto; display:block; }
+        .lds-brand-suite { display:flex; flex-direction:column; padding-left:18px; margin-left:18px; border-left:2px solid #500000; }
+        .lds-eyebrow { font-family:'Oswald',Arial,sans-serif; font-size:11px; font-weight:500; letter-spacing:1.2px; text-transform:uppercase; color:#500000; line-height:1; margin-bottom:4px; }
+        .lds-title { font-family:'Oswald',Arial,sans-serif; font-size:18px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:#313131; line-height:1; }
+        .lds-brand-search { display:flex; align-items:center; position:relative; margin:0; }
+        .lds-brand-search input { font-family:'Open Sans',Arial,sans-serif; font-size:14px; padding:9px 42px 9px 14px; border:1px solid #ccc; border-radius:2px; width:260px; background:#fff; color:#313131; outline:none; }
+        .lds-brand-search input:focus { border-color:#500000; box-shadow:0 0 0 2px rgba(80,0,0,0.12); }
+        .lds-brand-search button { position:absolute; right:0; top:0; bottom:0; width:38px; background:transparent; border:none; color:#500000; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; }
+        .lds-site-nav { background:#fff; border-bottom:2px solid #500000; position:sticky; top:0; z-index:100; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+        .lds-nav-inner { max-width:1280px; margin:0 auto; padding:0 16px; display:flex; gap:0; overflow-x:auto; align-items:stretch; }
+        .lds-nav-inner a { color:#313131; padding:16px 18px; font-size:13px; font-weight:700; font-family:'Open Sans',Arial,sans-serif; white-space:nowrap; text-transform:uppercase; letter-spacing:0.5px; border-bottom:3px solid transparent; margin-bottom:-2px; text-decoration:none; display:flex; align-items:center; }
+        .lds-nav-inner a:hover { color:#500000; }
+        .lds-back-link { color:#500000 !important; }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #3C0000 0%, #500000 55%, #6B1D1D 100%);
+            color: #fff;
+            padding: 56px 24px 48px;
+        }
+        .hero-inner { max-width: 1100px; margin: 0 auto; }
+        .hero .eyebrow {
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .hero h1 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-weight: 600;
+            font-size: 40px;
+            line-height: 1.1;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .hero p { font-size: 16px; opacity: 0.92; max-width: 680px; margin-bottom: 22px; }
+        .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 22px;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Open Sans', Arial, sans-serif;
+            text-decoration: none;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .btn-primary { background: #fff; color: var(--maroon); }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.25); color: var(--maroon-dark); }
+        .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.55); }
+        .btn-outline:hover { border-color: #fff; color: #fff; }
+
+        /* ── Main ── */
+        main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 64px; }
+        section.block { margin-bottom: 40px; }
+        section.block > h2 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--maroon);
+            padding-left: 12px;
+            border-left: 4px solid var(--maroon);
+            margin-bottom: 14px;
+        }
+        section.block p { margin-bottom: 12px; }
+
+        /* ── Decision tree ── */
+        .decision-tree {
+            background: var(--sand);
+            border-radius: 4px;
+            padding: 24px 28px;
+            margin-top: 14px;
+        }
+        .decision-step { padding: 14px 0; border-bottom: 1px dashed #cdc9bd; }
+        .decision-step:last-child { border-bottom: none; }
+        .decision-step h3 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--maroon-dark);
+            margin-bottom: 4px;
+        }
+        .decision-step .answer {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .decision-step .answer strong { color: var(--maroon); font-style: normal; font-weight: 700; }
+
+        /* ── Tier cards ── */
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+            margin-top: 10px;
+        }
+        .tier-card {
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            border-top: 4px solid var(--maroon);
+            padding: 22px 20px 20px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+        .tier-card .tier-number {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--maroon);
+            margin-bottom: 4px;
+        }
+        .tier-card h3 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .tier-card .when {
+            font-size: 13px;
+            color: var(--text-secondary);
+            background: var(--gray-light);
+            border-radius: 4px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+        }
+        .tier-card .when strong { color: var(--maroon); }
+        .tier-card a.tier-jump {
+            margin-top: auto;
+            align-self: flex-start;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--maroon);
+            text-decoration: none;
+        }
+        .tier-card a.tier-jump:hover { text-decoration: underline; }
+
+        /* ── Statement block (copyable) ── */
+        .statement-block {
+            margin-top: 18px;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--maroon);
+            border-radius: 4px;
+            background: #fff;
+            overflow: hidden;
+        }
+        .statement-head {
+            background: var(--maroon);
+            color: #fff;
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        .statement-head h3 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        .copy-btn {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 12px;
+            border-radius: 2px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Open Sans', Arial, sans-serif;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.15s;
+        }
+        .copy-btn:hover { background: rgba(255,255,255,0.28); }
+        .copy-btn.copied { background: var(--gold); color: var(--maroon-dark); border-color: var(--gold); }
+        .statement-body {
+            padding: 20px 22px;
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-size: 14.5px;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: #fdfcfa;
+        }
+        .statement-body p { margin-bottom: 10px; }
+        .statement-body p:last-child { margin-bottom: 0; }
+        .statement-body ol { margin: 8px 0 12px 22px; }
+        .statement-body li { margin-bottom: 4px; }
+
+        /* ── Citation table ── */
+        .citation-group { margin-bottom: 22px; }
+        .citation-group h3 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--maroon);
+            margin-bottom: 8px;
+        }
+        .citation-group .citation-item {
+            background: var(--gray-light);
+            border-radius: 4px;
+            padding: 12px 14px;
+            font-size: 13.5px;
+            margin-bottom: 8px;
+            font-family: 'Open Sans', Arial, sans-serif;
+        }
+        .citation-group .citation-item .label {
+            font-weight: 700;
+            color: var(--maroon);
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Callout ── */
+        .callout {
+            background: #FFF8E7;
+            border-left: 4px solid var(--gold);
+            padding: 14px 18px;
+            border-radius: 4px;
+            margin: 18px 0;
+            font-size: 14px;
+        }
+        .callout strong { color: #8A6A1A; }
+
+        /* ── Footer ── */
+        footer {
+            background: #1A1A1A;
+            color: rgba(255,255,255,0.7);
+            padding: 32px 24px;
+            font-size: 13px;
+        }
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-inner a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer-inner a:hover { color: #fff; text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .lds-top-strip-left { display: none; }
+            .lds-brand-band-inner { flex-direction: column; align-items: flex-start; gap: 14px; padding: 14px 20px; }
+            .lds-brand-search, .lds-brand-search input { width: 100%; }
+            .lds-brand-lockup img { height: 46px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════ TIER 1: Top Maroon Strip ════ -->
+<div class="lds-top-strip">
+    <div class="lds-top-strip-inner">
+        <span class="lds-top-strip-left">Texas A&amp;M University</span>
+        <nav class="lds-top-strip-links" aria-label="University links">
+            <a href="https://mays.tamu.edu" target="_blank" rel="noopener">Mays</a>
+            <a href="https://www.tamu.edu" target="_blank" rel="noopener">TAMU</a>
+            <a href="https://mays.tamu.edu/teaching-learning-innovation/" target="_blank" rel="noopener">TLI</a>
+            <a href="mailto:jeffrey.jones@tamu.edu?subject=Learning%20Design%20Suite%20Feedback">Feedback</a>
+        </nav>
+    </div>
+</div>
+
+<!-- ════ TIER 2: Brand Band ════ -->
+<div class="lds-brand-band">
+    <div class="lds-brand-band-inner">
+        <a href="index.html" class="lds-brand-lockup" aria-label="Mays Business School home">
+            <img src="assets/mays-primary-logo.png" alt="Mays Business School, Texas A&amp;M University">
+            <span class="lds-brand-suite">
+                <span class="lds-eyebrow">Teaching &amp; Learning Innovation</span>
+                <span class="lds-title">Learning Design Suite</span>
+            </span>
+        </a>
+        <form class="lds-brand-search" role="search" action="index.html" method="get">
+            <label for="ldsSearch" style="position:absolute;left:-9999px;">Search tools</label>
+            <input type="search" id="ldsSearch" name="q" placeholder="Search tools, policies, resources" autocomplete="off">
+            <button type="submit" aria-label="Search">&#128269;</button>
+        </form>
+    </div>
+</div>
+
+<!-- ════ TIER 3: Primary Navigation ════ -->
+<nav class="lds-site-nav" aria-label="Primary">
+    <div class="lds-nav-inner">
+        <a href="index.html" class="lds-back-link">&#8592; Back to Hub</a>
+        <a href="index.html#tools">AI Tools</a>
+        <a href="index.html#design-tools">Design Tools</a>
+        <a href="index.html#policy">Policy &amp; Governance</a>
+        <a href="index.html#literacy">AI Literacy</a>
+        <a href="index.html#resources">Resources</a>
+    </div>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="eyebrow">Faculty Resource &bull; Template v1.0</div>
+        <h1>Syllabus AI Use Statement Template</h1>
+        <p>Three tiered statements faculty can paste directly into any syllabus. Select the tier that aligns with your course outcomes, customize the bracketed placeholders, and ship.</p>
+        <div class="hero-actions">
+            <a href="Syllabus-AI-Use-Statement-Template.docx" class="btn btn-primary" download>&#11015; Download Mays-branded .docx</a>
+            <a href="#tiers" class="btn btn-outline">Preview the three tiers</a>
+        </div>
+    </div>
+</section>
+
+<main>
+
+<!-- ════ HOW TO USE ════ -->
+<section class="block">
+    <h2>How to use this template</h2>
+    <p>Each tier below reflects a distinct instructional stance on AI use. Use the decision tree to identify the right tier for your course, then copy the corresponding statement into your syllabus alongside your academic integrity policy. Customize the bracketed placeholders to match your course.</p>
+    <div class="callout">
+        <strong>At a glance:</strong> Tier 1 is for courses where AI would undermine core learning. Tier 2 is the recommended default for most Mays courses. Tier 3 is for courses that prepare students for professional contexts where AI fluency is an expected competency.
+    </div>
+</section>
+
+<!-- ════ DECISION TREE ════ -->
+<section class="block" id="decision">
+    <h2>Decision tree: which tier fits your course?</h2>
+    <p>Work through the questions in order. Stop at the first yes.</p>
+    <div class="decision-tree">
+        <div class="decision-step">
+            <h3>1. Do your course outcomes depend on unaided cognitive work?</h3>
+            <p class="answer">If students must demonstrate a skill in their own voice (writing, analytical reasoning, quantitative work shown step by step, foreign language production, competency-based performance), AI assistance would undermine the learning. <strong>Choose Tier 1.</strong></p>
+        </div>
+        <div class="decision-step">
+            <h3>2. Would AI assistance change the work in ways relevant to grading?</h3>
+            <p class="answer">If AI would affect quality, polish, or synthesis in ways you need to evaluate, you need transparency. <strong>Tier 2</strong> lets students use AI but requires disclosure so you can grade both process and outcome.</p>
+        </div>
+        <div class="decision-step">
+            <h3>3. Does the course prepare students for AI-fluent professional work?</h3>
+            <p class="answer">If the target profession expects employees to use AI fluently (strategic analysis, marketing, data interpretation, consulting, product management), classroom practice should align with that reality. <strong>Choose Tier 3.</strong></p>
+        </div>
+        <div class="decision-step">
+            <h3>If in doubt, choose Tier 2.</h3>
+            <p class="answer">It is the most flexible, places the lowest administrative burden on the instructor, and still teaches students to disclose AI use responsibly.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════ TIER QUICK CARDS ════ -->
+<section class="block" id="tiers">
+    <h2>Three tiers at a glance</h2>
+    <div class="tier-grid">
+        <div class="tier-card">
+            <div class="tier-number">Tier 1</div>
+            <h3>AI Prohibited</h3>
+            <div class="when"><strong>When:</strong> Courses whose outcomes depend on students demonstrating unaided cognitive work.</div>
+            <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:14px;">First-year writing, quantitative reasoning, foreign language, competency exams.</p>
+            <a href="#tier1" class="tier-jump">Jump to statement &rarr;</a>
+        </div>
+        <div class="tier-card">
+            <div class="tier-number">Tier 2 &mdash; Default</div>
+            <h3>Permitted with Disclosure</h3>
+            <div class="when"><strong>When:</strong> Most business courses where AI is realistic in practice but transparency matters for grading.</div>
+            <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:14px;">Recommended default for the majority of Mays courses.</p>
+            <a href="#tier2" class="tier-jump">Jump to statement &rarr;</a>
+        </div>
+        <div class="tier-card">
+            <div class="tier-number">Tier 3</div>
+            <h3>AI Encouraged</h3>
+            <div class="when"><strong>When:</strong> Courses that prepare students for professional work where AI fluency is a job-relevant skill.</div>
+            <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:14px;">Strategic analysis, marketing, analytics, consulting capstones.</p>
+            <a href="#tier3" class="tier-jump">Jump to statement &rarr;</a>
+        </div>
+    </div>
+</section>
+
+<!-- ════ TIER 1 STATEMENT ════ -->
+<section class="block" id="tier1">
+    <h2>Tier 1: AI Prohibited</h2>
+    <p><strong>When to use:</strong> Courses whose outcomes depend on students demonstrating unaided cognitive work. Examples: first-year writing, quantitative reasoning courses where process matters, foreign language courses, courses with competency exams.</p>
+    <div class="statement-block">
+        <div class="statement-head">
+            <h3>Statement to paste into your syllabus</h3>
+            <button class="copy-btn" data-target="tier1-text">Copy</button>
+        </div>
+        <div class="statement-body" id="tier1-text">
+            <p><strong>AI Use Policy (Prohibited)</strong></p>
+            <p>This course is designed to build [specific skill &mdash; e.g., analytical writing, quantitative reasoning, foundational vocabulary in the discipline]. Use of generative AI tools (including ChatGPT, Claude, Microsoft Copilot, Gemini, Grammarly's generative features, and similar platforms) to produce any portion of submitted work is prohibited unless explicitly approved by the instructor for a specific assignment.</p>
+            <p>Work determined to be AI-generated, in whole or in part, without approval will be treated as a violation of Texas A&amp;M's Aggie Code of Honor and reported through the Aggie Honor System. Detection tools, writing fluency patterns, and instructor judgment may all inform this determination.</p>
+            <p>If you are unsure whether a tool qualifies as generative AI, ask before using it. Standard grammar and spell-check tools that do not include generative writing assistance remain permitted.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════ TIER 2 STATEMENT ════ -->
+<section class="block" id="tier2">
+    <h2>Tier 2: Permitted with Disclosure</h2>
+    <p><strong>When to use:</strong> Most business courses where AI assistance is realistic, expected, or welcome in professional practice but where transparency matters for grading, learning, and academic integrity. <em>Recommended default for most Mays courses.</em></p>
+    <div class="statement-block">
+        <div class="statement-head">
+            <h3>Statement to paste into your syllabus</h3>
+            <button class="copy-btn" data-target="tier2-text">Copy</button>
+        </div>
+        <div class="statement-body" id="tier2-text">
+            <p><strong>AI Use Policy (Permitted with Disclosure)</strong></p>
+            <p>Generative AI tools (including ChatGPT, Claude, Microsoft Copilot, Gemini, and similar platforms) may be used to support your work in this course, provided that you disclose how you used them.</p>
+            <p>For any assignment where you use AI, include a brief <strong>AI Use Statement</strong> at the end of your submission that identifies:</p>
+            <ol>
+                <li>Which tool or tools you used</li>
+                <li>What you used them for (brainstorming, outlining, editing, drafting, analysis)</li>
+                <li>What portion of the final work is AI-generated versus authored by you</li>
+            </ol>
+            <p>You remain fully responsible for the accuracy, originality, and quality of all work you submit, regardless of AI involvement. AI outputs frequently contain errors, fabricated sources, and biased framings. Verify before you submit.</p>
+            <p>Assignment-level policies may tighten or loosen these expectations. When in doubt, check the assignment description or ask your instructor.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════ TIER 3 STATEMENT ════ -->
+<section class="block" id="tier3">
+    <h2>Tier 3: AI Encouraged</h2>
+    <p><strong>When to use:</strong> Courses that prepare students for professional work where AI fluency is a job-relevant skill. Examples: strategic analysis, marketing, data analytics, consulting capstones, and applied business courses where students are expected to produce work at professional velocity.</p>
+    <div class="statement-block">
+        <div class="statement-head">
+            <h3>Statement to paste into your syllabus</h3>
+            <button class="copy-btn" data-target="tier3-text">Copy</button>
+        </div>
+        <div class="statement-body" id="tier3-text">
+            <p><strong>AI Use Policy (Encouraged)</strong></p>
+            <p>Fluent, responsible use of generative AI is a professional skill expected in the fields this course prepares you for. You are encouraged to use AI tools (including ChatGPT, Claude, Microsoft Copilot, Gemini, and similar platforms) throughout your work in this course, including for research, drafting, analysis, and refinement.</p>
+            <p>What is required of you:</p>
+            <ol>
+                <li><strong>Disclose</strong> the AI tools you used and how you used them in an AI Use Statement accompanying each graded submission.</li>
+                <li><strong>Verify</strong> the accuracy of any claim, figure, or source produced with AI assistance. You are responsible for errors regardless of their origin.</li>
+                <li><strong>Demonstrate your own judgment</strong> in how you prompt, edit, and integrate AI output. The assignment is evaluated on both the final product and the quality of decisions made in producing it.</li>
+            </ol>
+            <p>Use of AI does not reduce your responsibility for academic integrity, FERPA compliance, or the Aggie Code of Honor. Do not input confidential company data, classmates' work, or protected personal information into AI tools.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════ CITATIONS ════ -->
+<section class="block" id="citations">
+    <h2>Citation examples for AI-generated content</h2>
+    <p>When AI contributes substantively to a piece of work, cite it. These formats align with APA 7th and Chicago 17th conventions as of the publication date of this template.</p>
+
+    <div class="citation-group">
+        <h3>APA 7th edition</h3>
+        <div class="citation-item">
+            <span class="label">In-text citation</span>
+            (OpenAI, 2026) &nbsp;or&nbsp; (Anthropic, 2026)
+        </div>
+        <div class="citation-item">
+            <span class="label">Reference list entry</span>
+            OpenAI. (2026). <em>ChatGPT</em> (GPT-4, April 15 version) [Large language model]. https://chat.openai.com
+        </div>
+        <div class="citation-item">
+            <span class="label">Reference list entry</span>
+            Anthropic. (2026). <em>Claude</em> (Sonnet 4.6) [Large language model]. https://claude.ai
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">APA recommends describing your prompt and the AI's output in the body of the paper when AI output is substantive to the argument.</p>
+    </div>
+
+    <div class="citation-group">
+        <h3>Chicago 17th edition (Notes-Bibliography)</h3>
+        <div class="citation-item">
+            <span class="label">Footnote</span>
+            1. Text generated by ChatGPT, OpenAI, April 15, 2026, https://chat.openai.com.
+        </div>
+        <div class="citation-item">
+            <span class="label">Bibliography</span>
+            OpenAI. <em>ChatGPT.</em> GPT-4, April 15 version. Accessed April 15, 2026. https://chat.openai.com.
+        </div>
+    </div>
+</section>
+
+<!-- ════ DOWNLOAD CTA ════ -->
+<section class="block">
+    <div style="background:var(--maroon); color:#fff; padding:26px 28px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap;">
+        <div>
+            <h3 style="font-family:'Oswald',Arial,sans-serif; font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px;">Prefer the branded Word version?</h3>
+            <p style="opacity:0.92; font-size:14px;">The Mays-branded .docx contains all three tiers plus the decision tree and citation examples, ready to distribute to faculty.</p>
+        </div>
+        <a href="Syllabus-AI-Use-Statement-Template.docx" class="btn btn-primary" download>&#11015; Download .docx</a>
+    </div>
+</section>
+
+<p style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:20px;">
+    Template v1.0 &bull; Released April 2026 &bull; Maintained by Teaching &amp; Learning Innovation, Mays Business School
+</p>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div>
+            <strong style="color:#fff; font-family:'Oswald',Arial,sans-serif; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Teaching &amp; Learning Innovation</strong>
+            <span>Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <div>
+            Powered by <a href="https://tamu.ai/" target="_blank" rel="noopener">TAMU AI Chat</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+/* Copy-to-clipboard for each tier */
+document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (!target) return;
+        const text = target.innerText.trim();
+        navigator.clipboard.writeText(text).then(() => {
+            const original = btn.textContent;
+            btn.classList.add('copied');
+            btn.textContent = 'Copied \u2713';
+            setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1800);
+        }).catch(() => {
+            btn.textContent = 'Copy failed';
+            setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
+        });
+    });
+});
+</script>
+
+</body>
+</html>
