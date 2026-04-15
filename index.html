@@ -442,6 +442,32 @@
         }
         .card-link:hover { gap: 8px; text-decoration: none; }
 
+        /* ── Coming Soon tag for pipeline resources ───────── */
+        .coming-soon {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+            background: #F1EFEC;
+            border: 1px solid #e5e1da;
+            cursor: default;
+        }
+        .coming-soon::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #B89B3E;
+            display: inline-block;
+        }
+        .card-pipeline { opacity: 0.88; }
+
         /* ── Framework Table ──────────────────────────────── */
         .framework-table {
             width: 100%;
@@ -1378,44 +1404,44 @@
         <div class="section-header">
             <h3>Resources &amp; Templates</h3>
         </div>
-        <p>Ready-to-use templates, guides, and reference documents for integrating AI into your courses. Resources are tagged by audience to help you find what you need quickly.</p>
+        <p>Planned templates, guides, and reference documents for integrating AI into your courses. These resources are in the TLI production pipeline; each will be published here as it is finalized.</p>
 
         <div class="card-grid">
-            <div class="card">
+            <div class="card card-pipeline">
                 <span class="card-tag tag-faculty">Faculty</span>
                 <h4>Syllabus AI Use Statement Template</h4>
                 <p>A customizable syllabus insert that communicates your course-level AI policy to students. Includes three tiers: AI prohibited, AI permitted with disclosure, and AI encouraged.</p>
-                <a href="#" class="card-link">Download Template &#8594;</a>
+                <span class="coming-soon">Coming Soon</span>
             </div>
-            <div class="card">
+            <div class="card card-pipeline">
                 <span class="card-tag tag-both">Faculty + TLI</span>
                 <h4>AI Prompt Library for Course Design</h4>
                 <p>A curated set of effective prompts for common learning design tasks: writing learning objectives, generating quiz questions, drafting rubric criteria, and creating case study scenarios.</p>
-                <a href="#" class="card-link">View Library &#8594;</a>
+                <span class="coming-soon">Coming Soon</span>
             </div>
-            <div class="card">
+            <div class="card card-pipeline">
                 <span class="card-tag tag-tli">TLI Staff</span>
                 <h4>AI Tool Evaluation Checklist</h4>
                 <p>A structured rubric for evaluating new AI tools against institutional requirements including data privacy, accessibility, integration capabilities, and cost.</p>
-                <a href="#" class="card-link">Download Checklist &#8594;</a>
+                <span class="coming-soon">Coming Soon</span>
             </div>
-            <div class="card">
+            <div class="card card-pipeline">
                 <span class="card-tag tag-faculty">Faculty</span>
                 <h4>AI-Resilient Assignment Design Guide</h4>
                 <p>Strategies for designing assignments that maintain academic integrity in an AI-enabled environment. Focuses on personal application, reflection, and process-based assessment.</p>
-                <a href="#" class="card-link">View Guide &#8594;</a>
+                <span class="coming-soon">Coming Soon</span>
             </div>
-            <div class="card">
+            <div class="card card-pipeline">
                 <span class="card-tag tag-tli">TLI Staff</span>
                 <h4>AI Integration SOP for Learning Designers</h4>
                 <p>Step-by-step operating procedures for incorporating AI tools into the course build workflow, including quality checkpoints and documentation requirements.</p>
-                <a href="#" class="card-link">View SOP &#8594;</a>
+                <span class="coming-soon">Coming Soon</span>
             </div>
-            <div class="card">
+            <div class="card card-pipeline">
                 <span class="card-tag tag-both">Faculty + TLI</span>
                 <h4>AI Literacy Module Template (Canvas)</h4>
                 <p>A ready-to-import Canvas module that introduces students to AI literacy fundamentals. Includes a video overview, a self-assessment quiz, and a reflection discussion.</p>
-                <a href="#" class="card-link">Preview Module &#8594;</a>
+                <span class="coming-soon">Coming Soon</span>
             </div>
         </div>
     </div>
