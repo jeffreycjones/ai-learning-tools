@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tool Evaluation Checklist | Learning Design Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --text-primary: #313131;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --border: #ddd;
+            --gray-light: #f7f7f7;
+            --gray-bg: #eeeeee;
+            --sand: #F5F2EB;
+            --gold: #D4A843;
+            --pass: #2E7D32;
+            --fail: #B71C1C;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.65;
+            background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: var(--maroon); }
+        a:hover { color: var(--maroon-light); }
+
+        /* ── 3-tier header ── */
+        .lds-top-strip { background:#500000; color:#fff; font-size:11px; letter-spacing:0.8px; text-transform:uppercase; }
+        .lds-top-strip-inner { max-width:1280px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; min-height:32px; }
+        .lds-top-strip-left { font-family:'Oswald', Arial, sans-serif; font-weight:500; color:rgba(255,255,255,0.95); }
+        .lds-top-strip-links { display:flex; gap:0; }
+        .lds-top-strip-links a { color:rgba(255,255,255,0.85); text-decoration:none; padding:8px 14px; font-weight:600; font-family:'Open Sans',Arial,sans-serif; }
+        .lds-top-strip-links a:hover { color:#fff; background:rgba(0,0,0,0.18); }
+        .lds-top-strip-links a + a { border-left:1px solid rgba(255,255,255,0.18); }
+        .lds-brand-band { background:#fff; border-bottom:1px solid #e5e5e5; }
+        .lds-brand-band-inner { max-width:1280px; margin:0 auto; padding:18px 24px; display:flex; align-items:center; justify-content:space-between; gap:32px; }
+        .lds-brand-lockup { display:flex; align-items:center; text-decoration:none; }
+        .lds-brand-lockup img { height:58px; width:auto; display:block; }
+        .lds-brand-suite { display:flex; flex-direction:column; padding-left:18px; margin-left:18px; border-left:2px solid #500000; }
+        .lds-eyebrow { font-family:'Oswald',Arial,sans-serif; font-size:11px; font-weight:500; letter-spacing:1.2px; text-transform:uppercase; color:#500000; line-height:1; margin-bottom:4px; }
+        .lds-title { font-family:'Oswald',Arial,sans-serif; font-size:18px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:#313131; line-height:1; }
+        .lds-brand-search { display:flex; align-items:center; position:relative; margin:0; }
+        .lds-brand-search input { font-family:'Open Sans',Arial,sans-serif; font-size:14px; padding:9px 42px 9px 14px; border:1px solid #ccc; border-radius:2px; width:260px; background:#fff; color:#313131; outline:none; }
+        .lds-brand-search input:focus { border-color:#500000; box-shadow:0 0 0 2px rgba(80,0,0,0.12); }
+        .lds-brand-search button { position:absolute; right:0; top:0; bottom:0; width:38px; background:transparent; border:none; color:#500000; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; }
+        .lds-site-nav { background:#fff; border-bottom:2px solid #500000; position:sticky; top:0; z-index:100; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+        .lds-nav-inner { max-width:1280px; margin:0 auto; padding:0 16px; display:flex; gap:0; overflow-x:auto; align-items:stretch; }
+        .lds-nav-inner a { color:#313131; padding:16px 18px; font-size:13px; font-weight:700; font-family:'Open Sans',Arial,sans-serif; white-space:nowrap; text-transform:uppercase; letter-spacing:0.5px; border-bottom:3px solid transparent; margin-bottom:-2px; text-decoration:none; display:flex; align-items:center; }
+        .lds-nav-inner a:hover { color:#500000; }
+        .lds-back-link { color:#500000 !important; }
+
+        /* ── Hero ── */
+        .hero { background: linear-gradient(135deg, #3C0000 0%, #500000 55%, #6B1D1D 100%); color: #fff; padding: 56px 24px 48px; }
+        .hero-inner { max-width: 1100px; margin: 0 auto; }
+        .hero .eyebrow { font-family: 'Open Sans', Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+        .hero h1 { font-family: 'Oswald', Arial, sans-serif; font-weight: 600; font-size: 40px; line-height: 1.1; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 14px; }
+        .hero p { font-size: 16px; opacity: 0.92; max-width: 720px; margin-bottom: 22px; }
+        .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 2px; font-size: 14px; font-weight: 700; font-family: 'Open Sans', Arial, sans-serif; text-decoration: none; border: 1.5px solid transparent; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+        .btn-primary { background: #fff; color: var(--maroon); }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.25); color: var(--maroon-dark); }
+        .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.55); }
+        .btn-outline:hover { border-color: #fff; color: #fff; }
+
+        /* ── Main ── */
+        main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 64px; }
+        section.block { margin-bottom: 40px; }
+        section.block > h2 { font-family: 'Oswald', Arial, sans-serif; font-size: 22px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--maroon); padding-left: 12px; border-left: 4px solid var(--maroon); margin-bottom: 14px; }
+        section.block p { margin-bottom: 12px; }
+
+        /* ── Governance flow (stages) ── */
+        .stage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 12px; }
+        .stage-card { background: var(--sand); border-radius: 4px; padding: 20px 22px; border-top: 4px solid var(--maroon); position: relative; }
+        .stage-card .stage-num { font-family: 'Oswald', Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--maroon); margin-bottom: 4px; }
+        .stage-card h3 { font-family: 'Oswald', Arial, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+        .stage-card .owner { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--maroon-dark); margin-bottom: 8px; }
+        .stage-card p { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 0; }
+
+        /* ── Gate tables ── */
+        .check-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; border: 1px solid var(--border); }
+        .check-table th, .check-table td { padding: 10px 12px; font-size: 13.5px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .check-table thead th { background: var(--maroon); color: #fff; font-family: 'Oswald', Arial, sans-serif; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; font-size: 12px; }
+        .check-table tbody tr:last-child td { border-bottom: none; }
+        .check-table tbody tr:nth-child(even) { background: #fafafa; }
+        .check-table td.judgment { text-align: center; font-weight: 700; }
+        .gate-title { font-family: 'Oswald', Arial, sans-serif; font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--maroon-dark); margin: 22px 0 6px; }
+
+        /* ── Rubric levels ── */
+        .levels-table { width: 100%; border-collapse: collapse; margin: 8px 0 18px; background: #fff; border: 1px solid var(--border); }
+        .levels-table th, .levels-table td { padding: 10px 12px; font-size: 13px; text-align: left; border: 1px solid var(--border); }
+        .levels-table thead th { background: var(--maroon-dark); color: #fff; font-family: 'Oswald', Arial, sans-serif; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; font-size: 12px; }
+        .levels-table .score-cell { font-family: 'Oswald', Arial, sans-serif; font-weight: 700; color: var(--maroon); text-align: center; }
+
+        /* ── Decision matrix ── */
+        .decision-table { width:100%; border-collapse: collapse; margin-top: 10px; background: #fff; border: 1px solid var(--border); }
+        .decision-table th, .decision-table td { padding: 12px 14px; font-size: 13.5px; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+        .decision-table thead th { background: var(--maroon); color: #fff; font-family: 'Oswald', Arial, sans-serif; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; font-size: 12px; }
+        .decision-table td.outcome { font-weight: 700; font-family: 'Oswald', Arial, sans-serif; letter-spacing: 0.3px; }
+        .decision-table tr.o-approve td.outcome { color: var(--pass); }
+        .decision-table tr.o-conditional td.outcome { color: #A56A00; }
+        .decision-table tr.o-decline td.outcome { color: var(--fail); }
+
+        /* ── Callout ── */
+        .callout { background: #FFF8E7; border-left: 4px solid var(--gold); padding: 14px 18px; border-radius: 4px; margin: 18px 0; font-size: 14px; }
+        .callout strong { color: #8A6A1A; }
+
+        /* ── Footer ── */
+        footer { background: #1A1A1A; color: rgba(255,255,255,0.7); padding: 32px 24px; font-size: 13px; }
+        .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .footer-inner a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 600; }
+        .footer-inner a:hover { color: #fff; text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .lds-top-strip-left { display: none; }
+            .lds-brand-band-inner { flex-direction: column; align-items: flex-start; gap: 14px; padding: 14px 20px; }
+            .lds-brand-search, .lds-brand-search input { width: 100%; }
+            .lds-brand-lockup img { height: 46px; }
+            .check-table thead, .levels-table thead { font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════ TIER 1: Top Maroon Strip ════ -->
+<div class="lds-top-strip">
+    <div class="lds-top-strip-inner">
+        <span class="lds-top-strip-left">Texas A&amp;M University</span>
+        <nav class="lds-top-strip-links" aria-label="University links">
+            <a href="https://mays.tamu.edu" target="_blank" rel="noopener">Mays</a>
+            <a href="https://www.tamu.edu" target="_blank" rel="noopener">TAMU</a>
+            <a href="https://mays.tamu.edu/teaching-learning-innovation/" target="_blank" rel="noopener">TLI</a>
+            <a href="mailto:jeffrey.jones@tamu.edu?subject=Learning%20Design%20Suite%20Feedback">Feedback</a>
+        </nav>
+    </div>
+</div>
+
+<!-- ════ TIER 2: Brand Band ════ -->
+<div class="lds-brand-band">
+    <div class="lds-brand-band-inner">
+        <a href="index.html" class="lds-brand-lockup" aria-label="Mays Business School home">
+            <img src="assets/mays-primary-logo.png" alt="Mays Business School, Texas A&amp;M University">
+            <span class="lds-brand-suite">
+                <span class="lds-eyebrow">Teaching &amp; Learning Innovation</span>
+                <span class="lds-title">Learning Design Suite</span>
+            </span>
+        </a>
+        <form class="lds-brand-search" role="search" action="index.html" method="get">
+            <label for="ldsSearch" style="position:absolute;left:-9999px;">Search tools</label>
+            <input type="search" id="ldsSearch" name="q" placeholder="Search tools, policies, resources" autocomplete="off">
+            <button type="submit" aria-label="Search">&#128269;</button>
+        </form>
+    </div>
+</div>
+
+<!-- ════ TIER 3: Primary Navigation ════ -->
+<nav class="lds-site-nav" aria-label="Primary">
+    <div class="lds-nav-inner">
+        <a href="index.html" class="lds-back-link">&#8592; Back to Hub</a>
+        <a href="index.html#tools">AI Tools</a>
+        <a href="index.html#design-tools">Design Tools</a>
+        <a href="index.html#policy">Policy &amp; Governance</a>
+        <a href="index.html#literacy">AI Literacy</a>
+        <a href="index.html#resources">Resources</a>
+    </div>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="eyebrow">Internal Resource &bull; Checklist v1.0</div>
+        <h1>AI Tool Evaluation Checklist</h1>
+        <p>A two-layer instrument for evaluating any AI tool proposed for Mays courses or operations. Pass/fail hard gates screen for non-negotiables. A four-level scored rubric across five domains produces the recommendation that flows through a three-stage governance review.</p>
+        <div class="hero-actions">
+            <a href="AI-Tool-Evaluation-Checklist.docx" class="btn btn-primary" download>&#11015; Download Mays-branded .docx</a>
+            <a href="#governance" class="btn btn-outline">Preview the governance flow</a>
+        </div>
+    </div>
+</section>
+
+<main>
+
+<!-- ════ HOW TO USE ════ -->
+<section class="block">
+    <h2>How to use this checklist</h2>
+    <p>The checklist is the evaluation instrument of record for any AI tool adoption decision at TLI. Use it for new tool requests, vendor renewals, or material changes to an existing tool's functionality or data handling.</p>
+    <div class="callout">
+        <strong>Sequencing rule:</strong> Hard gates are evaluated first. Any single hard-gate failure terminates the review. Scored rubric is completed only after all hard gates pass.
+    </div>
+</section>
+
+<!-- ════ GOVERNANCE FLOW ════ -->
+<section class="block" id="governance">
+    <h2>Three-stage governance flow</h2>
+    <p>Every tool moves through the same three stages. Owners are named, artifacts are required at each gate, and no stage skips.</p>
+    <div class="stage-grid">
+        <div class="stage-card">
+            <div class="stage-num">Stage 1</div>
+            <h3>Designer Pre-Screen</h3>
+            <div class="owner">Owner: Assigned Learning Designer</div>
+            <p>Completes tool metadata, hard-gate section, and a first pass at the scored rubric. Escalates only if hard gates pass and the rubric average is at or above 2.5.</p>
+        </div>
+        <div class="stage-card">
+            <div class="stage-num">Stage 2</div>
+            <h3>AI Committee Review</h3>
+            <div class="owner">Owner: TLI AI Committee</div>
+            <p>Reviews every tool regardless of score. Verifies hard-gate evidence, validates the designer's rubric scoring, and issues one of: approve, approve with conditions, or decline.</p>
+        </div>
+        <div class="stage-card">
+            <div class="stage-num">Stage 3</div>
+            <h3>Executive Director Approval</h3>
+            <div class="owner">Owner: Executive Director, TLI</div>
+            <p>Final sign-off. Required for all approvals and conditional approvals. Confirms budget, procurement path, and accountability for review cadence.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════ HARD GATES ════ -->
+<section class="block" id="hard-gates">
+    <h2>Section 1: Hard gates (pass/fail)</h2>
+    <p>Each requirement below must pass. A single failure terminates the review. Evidence is required in every row — an assertion without a linked document or screenshot does not satisfy the gate.</p>
+
+    <div class="gate-title">Gate 1.1: Data privacy, FERPA, and data ownership</div>
+    <table class="check-table">
+        <thead><tr><th style="width:55%;">Requirement</th><th style="width:30%;">Required evidence</th><th style="width:15%;">Pass / Fail</th></tr></thead>
+        <tbody>
+            <tr><td>Vendor contract or DPA explicitly prohibits training on institutional or student data.</td><td>Executed DPA or contract language</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Tool is FERPA-compliant for any interaction involving student records, student work, or personally identifiable academic data.</td><td>Vendor FERPA attestation</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Institution retains ownership of all data input and all derivative outputs.</td><td>Contract data-ownership clause</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Data residency and retention policies documented and acceptable under TAMU policy.</td><td>Vendor data policy URL</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Tool does not require students to create accounts that expose PII to third parties outside the DPA.</td><td>Account creation flow review</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Clear deletion pathway and timeline for user-initiated data deletion.</td><td>Vendor deletion SOP</td><td class="judgment">&#9633;</td></tr>
+        </tbody>
+    </table>
+
+    <div class="gate-title">Gate 1.2: Information security</div>
+    <table class="check-table">
+        <thead><tr><th style="width:55%;">Requirement</th><th style="width:30%;">Required evidence</th><th style="width:15%;">Pass / Fail</th></tr></thead>
+        <tbody>
+            <tr><td>Tool authenticates via TAMU SSO or equivalent institution-managed identity.</td><td>SSO configuration confirmation</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Vendor maintains current third-party security certification (SOC 2 Type II, ISO 27001, or equivalent).</td><td>Current certification report</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>TAMU IT Security has reviewed and cleared the tool for intended use.</td><td>IT Security ticket or sign-off</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Data in transit and at rest is encrypted using current industry-standard methods.</td><td>Vendor security whitepaper</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Vendor has a documented incident response and breach notification process.</td><td>IR policy document</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Tool does not introduce browser extensions, local agents, or endpoints that bypass TAMU network controls.</td><td>Deployment architecture diagram</td><td class="judgment">&#9633;</td></tr>
+        </tbody>
+    </table>
+
+    <div class="gate-title">Gate 1.3: Accessibility (WCAG 2.1 AA)</div>
+    <table class="check-table">
+        <thead><tr><th style="width:55%;">Requirement</th><th style="width:30%;">Required evidence</th><th style="width:15%;">Pass / Fail</th></tr></thead>
+        <tbody>
+            <tr><td>Vendor provides a current VPAT or Accessibility Conformance Report against WCAG 2.1 AA.</td><td>VPAT / ACR document</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Keyboard navigation is fully supported; no mouse-only interactions.</td><td>Keyboard-only walkthrough notes</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Screen reader compatibility verified with at least one current major screen reader (NVDA, JAWS, or VoiceOver).</td><td>Screen reader test notes</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Color contrast meets WCAG 2.1 AA minimums across primary interface states.</td><td>Contrast audit screenshots</td><td class="judgment">&#9633;</td></tr>
+            <tr><td>Any video or audio output supports captions and transcript access.</td><td>Feature confirmation</td><td class="judgment">&#9633;</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ════ SCORED RUBRIC ════ -->
+<section class="block" id="rubric">
+    <h2>Section 2: Scored rubric (four levels)</h2>
+    <p>Five domains, four criteria each. Each criterion is scored 1 through 4 using the performance levels below. The domain average is reported. An overall average rolls up to the decision matrix.</p>
+
+    <table class="levels-table">
+        <thead><tr><th style="width:12%;">Level</th><th>Definition</th></tr></thead>
+        <tbody>
+            <tr><td class="score-cell">4 &mdash; Exemplary</td><td>Exceeds institutional standard. Sets a positive reference point for future tool decisions.</td></tr>
+            <tr><td class="score-cell">3 &mdash; Proficient</td><td>Meets institutional standard. Acceptable without reservation.</td></tr>
+            <tr><td class="score-cell">2 &mdash; Developing</td><td>Partially meets standard. Adoption possible only with explicit mitigations in place.</td></tr>
+            <tr><td class="score-cell">1 &mdash; Insufficient</td><td>Does not meet standard. Adoption not recommended.</td></tr>
+        </tbody>
+    </table>
+
+    <div class="gate-title">Domain 2.1: Pedagogical fit</div>
+    <table class="check-table">
+        <thead><tr><th style="width:70%;">Criterion</th><th style="width:15%;">Score (1-4)</th><th style="width:15%;">Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Advances stated course or program learning outcomes.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Supports, rather than replaces, the cognitive work students need to do.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Generates evidence of learning that faculty can assess.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Fits instructor workflow without requiring redesign of unrelated course components.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+        </tbody>
+    </table>
+
+    <div class="gate-title">Domain 2.2: Canvas and systems integration</div>
+    <table class="check-table">
+        <thead><tr><th style="width:70%;">Criterion</th><th style="width:15%;">Score (1-4)</th><th style="width:15%;">Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Integrates with Canvas via LTI 1.3 or institution-approved equivalent.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Supports single sign-on and consistent identity across TAMU-managed systems.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Grade passback, analytics, or roster sync functions work reliably where applicable.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Does not duplicate functionality already licensed through enterprise agreements.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+        </tbody>
+    </table>
+
+    <div class="gate-title">Domain 2.3: Cost and total cost of ownership</div>
+    <table class="check-table">
+        <thead><tr><th style="width:70%;">Criterion</th><th style="width:15%;">Score (1-4)</th><th style="width:15%;">Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Licensing model (per-seat, site, or consumption) is predictable and scales with demand.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Total cost of ownership (license plus staff time plus training) is justified by expected impact.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Exit cost is bounded: data export, contract termination, and migration pathways are clear.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Price trajectory (historical and projected) does not create unsustainable long-term risk.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+        </tbody>
+    </table>
+
+    <div class="gate-title">Domain 2.4: Vendor viability</div>
+    <table class="check-table">
+        <thead><tr><th style="width:70%;">Criterion</th><th style="width:15%;">Score (1-4)</th><th style="width:15%;">Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Vendor demonstrates financial stability and funding runway appropriate to the contract term.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Product roadmap is transparent and aligns with institutional direction.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Support model (hours, SLAs, escalation path) matches the criticality of intended use.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Comparable higher-education reference customers verify operational quality.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+        </tbody>
+    </table>
+
+    <div class="gate-title">Domain 2.5: Faculty and student experience</div>
+    <table class="check-table">
+        <thead><tr><th style="width:70%;">Criterion</th><th style="width:15%;">Score (1-4)</th><th style="width:15%;">Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Onboarding a new user requires under thirty minutes without specialized training.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Interface and workflow are consistent, predictable, and minimally distracting.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Errors, AI hallucinations, and edge cases are handled transparently.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+            <tr><td>Adequate documentation, training materials, and support are available in English at TAMU's expected quality.</td><td class="judgment">&#9633;</td><td>&nbsp;</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ════ DECISION MATRIX ════ -->
+<section class="block" id="decision">
+    <h2>Section 3: Decision matrix</h2>
+    <p>After the rubric is complete, calculate the overall average score across all five domains. Use the matrix to translate the score into a recommended action. The AI Committee is not bound by the matrix but must document any deviation.</p>
+    <table class="decision-table">
+        <thead><tr><th style="width:28%;">Result</th><th style="width:28%;">Recommended action</th><th>Conditions</th></tr></thead>
+        <tbody>
+            <tr class="o-decline"><td>Any hard gate fails</td><td class="outcome">Decline</td><td>Tool cannot be adopted at this time. Document the failing gate and share with vendor. Re-evaluation requires vendor remediation.</td></tr>
+            <tr class="o-approve"><td>Overall average 3.5 &ndash; 4.0 and all gates pass</td><td class="outcome">Approve</td><td>Route to Executive Director for final sign-off. Proceed to contract and onboarding.</td></tr>
+            <tr class="o-approve"><td>Overall average 3.0 &ndash; 3.4 and all gates pass</td><td class="outcome">Approve with conditions</td><td>AI Committee names the specific gaps, required mitigations, and re-review date. Executive Director signs once conditions are accepted.</td></tr>
+            <tr class="o-conditional"><td>Overall average 2.5 &ndash; 2.9 and all gates pass</td><td class="outcome">Pilot only</td><td>Limited-scope, time-bounded pilot with explicit success metrics and exit criteria. Full adoption requires a second review at pilot close.</td></tr>
+            <tr class="o-decline"><td>Overall average below 2.5</td><td class="outcome">Decline</td><td>Adoption not recommended. Revisit only if vendor capability materially changes.</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ════ SIGN-OFF ════ -->
+<section class="block" id="signoff">
+    <h2>Section 4: Sign-off</h2>
+    <p>Every approval carries three signatures on the record. No skips. No signature blocks left blank.</p>
+    <table class="check-table">
+        <thead><tr><th style="width:25%;">Stage</th><th style="width:25%;">Role</th><th>Artifact required</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Stage 1</strong> Pre-screen</td><td>Learning Designer (assigned)</td><td>Completed metadata, hard-gate evidence, initial rubric scoring.</td></tr>
+            <tr><td><strong>Stage 2</strong> Committee review</td><td>TLI AI Committee chair and members of record</td><td>Final rubric, decision matrix outcome, committee notes, conditions where applicable.</td></tr>
+            <tr><td><strong>Stage 3</strong> Final approval</td><td>Executive Director, TLI</td><td>Signed approval memo. Confirms budget, procurement path, and annual review cadence.</td></tr>
+        </tbody>
+    </table>
+    <div class="callout">
+        <strong>Review cadence:</strong> All approved tools re-enter this checklist annually, or immediately on any material change to pricing, data handling, or functionality. The designated tool owner maintains the record.
+    </div>
+</section>
+
+<!-- ════ DOWNLOAD CTA ════ -->
+<section class="block">
+    <div style="background:var(--maroon); color:#fff; padding:26px 28px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap;">
+        <div>
+            <h3 style="font-family:'Oswald',Arial,sans-serif; font-size:20px; font-weight:600; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px;">Use the branded working copy</h3>
+            <p style="opacity:0.92; font-size:14px;">The Mays-branded .docx contains all hard-gate tables, the scored rubric, the decision matrix, and sign-off blocks. Designers complete and route it.</p>
+        </div>
+        <a href="AI-Tool-Evaluation-Checklist.docx" class="btn btn-primary" download>&#11015; Download .docx</a>
+    </div>
+</section>
+
+<p style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:20px;">
+    Checklist v1.0 &bull; Released April 2026 &bull; Maintained by Teaching &amp; Learning Innovation, Mays Business School
+</p>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div>
+            <strong style="color:#fff; font-family:'Oswald',Arial,sans-serif; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Teaching &amp; Learning Innovation</strong>
+            <span>Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <div>
+            Powered by <a href="https://tamu.ai/" target="_blank" rel="noopener">TAMU AI Chat</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
