@@ -628,6 +628,8 @@
                 </div>
                 <div class="action-bar" id="actionBar" style="display:none;">
                     <button class="copy-btn" onclick="copyOutput()">Copy to Clipboard</button>
+                <button class="copy-btn" onclick="downloadMarkdown()" style="background:#fff;color:var(--maroon-dark);border:1.5px solid var(--maroon);">&#11015; Download .md</button>
+                <button class="copy-btn" onclick="downloadWord()" style="background:#fff;color:var(--maroon-dark);border:1.5px solid var(--maroon);">&#11015; Download Word</button>
                     <button class="copy-btn" onclick="generate()" style="background:var(--maroon);color:white;">Regenerate</button>
                 </div>
             </section>
@@ -869,5 +871,6 @@ Present each option as a separate alt text choice, numbered 1, 2, and 3. For eac
         }
     </script>
 <script src="tli-api-key.js"></script>
+<script src="tli-download.js"></script>
 </body>
 </html>

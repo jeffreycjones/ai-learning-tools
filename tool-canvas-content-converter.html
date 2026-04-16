@@ -371,6 +371,8 @@
             <div class="action-bar" id="actionBar" style="display:none;">
                 <button class="copy-btn" onclick="copyHtmlOnly()">Copy HTML Only</button>
                 <button class="copy-btn" onclick="copyOutput()">Copy All</button>
+                <button class="copy-btn" onclick="downloadMarkdown()" style="background:#fff;color:var(--maroon-dark);border:1.5px solid var(--maroon);">&#11015; Download .md</button>
+                <button class="copy-btn" onclick="downloadWord()" style="background:#fff;color:var(--maroon-dark);border:1.5px solid var(--maroon);">&#11015; Download Word</button>
                 <button class="copy-btn" onclick="generate()" style="background:var(--maroon);color:var(--white);">Regenerate</button>
             </div>
 
@@ -839,5 +841,6 @@ Finally, include a short "What to verify" checklist (3-5 bullets) of items the u
 </script>
 
 <script src="tli-api-key.js"></script>
+<script src="tli-download.js"></script>
 </body>
 </html>

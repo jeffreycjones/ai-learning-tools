@@ -709,6 +709,8 @@
                 </div>
                 <div class="output-actions">
                     <button class="btn-secondary" id="copyBtn2">Copy to Clipboard</button>
+                <button class="btn-secondary" onclick="downloadMarkdown()" style="background:#fff;color:var(--maroon-dark);border:1.5px solid var(--maroon);">&#11015; Download .md</button>
+                <button class="btn-secondary" onclick="downloadWord()" style="background:#fff;color:var(--maroon-dark);border:1.5px solid var(--maroon);">&#11015; Download Word</button>
                     <button class="btn-secondary" id="regenerateBtn" style="background:var(--maroon);color:white;">Regenerate</button>
                     <div class="copy-success" id="copySuccess">Copied to clipboard!</div>
                 </div>
@@ -1143,5 +1145,6 @@ ADDITIONAL ANALYSIS:
     /* ═══════ END TLI DOC UPLOADER ═══════ */
     </script>
 <script src="tli-api-key.js"></script>
+<script src="tli-download.js"></script>
 </body>
 </html>

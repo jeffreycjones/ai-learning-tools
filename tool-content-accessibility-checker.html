@@ -608,6 +608,8 @@
             </div>
             <div class="action-bar" id="actionBar" style="display:none;">
                 <button type="button" class="btn-copy" onclick="copyOutput()">Copy to Clipboard</button>
+                <button class="btn-copy" onclick="downloadMarkdown()" style="background:#fff;color:var(--maroon-dark);border:1.5px solid var(--maroon);">&#11015; Download .md</button>
+                <button class="btn-copy" onclick="downloadWord()" style="background:#fff;color:var(--maroon-dark);border:1.5px solid var(--maroon);">&#11015; Download Word</button>
                 <button type="button" class="btn-copy" onclick="generate()" style="background:var(--maroon);color:white;">Regenerate</button>
             </div>
         </section>
@@ -835,5 +837,6 @@ Audit Instructions:
         }
     </script>
 <script src="tli-api-key.js"></script>
+<script src="tli-download.js"></script>
 </body>
 </html>
