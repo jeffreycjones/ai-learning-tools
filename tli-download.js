@@ -305,13 +305,24 @@
     function htmlToBodyXml(html) {
         const container = document.createElement('div');
         container.innerHTML = html;
-        // Hoist tables (and other block elements) that ended up inside <p> tags.
-        // Browsers often auto-close the <p> before a <table>, but innerHTML
-        // parsing can leave <table> trapped inside <p> depending on the markup.
-        container.querySelectorAll('p > table, p > ul, p > ol').forEach(function(nested) {
-            const p = nested.parentNode;
-            p.parentNode.insertBefore(nested, p.nextSibling);
-        });
+        // Hoist block elements (tables, headings, lists) that ended up nested
+        // inside containers that translateBlocks won't recurse into properly.
+        // AI-generated HTML often produces invalid nesting like <ul><table>...
+        // or <p><table>... which causes the table to be silently skipped.
+        // Run repeatedly until stable because hoisting can expose new nesting.
+        let hoisted;
+        do {
+            hoisted = false;
+            container.querySelectorAll('table, h1, h2, h3, h4, h5, h6').forEach(function(block) {
+                const parent = block.parentNode;
+                if (parent === container) return; // already at top level
+                const grandparent = parent.parentNode;
+                if (!grandparent) return;
+                // Hoist the block to just after its parent
+                grandparent.insertBefore(block, parent.nextSibling);
+                hoisted = true;
+            });
+        } while (hoisted);
         const parts = [];
         translateBlocks(container, parts);
         return parts.join('');
