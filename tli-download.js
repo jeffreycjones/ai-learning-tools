@@ -173,21 +173,60 @@
         const rows = [];
         const trs = tableEl.querySelectorAll('tr');
         let colCount = 0;
+        const headerTexts = [];
         trs.forEach(tr => {
-            const count = tr.querySelectorAll('th, td').length;
-            if (count > colCount) colCount = count;
+            const cells = tr.querySelectorAll('th, td');
+            if (cells.length > colCount) colCount = cells.length;
         });
         if (!colCount) return '';
 
-        trs.forEach(tr => {
+        // Collect header text for smart column sizing
+        const firstRow = trs[0];
+        if (firstRow) {
+            firstRow.querySelectorAll('th, td').forEach(c => headerTexts.push((c.textContent || '').trim().toLowerCase()));
+        }
+
+        // Smart column widths: allocate based on content type
+        // Total page width ~10060 dxa for landscape-friendly tables
+        const PAGE_W = 10060;
+        let colWidths;
+        if (colCount <= 3) {
+            // Equal distribution for small tables
+            const w = Math.floor(PAGE_W / colCount);
+            colWidths = Array(colCount).fill(w);
+        } else {
+            // Weighted distribution: short labels get narrow columns, long content gets wide
+            const weights = headerTexts.map(h => {
+                if (/^(#|no\.?|shot\s*#?)$/i.test(h)) return 1;
+                if (/^(dur|duration|time|length)$/i.test(h)) return 1.5;
+                if (/^(type|shot\s*type|format)$/i.test(h)) return 1.5;
+                if (/visual|description|narration|audio|script|content|detail/i.test(h)) return 4;
+                if (/graphic|note|comment/i.test(h)) return 2.5;
+                return 2; // default medium
+            });
+            // Pad to colCount if header row had fewer cells
+            while (weights.length < colCount) weights.push(2);
+            const totalWeight = weights.reduce((a, b) => a + b, 0);
+            colWidths = weights.map(w => Math.round((w / totalWeight) * PAGE_W));
+        }
+
+        trs.forEach((tr, rowIdx) => {
             const cells = [];
-            tr.querySelectorAll('th, td').forEach(td => {
+            const cellEls = tr.querySelectorAll('th, td');
+            cellEls.forEach((td, colIdx) => {
                 const isHeader = td.tagName.toLowerCase() === 'th';
                 const runs = buildRuns(td, isHeader ? '<w:b/><w:color w:val="FFFFFF"/>' : '');
                 const pPrParts = [`<w:pStyle w:val="${isHeader ? 'TableTextbold' : 'TableText'}"/>`];
+                // Smaller font for dense tables
+                if (colCount >= 6) pPrParts.push('<w:rPr><w:sz w:val="18"/><w:szCs w:val="18"/></w:rPr>');
                 const pPr = `<w:pPr>${pPrParts.join('')}</w:pPr>`;
                 const tcPrParts = [];
+                if (colWidths[colIdx]) tcPrParts.push(`<w:tcW w:w="${colWidths[colIdx]}" w:type="dxa"/>`);
                 if (isHeader) tcPrParts.push('<w:shd w:val="clear" w:color="auto" w:fill="500000"/>');
+                // Alternating row shading for readability on dense tables
+                if (!isHeader && colCount >= 6 && rowIdx % 2 === 0) {
+                    tcPrParts.push('<w:shd w:val="clear" w:color="auto" w:fill="F5F5F5"/>');
+                }
                 const tcPr = tcPrParts.length ? `<w:tcPr>${tcPrParts.join('')}</w:tcPr>` : '';
                 cells.push(`<w:tc>${tcPr}<w:p>${pPr}${runs}</w:p></w:tc>`);
             });
@@ -210,7 +249,7 @@
             '</w:tblPr>'
         ].join('');
 
-        const grid = `<w:tblGrid>${'<w:gridCol w:w="1000"/>'.repeat(colCount)}</w:tblGrid>`;
+        const grid = `<w:tblGrid>${colWidths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
 
         return `<w:tbl>${tblPr}${grid}${rows.join('')}</w:tbl>`;
     }
@@ -266,6 +305,13 @@
     function htmlToBodyXml(html) {
         const container = document.createElement('div');
         container.innerHTML = html;
+        // Hoist tables (and other block elements) that ended up inside <p> tags.
+        // Browsers often auto-close the <p> before a <table>, but innerHTML
+        // parsing can leave <table> trapped inside <p> depending on the markup.
+        container.querySelectorAll('p > table, p > ul, p > ol').forEach(function(nested) {
+            const p = nested.parentNode;
+            p.parentNode.insertBefore(nested, p.nextSibling);
+        });
         const parts = [];
         translateBlocks(container, parts);
         return parts.join('');
