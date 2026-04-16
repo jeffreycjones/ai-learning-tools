@@ -371,6 +371,17 @@
         const buf = await resp.arrayBuffer();
         const zip = await JSZip.loadAsync(buf);
 
+        // 2b. Fix Content_Types: template was .dotx, output must be .docx
+        const ctFile = zip.file('[Content_Types].xml');
+        if (ctFile) {
+            let ctXml = await ctFile.async('string');
+            ctXml = ctXml.replace(
+                'wordprocessingml.template.main+xml',
+                'wordprocessingml.document.main+xml'
+            );
+            zip.file('[Content_Types].xml', ctXml);
+        }
+
         // 3. Parse the raw script text
         const parsed = parseRawScript(rawText);
         const meta = extractMetadata(parsed);
