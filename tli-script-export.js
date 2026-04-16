@@ -200,41 +200,53 @@
         return s.replace(/^#+\s*/, '').replace(/^\*+/, '').replace(/\*+$/, '').replace(/^_+/, '').replace(/_+$/, '').trim();
     }
 
+    // Normalize a line by stripping numbered prefixes, bold/italic markers, and
+    // horizontal rules so pattern matching works on any combination of formatting.
+    function normalizeLine(s) {
+        // Strip leading numbered prefix: "1. ", "2) ", etc.
+        s = s.replace(/^\d+[\.\)]\s*/, '');
+        // Strip bold/italic markers
+        s = s.replace(/^\*{1,3}/, '').replace(/\*{1,3}$/, '');
+        // Strip leading/trailing underscores
+        s = s.replace(/^_+/, '').replace(/_+$/, '');
+        return s.trim();
+    }
+
     // Try to detect if a line is a section header. Returns the label text or null.
     function detectSectionHeader(trimmed) {
+        // Normalize: strip "1. **" prefix and "**" suffix so all combos work
+        const norm = normalizeLine(trimmed);
+
         // 1. Bracket headers: [HOOK / COLD OPEN], [SECTION 1: TITLE]
-        let m = trimmed.match(/^\*{0,3}\[([A-Z][A-Z0-9 \/:\-]+[A-Z0-9\]]?)\]\*{0,3}\s*$/);
-        if (m) return m[1].trim();
+        let m = norm.match(/^\[([^\]]+)\]\s*$/);
+        if (m) {
+            const inner = m[1].trim();
+            if (SECTION_KEYWORDS.test(inner) || PRODUCTION_SUMMARY_RE.test(inner) || PRODUCTION_NOTES_RE.test(inner)) {
+                return inner;
+            }
+        }
 
-        // 2. Bold bracket headers: **[HOOK / COLD OPEN]**
-        m = trimmed.match(/^\*\*\[(.+?)\]\*\*\s*$/);
-        if (m) return m[1].trim();
-
-        // 3. Markdown headers: ## Hook / Cold Open, ### Section 1: The Three Pillars
+        // 2. Markdown headers: ## Hook / Cold Open, ### Section 1: The Three Pillars
         m = trimmed.match(/^#{1,4}\s+(.+)$/);
         if (m) {
-            const text = stripMd(m[1]);
+            const text = normalizeLine(m[1]).replace(/[\[\]]/g, '').trim();
             if (SECTION_KEYWORDS.test(text) || PRODUCTION_SUMMARY_RE.test(text) || PRODUCTION_NOTES_RE.test(text)) {
                 return text;
             }
         }
 
-        // 4. Bold standalone headers: **Hook / Cold Open**, **Section 1: Title**
-        m = trimmed.match(/^\*\*(.+?)\*\*\s*$/);
-        if (m) {
-            const text = m[1].replace(/[\[\]]/g, '').trim();
-            if (SECTION_KEYWORDS.test(text) || PRODUCTION_SUMMARY_RE.test(text) || PRODUCTION_NOTES_RE.test(text)) {
-                return text;
+        // 3. Plain text (after normalization) that matches section keywords
+        //    Catches: "Hook / Cold Open", "Section 1: Title", "Recap / Summary"
+        const plain = norm.replace(/[\[\]]/g, '').trim();
+        if (plain.length > 3 && plain.length < 80) {
+            if (SECTION_KEYWORDS.test(plain) || PRODUCTION_SUMMARY_RE.test(plain) || PRODUCTION_NOTES_RE.test(plain)) {
+                return plain;
             }
         }
 
-        // 5. Numbered section labels: 1. [HOOK / COLD OPEN] or 1. Hook / Cold Open
-        m = trimmed.match(/^\d+[\.\)]\s*\[?([A-Z][A-Z0-9 \/:\-]+[A-Z0-9]?)\]?\s*$/);
-        if (m) return m[1].trim();
-
-        // 6. ALL-CAPS line that matches keywords (some models skip brackets entirely)
-        if (/^[A-Z][A-Z0-9 \/:\-]{4,}$/.test(trimmed) && SECTION_KEYWORDS.test(trimmed)) {
-            return trimmed;
+        // 4. ALL-CAPS line that matches keywords
+        if (/^[A-Z][A-Z0-9 \/:\-]{4,}$/.test(norm) && SECTION_KEYWORDS.test(norm)) {
+            return norm;
         }
 
         return null;
@@ -311,6 +323,9 @@
                 continue;
             }
 
+            // Skip horizontal rules
+            if (/^-{3,}$/.test(trimmed)) continue;
+
             // Classify line: dialogue or graphics
             const cleanLine = trimmed.replace(/\*+/g, '').trim();
             if (!cleanLine) continue;
@@ -320,16 +335,43 @@
 
             if (!currentSection) continue;
 
+            // If the entire line is a standalone graphics cue
             if (GRAPHICS_CUE_RE.test(trimmed)) {
                 currentSection.graphics.push(cleanLine);
             } else if (TIMING_RE.test(trimmed)) {
                 currentSection.graphics.push(cleanLine);
-            } else if (PACE_CUE_RE.test(trimmed) || REVIEW_RE.test(trimmed)) {
-                currentSection.dialogue.push(cleanLine);
-            } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-                currentSection.dialogue.push(cleanLine.replace(/^[\-\*]\s*/, ''));
             } else {
-                currentSection.dialogue.push(cleanLine);
+                // Extract inline graphics cues from within dialogue lines
+                // e.g., "...some dialogue [SLIDE: something] more dialogue *Approx. 0:30*"
+                let dialoguePart = cleanLine;
+                const inlineCues = [];
+
+                // Pull out [SLIDE:...], [B-ROLL:...], [TRANSITION:...]
+                dialoguePart = dialoguePart.replace(/\[(?:SLIDE|B-ROLL|TRANSITION):[^\]]*\]/gi, function(m) {
+                    inlineCues.push(m); return '';
+                });
+                // Pull out (Visual:...)
+                dialoguePart = dialoguePart.replace(/\(Visual:[^)]*\)/gi, function(m) {
+                    inlineCues.push(m); return '';
+                });
+                // Pull out timing markers: *Approx. 0:30* or Approx. 0:30
+                dialoguePart = dialoguePart.replace(/\*?Approx\.?\s+[\d:]+\*?/gi, function(m) {
+                    inlineCues.push(m.replace(/\*/g, '').trim()); return '';
+                });
+
+                // Clean up dialogue (collapse extra spaces)
+                dialoguePart = dialoguePart.replace(/\s{2,}/g, ' ').trim();
+                // Strip bullet prefix
+                dialoguePart = dialoguePart.replace(/^[\-\*]\s*/, '');
+
+                if (dialoguePart) {
+                    currentSection.dialogue.push(dialoguePart);
+                }
+                if (inlineCues.length > 0) {
+                    for (const cue of inlineCues) {
+                        currentSection.graphics.push(cue);
+                    }
+                }
             }
         }
 
