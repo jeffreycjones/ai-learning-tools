@@ -180,32 +180,85 @@
 
     /* ── Raw text parser ──────────────────────────── */
 
-    // Section header patterns from the AI system prompt
-    const SECTION_RE = /^\[([A-Z][A-Z0-9 \/:\-]+[A-Z0-9\]]?)\](.*)$/;
-    // Markdown heading fallback
-    const MD_HEADER_RE = /^#{1,3}\s+(.+)$/;
-    // Visual / production cues go to Graphics column
-    const GRAPHICS_CUE_RE = /^\(Visual:.*\)$|^\[SLIDE:.*\]$|^\[B-ROLL:.*\]$|^\[TRANSITION:.*\]$/i;
+    // Visual / production cues go to Graphics column (no end anchor -- tolerate trailing spaces)
+    const GRAPHICS_CUE_RE = /^\(Visual:.*\)|^\[SLIDE:.*\]|^\[B-ROLL:.*\]|^\[TRANSITION:.*\]/i;
     // Timing markers
-    const TIMING_RE = /^\*Approx\.?\s+[\d:]+\*$/i;
+    const TIMING_RE = /^\*?Approx\.?\s+[\d:]+\*?\s*$/i;
     // Pacing cues stay in dialogue
-    const PACE_CUE_RE = /^\[PAUSE.*\]$|^\[EMPHASIS.*\]$/i;
+    const PACE_CUE_RE = /^\[PAUSE.*\]|^\[EMPHASIS.*\]/i;
     // Instructor review flag
-    const REVIEW_RE = /^\[INSTRUCTOR REVIEW:.*\]$/i;
+    const REVIEW_RE = /^\[INSTRUCTOR REVIEW:.*\]/i;
+
+    // Keywords that indicate a structural section header
+    const SECTION_KEYWORDS = /hook|cold open|section\s*\d|recap|summary|call to action|learning obj|introduction|conclusion|opening/i;
+    // Keywords for production metadata (not script sections)
+    const PRODUCTION_SUMMARY_RE = /production summary/i;
+    const PRODUCTION_NOTES_RE = /production notes/i;
+
+    // Strip leading/trailing markdown formatting from a line
+    function stripMd(s) {
+        return s.replace(/^#+\s*/, '').replace(/^\*+/, '').replace(/\*+$/, '').replace(/^_+/, '').replace(/_+$/, '').trim();
+    }
+
+    // Try to detect if a line is a section header. Returns the label text or null.
+    function detectSectionHeader(trimmed) {
+        // 1. Bracket headers: [HOOK / COLD OPEN], [SECTION 1: TITLE]
+        let m = trimmed.match(/^\*{0,3}\[([A-Z][A-Z0-9 \/:\-]+[A-Z0-9\]]?)\]\*{0,3}\s*$/);
+        if (m) return m[1].trim();
+
+        // 2. Bold bracket headers: **[HOOK / COLD OPEN]**
+        m = trimmed.match(/^\*\*\[(.+?)\]\*\*\s*$/);
+        if (m) return m[1].trim();
+
+        // 3. Markdown headers: ## Hook / Cold Open, ### Section 1: The Three Pillars
+        m = trimmed.match(/^#{1,4}\s+(.+)$/);
+        if (m) {
+            const text = stripMd(m[1]);
+            if (SECTION_KEYWORDS.test(text) || PRODUCTION_SUMMARY_RE.test(text) || PRODUCTION_NOTES_RE.test(text)) {
+                return text;
+            }
+        }
+
+        // 4. Bold standalone headers: **Hook / Cold Open**, **Section 1: Title**
+        m = trimmed.match(/^\*\*(.+?)\*\*\s*$/);
+        if (m) {
+            const text = m[1].replace(/[\[\]]/g, '').trim();
+            if (SECTION_KEYWORDS.test(text) || PRODUCTION_SUMMARY_RE.test(text) || PRODUCTION_NOTES_RE.test(text)) {
+                return text;
+            }
+        }
+
+        // 5. Numbered section labels: 1. [HOOK / COLD OPEN] or 1. Hook / Cold Open
+        m = trimmed.match(/^\d+[\.\)]\s*\[?([A-Z][A-Z0-9 \/:\-]+[A-Z0-9]?)\]?\s*$/);
+        if (m) return m[1].trim();
+
+        // 6. ALL-CAPS line that matches keywords (some models skip brackets entirely)
+        if (/^[A-Z][A-Z0-9 \/:\-]{4,}$/.test(trimmed) && SECTION_KEYWORDS.test(trimmed)) {
+            return trimmed;
+        }
+
+        return null;
+    }
 
     // Map AI section labels to A/V template section names
     function mapSectionLabel(rawLabel) {
         const upper = rawLabel.toUpperCase().replace(/[\[\]]/g, '').trim();
         if (upper.includes('HOOK') || upper.includes('COLD OPEN')) return 'Video Introduction';
+        if (upper.includes('INTRODUCTION')) return 'Video Introduction';
         if (upper.includes('LEARNING OBJECTIVE')) return 'Video Introduction';
         if (upper.includes('RECAP') || upper.includes('SUMMARY')) return 'Video Conclusion';
+        if (upper.includes('CONCLUSION')) return 'Video Conclusion';
         if (upper.includes('CALL TO ACTION')) return 'Video Conclusion';
-        if (upper.includes('PRODUCTION NOTES')) return null; // handled separately
-        if (upper.includes('PRODUCTION SUMMARY')) return null;
+        if (PRODUCTION_NOTES_RE.test(rawLabel)) return null;
+        if (PRODUCTION_SUMMARY_RE.test(rawLabel)) return null;
         // SECTION N: Title -> Video Content: Title
-        const secMatch = upper.match(/SECTION\s+\d+[:\s-]*(.*)/);
-        if (secMatch) return 'Video Content: ' + (secMatch[1] || '').trim();
-        return upper;
+        const secMatch = upper.match(/SECTION\s+\d+[:\s\-]*(.*)/);
+        if (secMatch) {
+            const title = secMatch[1].trim();
+            return title ? 'Video Content: ' + title : 'Video Content';
+        }
+        // If nothing else matched but it got through detectSectionHeader, use it as-is
+        return rawLabel;
     }
 
     function parseRawScript(raw) {
@@ -216,42 +269,24 @@
         let productionNotes = [];
         let inProductionSummary = false;
         let inProductionNotes = false;
+        let allDialogue = [];  // fallback collector
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             const trimmed = line.trim();
             if (!trimmed) continue;
 
-            // Check for section headers
-            let sectionMatch = trimmed.match(SECTION_RE);
-            if (!sectionMatch) {
-                // Try markdown header
-                const mdMatch = trimmed.match(MD_HEADER_RE);
-                if (mdMatch) {
-                    const headerText = mdMatch[1].replace(/\*+/g, '').trim();
-                    // Check if this looks like a section
-                    if (/hook|cold open|section|recap|summary|call to action|learning obj|production/i.test(headerText)) {
-                        sectionMatch = [null, headerText, ''];
-                    }
-                }
-            }
-            // Also check for **Bold Section Headers**
-            if (!sectionMatch) {
-                const boldMatch = trimmed.match(/^\*\*(.+?)\*\*\s*$/);
-                if (boldMatch && /production summary|production notes/i.test(boldMatch[1])) {
-                    sectionMatch = [null, boldMatch[1], ''];
-                }
-            }
+            // Detect section header
+            const headerLabel = detectSectionHeader(trimmed);
 
-            if (sectionMatch) {
-                const rawLabel = (sectionMatch[1] || '').replace(/[\[\]]/g, '').trim();
-                if (/production summary/i.test(rawLabel)) {
+            if (headerLabel) {
+                if (PRODUCTION_SUMMARY_RE.test(headerLabel)) {
                     inProductionSummary = true;
                     inProductionNotes = false;
                     currentSection = null;
                     continue;
                 }
-                if (/production notes/i.test(rawLabel)) {
+                if (PRODUCTION_NOTES_RE.test(headerLabel)) {
                     inProductionNotes = true;
                     inProductionSummary = false;
                     currentSection = null;
@@ -259,7 +294,7 @@
                 }
                 inProductionSummary = false;
                 inProductionNotes = false;
-                const label = mapSectionLabel(rawLabel);
+                const label = mapSectionLabel(headerLabel);
                 if (label) {
                     currentSection = { label, dialogue: [], graphics: [] };
                     sections.push(currentSection);
@@ -276,22 +311,22 @@
                 continue;
             }
 
-            if (!currentSection) continue;
-
             // Classify line: dialogue or graphics
             const cleanLine = trimmed.replace(/\*+/g, '').trim();
             if (!cleanLine) continue;
 
+            // Collect for fallback regardless
+            allDialogue.push(cleanLine);
+
+            if (!currentSection) continue;
+
             if (GRAPHICS_CUE_RE.test(trimmed)) {
                 currentSection.graphics.push(cleanLine);
             } else if (TIMING_RE.test(trimmed)) {
-                // Append timing as a graphics note
                 currentSection.graphics.push(cleanLine);
             } else if (PACE_CUE_RE.test(trimmed) || REVIEW_RE.test(trimmed)) {
-                // Keep pacing cues in dialogue
                 currentSection.dialogue.push(cleanLine);
             } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-                // Bullet items go to dialogue
                 currentSection.dialogue.push(cleanLine.replace(/^[\-\*]\s*/, ''));
             } else {
                 currentSection.dialogue.push(cleanLine);
@@ -299,7 +334,6 @@
         }
 
         // Merge consecutive sections with the same label
-        // (e.g., HOOK + LEARNING OBJECTIVES both map to "Video Introduction")
         const merged = [];
         for (const s of sections) {
             const last = merged[merged.length - 1];
@@ -309,6 +343,15 @@
             } else {
                 merged.push({ ...s, dialogue: [...s.dialogue], graphics: [...s.graphics] });
             }
+        }
+
+        // FALLBACK: if no sections were parsed, put all text in one section
+        if (merged.length === 0 && allDialogue.length > 0) {
+            merged.push({
+                label: 'Video Content',
+                dialogue: allDialogue,
+                graphics: []
+            });
         }
 
         return { sections: merged, productionSummary, productionNotes };
