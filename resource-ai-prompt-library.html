@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Library for Course Design | Learning Design Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --text-primary: #313131;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --border: #ddd;
+            --gray-light: #f7f7f7;
+            --gray-bg: #eeeeee;
+            --sand: #F5F2EB;
+            --gold: #D4A843;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.65;
+            background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: var(--maroon); }
+        a:hover { color: var(--maroon-light); }
+
+        /* -- 3-tier header (same system as hub + tool pages) -- */
+        .lds-top-strip { background:#500000; color:#fff; font-size:11px; letter-spacing:0.8px; text-transform:uppercase; }
+        .lds-top-strip-inner { max-width:1280px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; min-height:32px; }
+        .lds-top-strip-left { font-family:'Oswald', Arial, sans-serif; font-weight:500; color:rgba(255,255,255,0.95); }
+        .lds-top-strip-links { display:flex; gap:0; }
+        .lds-top-strip-links a { color:rgba(255,255,255,0.85); text-decoration:none; padding:8px 14px; font-weight:600; font-family:'Open Sans',Arial,sans-serif; }
+        .lds-top-strip-links a:hover { color:#fff; background:rgba(0,0,0,0.18); }
+        .lds-top-strip-links a + a { border-left:1px solid rgba(255,255,255,0.18); }
+        .lds-brand-band { background:#fff; border-bottom:1px solid #e5e5e5; }
+        .lds-brand-band-inner { max-width:1280px; margin:0 auto; padding:18px 24px; display:flex; align-items:center; justify-content:space-between; gap:32px; }
+        .lds-brand-lockup { display:flex; align-items:center; text-decoration:none; }
+        .lds-brand-lockup img { height:58px; width:auto; display:block; }
+        .lds-brand-suite { display:flex; flex-direction:column; padding-left:18px; margin-left:18px; border-left:2px solid #500000; }
+        .lds-eyebrow { font-family:'Oswald',Arial,sans-serif; font-size:11px; font-weight:500; letter-spacing:1.2px; text-transform:uppercase; color:#500000; line-height:1; margin-bottom:4px; }
+        .lds-title { font-family:'Oswald',Arial,sans-serif; font-size:18px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:#313131; line-height:1; }
+        .lds-brand-search { display:flex; align-items:center; position:relative; margin:0; }
+        .lds-brand-search input { font-family:'Open Sans',Arial,sans-serif; font-size:14px; padding:9px 42px 9px 14px; border:1px solid #ccc; border-radius:2px; width:260px; background:#fff; color:#313131; outline:none; }
+        .lds-brand-search input:focus { border-color:#500000; box-shadow:0 0 0 2px rgba(80,0,0,0.12); }
+        .lds-brand-search button { position:absolute; right:0; top:0; bottom:0; width:38px; background:transparent; border:none; color:#500000; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; }
+        .lds-site-nav { background:#fff; border-bottom:2px solid #500000; position:sticky; top:0; z-index:100; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+        .lds-nav-inner { max-width:1280px; margin:0 auto; padding:0 16px; display:flex; gap:0; overflow-x:auto; align-items:stretch; }
+        .lds-nav-inner a { color:#313131; padding:16px 18px; font-size:13px; font-weight:700; font-family:'Open Sans',Arial,sans-serif; white-space:nowrap; text-transform:uppercase; letter-spacing:0.5px; border-bottom:3px solid transparent; margin-bottom:-2px; text-decoration:none; display:flex; align-items:center; }
+        .lds-nav-inner a:hover { color:#500000; }
+        .lds-back-link { color:#500000 !important; }
+
+        /* -- Hero -- */
+        .hero {
+            background: linear-gradient(135deg, #3C0000 0%, #500000 55%, #6B1D1D 100%);
+            color: #fff;
+            padding: 56px 24px 48px;
+        }
+        .hero-inner { max-width: 900px; margin: 0 auto; }
+        .hero .eyebrow {
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .hero h1 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-weight: 600;
+            font-size: 40px;
+            line-height: 1.1;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .hero p { font-size: 16px; opacity: 0.92; max-width: 680px; margin-bottom: 22px; }
+
+        /* -- Main -- */
+        main { max-width: 900px; margin: 0 auto; padding: 40px 24px 64px; }
+        section.block { margin-bottom: 40px; }
+        section.block > h2 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--maroon);
+            padding-left: 12px;
+            border-left: 4px solid var(--maroon);
+            margin-bottom: 14px;
+        }
+        section.block > p { margin-bottom: 12px; }
+
+        /* -- Prompt cards -- */
+        .prompt-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .prompt-card h3 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .prompt-card .when {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+        .prompt-block {
+            background: var(--sand);
+            border-left: 3px solid var(--maroon);
+            border-radius: 4px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-primary);
+            position: relative;
+            margin-bottom: 0;
+        }
+        .prompt-block-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .copy-prompt-btn {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: transparent;
+            color: var(--maroon);
+            border: 1px solid var(--maroon);
+            padding: 6px 12px;
+            border-radius: 2px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Open Sans', Arial, sans-serif;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.15s, color 0.15s;
+        }
+        .copy-prompt-btn:hover {
+            background: var(--maroon);
+            color: #fff;
+        }
+        .copy-prompt-btn.copied {
+            background: var(--maroon);
+            color: #fff;
+            border-color: var(--maroon);
+        }
+
+        /* -- Callout -- */
+        .callout {
+            background: #FFF8E7;
+            border-left: 4px solid var(--gold);
+            padding: 14px 18px;
+            border-radius: 4px;
+            margin: 18px 0;
+            font-size: 14px;
+        }
+        .callout strong { color: #8A6A1A; }
+
+        /* -- Footer -- */
+        footer {
+            background: #1A1A1A;
+            color: rgba(255,255,255,0.7);
+            padding: 32px 24px;
+            font-size: 13px;
+        }
+        .footer-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-inner a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer-inner a:hover { color: #fff; text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .lds-top-strip-left { display: none; }
+            .lds-brand-band-inner { flex-direction: column; align-items: flex-start; gap: 14px; padding: 14px 20px; }
+            .lds-brand-search, .lds-brand-search input { width: 100%; }
+            .lds-brand-lockup img { height: 46px; }
+            .copy-prompt-btn { position: static; margin-top: 12px; display: block; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==== TIER 1: Top Maroon Strip ==== -->
+<div class="lds-top-strip">
+    <div class="lds-top-strip-inner">
+        <span class="lds-top-strip-left">Texas A&amp;M University</span>
+        <nav class="lds-top-strip-links" aria-label="University links">
+            <a href="https://mays.tamu.edu" target="_blank" rel="noopener">Mays</a>
+            <a href="https://www.tamu.edu" target="_blank" rel="noopener">TAMU</a>
+            <a href="https://mays.tamu.edu/teaching-learning-innovation/" target="_blank" rel="noopener">TLI</a>
+            <a href="mailto:jeffrey.jones@tamu.edu?subject=Learning%20Design%20Suite%20Feedback">Feedback</a>
+        </nav>
+    </div>
+</div>
+
+<!-- ==== TIER 2: Brand Band ==== -->
+<div class="lds-brand-band">
+    <div class="lds-brand-band-inner">
+        <a href="index.html" class="lds-brand-lockup" aria-label="Mays Business School home">
+            <img src="assets/mays-primary-logo.png" alt="Mays Business School, Texas A&amp;M University">
+            <span class="lds-brand-suite">
+                <span class="lds-eyebrow">Teaching &amp; Learning Innovation</span>
+                <span class="lds-title">Learning Design Suite</span>
+            </span>
+        </a>
+        <form class="lds-brand-search" role="search" action="index.html" method="get">
+            <label for="ldsSearch" style="position:absolute;left:-9999px;">Search tools</label>
+            <input type="search" id="ldsSearch" name="q" placeholder="Search tools, policies, resources" autocomplete="off">
+            <button type="submit" aria-label="Search">&#128269;</button>
+        </form>
+    </div>
+</div>
+
+<!-- ==== TIER 3: Primary Navigation ==== -->
+<nav class="lds-site-nav" aria-label="Primary">
+    <div class="lds-nav-inner">
+        <a href="index.html" class="lds-back-link">&#8592; Back to Hub</a>
+        <a href="tools.html">AI Tools</a>
+        <a href="design-tools.html">Design Tools</a>
+        <a href="policy.html">Policy &amp; Governance</a>
+        <a href="literacy.html">AI Literacy</a>
+        <a href="resources.html">Resources</a>
+    </div>
+</nav>
+
+<!-- ==== HERO ==== -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="eyebrow">Faculty Resource</div>
+        <h1>AI Prompt Library for Course Design</h1>
+        <p>Ready-to-use prompts for common course design tasks. Copy any prompt, customize the bracketed variables, and paste into TAMU AI Chat at tamu.ai.</p>
+    </div>
+</section>
+
+<main>
+
+<!-- ==== INTRO ==== -->
+<section class="block">
+    <h2>How to use this library</h2>
+    <p>This resource collects practical, ready-to-copy prompts for course design work that the 16 interactive tools don't cover. Each prompt is designed to be pasted directly into TAMU AI Chat with minimal customization.</p>
+    <p>To use a prompt:</p>
+    <ol style="margin-left: 22px; margin-bottom: 12px;">
+        <li>Find the prompt that matches your current task</li>
+        <li>Click the Copy button to copy the full prompt</li>
+        <li>Replace all [bracketed variables] with your own course details and context</li>
+        <li>Paste into TAMU AI Chat and press enter</li>
+    </ol>
+    <div class="callout">
+        <strong>Note:</strong> These prompts are static reference guides. Unlike the interactive tools on the AI Tools page, you browse and copy here rather than filling out forms.
+    </div>
+</section>
+
+<!-- ==== CATEGORY 1: LESSON PLANNING ==== -->
+<section class="block">
+    <h2>Lesson Planning &amp; Module Design</h2>
+    <p>Use these prompts to structure learning experiences from scratch, redesign existing sessions, or scaffold major assignments into manageable pieces.</p>
+
+    <div class="prompt-card">
+        <h3>Weekly Module Outline</h3>
+        <p class="when">When to use: Starting a new module from scratch</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-1">Copy</button>
+            <div class="prompt-block-content" id="prompt-1">I am designing a [undergraduate/graduate] course in [subject] at a business school. Create a detailed outline for a one-week module on [topic]. Include: learning objectives (Bloom's Taxonomy verbs), a list of readings or resources to assign, 2-3 active learning activities, one formative assessment, and estimated time allocations for each component. The course is delivered in [8-week online / 16-week face-to-face / hybrid] format.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Flipped Classroom Activity Plan</h3>
+        <p class="when">When to use: Converting a lecture-heavy session to active learning</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-2">Copy</button>
+            <div class="prompt-block-content" id="prompt-2">I currently deliver a 75-minute lecture on [topic] in my [course name] course. Help me redesign this as a flipped classroom session. Provide: a 10-15 minute pre-class video outline covering the essential content, 2-3 in-class activities that apply the concepts (with timing), a brief formative check at the end, and instructions I can give students for the pre-class preparation.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Scaffolded Assignment Sequence</h3>
+        <p class="when">When to use: Breaking a major project into staged deliverables</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-3">Copy</button>
+            <div class="prompt-block-content" id="prompt-3">I assign a [final paper / capstone project / case analysis] in my [course name] course. Design a scaffolded sequence of 4-5 smaller deliverables that build toward the final submission. For each stage, provide: what students submit, the purpose of that stage, how it connects to the next, and brief grading criteria. The final project is due in Week [X] of an [8/16]-week term.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==== CATEGORY 2: RUBRIC & ASSESSMENT ==== -->
+<section class="block">
+    <h2>Rubric &amp; Assessment Design</h2>
+    <p>Use these prompts to create detailed rubrics, set up peer review, or plan balanced exams that assess the right level of thinking.</p>
+
+    <div class="prompt-card">
+        <h3>Analytic Rubric Builder</h3>
+        <p class="when">When to use: Creating a detailed rubric for any assignment</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-4">Copy</button>
+            <div class="prompt-block-content" id="prompt-4">Create an analytic rubric for a [assignment type] in a [course level] [subject] course. The assignment asks students to [brief description]. Build a rubric with 4-5 criteria, each with 4 performance levels (Exemplary, Proficient, Developing, Beginning). Include point values totaling [X] points. Write descriptors that are specific and observable, not vague.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Peer Review Criteria</h3>
+        <p class="when">When to use: Setting up structured peer feedback activities</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-5">Copy</button>
+            <div class="prompt-block-content" id="prompt-5">Design a peer review form for a [assignment type] in my [course name] course. Include 5-6 specific criteria students should evaluate, a rating scale (1-4) with descriptors for each level, and 2-3 open-ended questions that prompt constructive feedback. Keep language accessible for [undergraduate/graduate] students.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Exam Blueprint</h3>
+        <p class="when">When to use: Planning a balanced exam before writing questions</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-6">Copy</button>
+            <div class="prompt-block-content" id="prompt-6">Create an exam blueprint for a [midterm/final] in [course name] covering [topics/chapters]. Map questions to learning objectives and Bloom's levels. Recommend a mix of question types (multiple choice, short answer, application problems) with point distributions. The exam should take [X] minutes and total [X] points. Weight higher-order thinking at [X]% of total points.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==== CATEGORY 3: STUDENT COMMUNICATION ==== -->
+<section class="block">
+    <h2>Student Communication &amp; Engagement</h2>
+    <p>Use these prompts to write warm course announcements, recurring check-ins, difficult feedback emails, and reflection prompts that gather meaningful student input.</p>
+
+    <div class="prompt-card">
+        <h3>Welcome Announcement</h3>
+        <p class="when">When to use: Writing the first course announcement before term starts</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-7">Copy</button>
+            <div class="prompt-block-content" id="prompt-7">Write a warm, professional welcome announcement for [course name] at Mays Business School. Include: a brief introduction of myself as [your role/title], what students will learn, how the course is structured, 2-3 immediate action items for the first week, and where to find help. Tone should be approachable but professional. Keep it under 300 words.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Weekly Check-In Message</h3>
+        <p class="when">When to use: Drafting recurring weekly communication to students</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-8">Copy</button>
+            <div class="prompt-block-content" id="prompt-8">Write a weekly check-in announcement for Week [X] of [course name]. This week covers [topic]. Include: a brief recap of what was accomplished last week, what is due this week (with dates), one tip for success on the current material, and a reminder of office hours or support resources. Keep it concise and scannable.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Difficult Conversation Email</h3>
+        <p class="when">When to use: Addressing performance concerns with a student</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-9">Copy</button>
+            <div class="prompt-block-content" id="prompt-9">Draft a professional, empathetic email to a student who [is falling behind on assignments / received a low exam score / has not been participating]. Express concern without judgment, reference specific observations, offer concrete next steps or resources, and invite them to meet. Follow FERPA guidelines - do not include specific grades in the email subject line.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>End-of-Course Reflection Prompt</h3>
+        <p class="when">When to use: Gathering meaningful student feedback beyond standard evaluations</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-10">Copy</button>
+            <div class="prompt-block-content" id="prompt-10">Create a short end-of-course reflection for [course name] with 4-5 questions that help students articulate what they learned, how their thinking changed, what skills they developed, and how they might apply this in future coursework or careers. Frame questions to encourage honest, thoughtful responses rather than surface-level answers.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==== CATEGORY 4: COURSE CONTENT ==== -->
+<section class="block">
+    <h2>Course Content &amp; Materials</h2>
+    <p>Use these prompts to prepare students for dense readings, lead engaging case discussions, illustrate abstract concepts with real examples, and build reference glossaries.</p>
+
+    <div class="prompt-card">
+        <h3>Reading Guide / Study Guide</h3>
+        <p class="when">When to use: Helping students navigate dense readings</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-11">Copy</button>
+            <div class="prompt-block-content" id="prompt-11">Create a reading guide for [article/chapter title] by [author] assigned in [course name]. Include: 3-4 key questions students should answer while reading, a list of key terms with brief definitions, 2-3 discussion-starter questions connecting the reading to course themes, and a brief note on why this reading matters for the course.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Case Discussion Facilitation Plan</h3>
+        <p class="when">When to use: Preparing to lead a case discussion in class</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-12">Copy</button>
+            <div class="prompt-block-content" id="prompt-12">I am teaching [case name] in my [course name] class. Create a facilitation plan for a [50/75]-minute case discussion. Include: an opening question to launch discussion, 4-5 sequenced discussion questions that move from analysis to evaluation to recommendation, anticipated student responses and follow-up probes, a plan for managing dominant/quiet participants, and a 5-minute closing synthesis.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Real-World Application Example</h3>
+        <p class="when">When to use: Making abstract concepts concrete</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-13">Copy</button>
+            <div class="prompt-block-content" id="prompt-13">Provide 3 real-world business examples that illustrate [concept] for [undergraduate/graduate] students in a [subject] course. For each example, include: the company or situation, what happened, how it connects to the concept, and one discussion question. Use examples from the last 5 years when possible.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Glossary of Key Terms</h3>
+        <p class="when">When to use: Building a course reference document</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-14">Copy</button>
+            <div class="prompt-block-content" id="prompt-14">Create a glossary of 15-20 key terms for a [course name] course covering [topics]. For each term, provide: a concise definition (1-2 sentences), an example of how it applies in a business context, and any common misconceptions students have about the term. Format as a table.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==== CATEGORY 5: GRADING & FEEDBACK ==== -->
+<section class="block">
+    <h2>Grading &amp; Feedback</h2>
+    <p>Use these prompts to write consistent, constructive feedback on individual student work, build reusable feedback banks for recurring issues, and document grading rationale.</p>
+
+    <div class="prompt-card">
+        <h3>Assignment Feedback Template</h3>
+        <p class="when">When to use: Writing consistent, constructive feedback on student work</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-15">Copy</button>
+            <div class="prompt-block-content" id="prompt-15">I am grading a [assignment type] in [course name]. The student's submission [brief description of quality/issues]. Write constructive feedback that: acknowledges what the student did well, identifies 2-3 specific areas for improvement with concrete suggestions, connects feedback to the rubric criteria, and ends with an encouraging forward-looking statement. Keep feedback under 200 words.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Common Feedback Bank</h3>
+        <p class="when">When to use: Building reusable feedback comments for recurring issues</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-16">Copy</button>
+            <div class="prompt-block-content" id="prompt-16">Create a bank of 10-12 reusable feedback comments for common issues in [assignment type] submissions in a [course name] course. Organize by category (e.g., argument quality, evidence use, formatting, critical thinking). Each comment should be specific enough to be useful but general enough to apply across students. Include both the issue and a constructive suggestion.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Grade Justification Narrative</h3>
+        <p class="when">When to use: Documenting grading rationale for borderline or contested grades</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-17">Copy</button>
+            <div class="prompt-block-content" id="prompt-17">Help me write a brief, professional grade justification for a student who earned a [grade] on [assignment]. The main factors were [list 2-3 factors]. Write a 3-4 sentence narrative that references specific rubric criteria, is factual and objective, and could be shared with the student or used in a grade appeal process.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==== CATEGORY 6: COURSE IMPROVEMENT ==== -->
+<section class="block">
+    <h2>Course Improvement &amp; Reflection</h2>
+    <p>Use these prompts to gather mid-semester feedback, analyze what worked and what didn't, and audit your learning outcomes against actual assessments.</p>
+
+    <div class="prompt-card">
+        <h3>Mid-Semester Check-In Survey</h3>
+        <p class="when">When to use: Gathering actionable feedback at the midpoint</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-18">Copy</button>
+            <div class="prompt-block-content" id="prompt-18">Design a 5-question mid-semester check-in survey for [course name]. Questions should surface actionable feedback about: pacing, clarity of expectations, effectiveness of activities, workload balance, and one open-ended improvement suggestion. Keep questions neutral and non-leading. Format as a list I can paste into a Canvas survey.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Course Redesign Analysis</h3>
+        <p class="when">When to use: Evaluating what to change for next semester</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-19">Copy</button>
+            <div class="prompt-block-content" id="prompt-19">I just finished teaching [course name]. Based on these observations: [list 3-4 observations, e.g., 'students struggled with the group project,' 'exam 2 scores were low,' 'discussion participation dropped after week 4']. Analyze potential root causes for each issue and recommend specific, practical changes I could make for the next offering. Prioritize changes by likely impact.</div>
+        </div>
+    </div>
+
+    <div class="prompt-card">
+        <h3>Learning Outcome Alignment Audit</h3>
+        <p class="when">When to use: Checking that assessments match stated objectives</p>
+        <div class="prompt-block">
+            <button class="copy-prompt-btn" data-target="prompt-20">Copy</button>
+            <div class="prompt-block-content" id="prompt-20">Here are my course learning objectives for [course name]: [paste objectives]. And here are my major assessments: [paste assessment list]. Audit the alignment between objectives and assessments. Identify any objectives that lack a direct assessment, any assessments that don't clearly map to an objective, and recommend adjustments to close gaps.</div>
+        </div>
+    </div>
+</section>
+
+<p style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:20px;">
+    Prompt Library v1.0 &bull; Released April 2026 &bull; Maintained by Teaching &amp; Learning Innovation, Mays Business School
+</p>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div>
+            <strong style="color:#fff; font-family:'Oswald',Arial,sans-serif; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Teaching &amp; Learning Innovation</strong>
+            <span>Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <div>
+            Powered by <a href="https://tamu.ai/" target="_blank" rel="noopener">TAMU AI Chat</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+/* Copy-to-clipboard for each prompt */
+document.querySelectorAll('.copy-prompt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (!target) return;
+        const text = target.innerText.trim();
+        navigator.clipboard.writeText(text).then(() => {
+            const original = btn.textContent;
+            btn.classList.add('copied');
+            btn.textContent = 'Copied \u2713';
+            setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1800);
+        }).catch(() => {
+            btn.textContent = 'Copy failed';
+            setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
+        });
+    });
+});
+</script>
+
+</body>
+</html>
