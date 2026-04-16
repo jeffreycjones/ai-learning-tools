@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Resilient Assignment Design Guide | Learning Design Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --text-primary: #313131;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --border: #ddd;
+            --gray-light: #f7f7f7;
+            --gray-bg: #eeeeee;
+            --sand: #F5F2EB;
+            --gold: #D4A843;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.65;
+            background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: var(--maroon); }
+        a:hover { color: var(--maroon-light); }
+
+        /* ── 3-tier header ── */
+        .lds-top-strip { background:#500000; color:#fff; font-size:11px; letter-spacing:0.8px; text-transform:uppercase; }
+        .lds-top-strip-inner { max-width:1280px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; min-height:32px; }
+        .lds-top-strip-left { font-family:'Oswald', Arial, sans-serif; font-weight:500; color:rgba(255,255,255,0.95); }
+        .lds-top-strip-links { display:flex; gap:0; }
+        .lds-top-strip-links a { color:rgba(255,255,255,0.85); text-decoration:none; padding:8px 14px; font-weight:600; font-family:'Open Sans',Arial,sans-serif; }
+        .lds-top-strip-links a:hover { color:#fff; background:rgba(0,0,0,0.18); }
+        .lds-top-strip-links a + a { border-left:1px solid rgba(255,255,255,0.18); }
+        .lds-brand-band { background:#fff; border-bottom:1px solid #e5e5e5; }
+        .lds-brand-band-inner { max-width:1280px; margin:0 auto; padding:18px 24px; display:flex; align-items:center; justify-content:space-between; gap:32px; }
+        .lds-brand-lockup { display:flex; align-items:center; text-decoration:none; }
+        .lds-brand-lockup img { height:58px; width:auto; display:block; }
+        .lds-brand-suite { display:flex; flex-direction:column; padding-left:18px; margin-left:18px; border-left:2px solid #500000; }
+        .lds-eyebrow { font-family:'Oswald',Arial,sans-serif; font-size:11px; font-weight:500; letter-spacing:1.2px; text-transform:uppercase; color:#500000; line-height:1; margin-bottom:4px; }
+        .lds-title { font-family:'Oswald',Arial,sans-serif; font-size:18px; font-weight:600; letter-spacing:0.4px; text-transform:uppercase; color:#313131; line-height:1; }
+        .lds-brand-search { display:flex; align-items:center; position:relative; margin:0; }
+        .lds-brand-search input { font-family:'Open Sans',Arial,sans-serif; font-size:14px; padding:9px 42px 9px 14px; border:1px solid #ccc; border-radius:2px; width:260px; background:#fff; color:#313131; outline:none; }
+        .lds-brand-search input:focus { border-color:#500000; box-shadow:0 0 0 2px rgba(80,0,0,0.12); }
+        .lds-brand-search button { position:absolute; right:0; top:0; bottom:0; width:38px; background:transparent; border:none; color:#500000; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; }
+        .lds-site-nav { background:#fff; border-bottom:2px solid #500000; position:sticky; top:0; z-index:100; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+        .lds-nav-inner { max-width:1280px; margin:0 auto; padding:0 16px; display:flex; gap:0; overflow-x:auto; align-items:stretch; }
+        .lds-nav-inner a { color:#313131; padding:16px 18px; font-size:13px; font-weight:700; font-family:'Open Sans',Arial,sans-serif; white-space:nowrap; text-transform:uppercase; letter-spacing:0.5px; border-bottom:3px solid transparent; margin-bottom:-2px; text-decoration:none; display:flex; align-items:center; }
+        .lds-nav-inner a:hover { color:#500000; }
+        .lds-back-link { color:#500000 !important; }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #3C0000 0%, #500000 55%, #6B1D1D 100%);
+            color: #fff;
+            padding: 56px 24px 48px;
+        }
+        .hero-inner { max-width: 1100px; margin: 0 auto; }
+        .hero .eyebrow {
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .hero h1 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-weight: 600;
+            font-size: 40px;
+            line-height: 1.1;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .hero p { font-size: 16px; opacity: 0.92; max-width: 680px; margin-bottom: 22px; }
+        .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 22px;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Open Sans', Arial, sans-serif;
+            text-decoration: none;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .btn-primary { background: #fff; color: var(--maroon); }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.25); color: var(--maroon-dark); }
+        .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.55); }
+        .btn-outline:hover { border-color: #fff; color: #fff; }
+
+        /* ── Main ── */
+        main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 64px; }
+        section.block { margin-bottom: 40px; }
+        section.block > h2 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--maroon);
+            padding-left: 12px;
+            border-left: 4px solid var(--maroon);
+            margin-bottom: 14px;
+        }
+        section.block p { margin-bottom: 12px; }
+
+        /* ── Callout ── */
+        .callout {
+            background: #FFF8E7;
+            border-left: 4px solid var(--gold);
+            padding: 14px 18px;
+            border-radius: 4px;
+            margin: 18px 0;
+            font-size: 14px;
+        }
+        .callout strong { color: #8A6A1A; }
+
+        /* ── Principle cards ── */
+        .principle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+            margin-top: 10px;
+        }
+        .principle-card {
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            border-top: 4px solid var(--maroon);
+            padding: 22px 20px 20px;
+            background: #fff;
+        }
+        .principle-card .principle-number {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--maroon);
+            margin-bottom: 4px;
+        }
+        .principle-card h3 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .principle-card p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── Strategy type cards ── */
+        .strategy-section { margin-top: 24px; margin-bottom: 28px; }
+        .strategy-section h3 {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--maroon);
+            margin-bottom: 6px;
+        }
+        .strategy-section > p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        /* ── Before/After cards ── */
+        .conversion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+        .conversion-before, .conversion-after {
+            padding: 18px 20px;
+        }
+        .conversion-before {
+            background: var(--gray-light);
+            border-right: 1px solid var(--border);
+        }
+        .conversion-after {
+            background: #fdfcfa;
+        }
+        .conversion-label {
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .conversion-before .conversion-label { color: var(--text-muted); }
+        .conversion-after .conversion-label { color: #2D6A4F; }
+        .conversion-before p, .conversion-after p {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        .conversion-tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 2px 8px;
+            border-radius: 2px;
+            margin-bottom: 10px;
+        }
+        .tag-vulnerable { background: #FDEAEA; color: #8A1E1E; }
+        .tag-resilient { background: #E0F0E8; color: #2D6A4F; }
+
+        /* ── Spectrum table ── */
+        .spectrum-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .spectrum-table thead { background: var(--maroon); color: #fff; }
+        .spectrum-table th {
+            padding: 12px 18px;
+            text-align: left;
+            font-family: 'Oswald', Arial, sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .spectrum-table td {
+            padding: 14px 18px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .spectrum-table tr:last-child td { border-bottom: none; }
+        .spectrum-table tbody tr:hover { background: var(--gray-light); }
+
+        /* ── Self-check list ── */
+        .self-check {
+            background: var(--sand);
+            border-radius: 4px;
+            padding: 24px 28px;
+            margin-top: 14px;
+        }
+        .check-item {
+            padding: 12px 0;
+            border-bottom: 1px dashed #cdc9bd;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .check-item:last-child { border-bottom: none; }
+        .check-box {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--maroon);
+            border-radius: 3px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            transition: background 0.15s;
+        }
+        .check-box.checked {
+            background: var(--maroon);
+        }
+        .check-box.checked::after {
+            content: '\2713';
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .check-item p {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin: 0;
+        }
+        .check-item p strong { color: var(--maroon); }
+
+        /* ── Footer ── */
+        footer {
+            background: #1A1A1A;
+            color: rgba(255,255,255,0.7);
+            padding: 32px 24px;
+            font-size: 13px;
+        }
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-inner a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer-inner a:hover { color: #fff; text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .lds-top-strip-left { display: none; }
+            .lds-brand-band-inner { flex-direction: column; align-items: flex-start; gap: 14px; padding: 14px 20px; }
+            .lds-brand-search, .lds-brand-search input { width: 100%; }
+            .lds-brand-lockup img { height: 46px; }
+            .conversion-grid { grid-template-columns: 1fr; }
+            .conversion-before { border-right: none; border-bottom: 1px solid var(--border); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════ TIER 1: Top Maroon Strip ════ -->
+<div class="lds-top-strip">
+    <div class="lds-top-strip-inner">
+        <span class="lds-top-strip-left">Texas A&amp;M University</span>
+        <nav class="lds-top-strip-links" aria-label="University links">
+            <a href="https://mays.tamu.edu" target="_blank" rel="noopener">Mays</a>
+            <a href="https://www.tamu.edu" target="_blank" rel="noopener">TAMU</a>
+            <a href="https://mays.tamu.edu/teaching-learning-innovation/" target="_blank" rel="noopener">TLI</a>
+            <a href="mailto:jeffrey.jones@tamu.edu?subject=Learning%20Design%20Suite%20Feedback">Feedback</a>
+        </nav>
+    </div>
+</div>
+
+<!-- ════ TIER 2: Brand Band ════ -->
+<div class="lds-brand-band">
+    <div class="lds-brand-band-inner">
+        <a href="index.html" class="lds-brand-lockup" aria-label="Mays Business School home">
+            <img src="assets/mays-primary-logo.png" alt="Mays Business School, Texas A&amp;M University">
+            <span class="lds-brand-suite">
+                <span class="lds-eyebrow">Teaching &amp; Learning Innovation</span>
+                <span class="lds-title">Learning Design Suite</span>
+            </span>
+        </a>
+        <form class="lds-brand-search" role="search" action="index.html" method="get">
+            <label for="ldsSearch" style="position:absolute;left:-9999px;">Search tools</label>
+            <input type="search" id="ldsSearch" name="q" placeholder="Search tools, policies, resources" autocomplete="off">
+            <button type="submit" aria-label="Search">&#128269;</button>
+        </form>
+    </div>
+</div>
+
+<!-- ════ TIER 3: Primary Navigation ════ -->
+<nav class="lds-site-nav" aria-label="Primary">
+    <div class="lds-nav-inner">
+        <a href="index.html" class="lds-back-link">&#8592; Back to Hub</a>
+        <a href="tools.html">AI Tools</a>
+        <a href="design-tools.html">Design Tools</a>
+        <a href="policy.html">Policy &amp; Governance</a>
+        <a href="literacy.html">AI Literacy</a>
+        <a href="resources.html">Resources</a>
+    </div>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="eyebrow">Faculty Resource</div>
+        <h1>AI-Resilient Assignment Design Guide</h1>
+        <p>Practical strategies for designing assessments that maintain academic integrity through structure, not surveillance. Build assignments where AI assistance is either irrelevant, insufficient, or transparent.</p>
+        <div class="hero-actions">
+            <a href="#principles" class="btn btn-primary">View Design Principles</a>
+            <a href="#strategies" class="btn btn-outline">Jump to Strategies</a>
+        </div>
+    </div>
+</section>
+
+<main>
+
+<!-- ════ THE CORE ARGUMENT ════ -->
+<section class="block">
+    <h2>Why design matters more than detection</h2>
+    <p>AI detection tools produce probabilistic estimates, not definitive findings. False positives penalize honest students. False negatives reward dishonest ones. Detection accuracy degrades with each model generation, and students who want to evade detection can do so with minimal effort.</p>
+    <p>A more durable approach: design assignments where the structure itself makes AI-only completion either impossible, obvious, or beside the point. When an assignment requires personal experience, iterative process, live performance, or collaborative negotiation, AI becomes a tool rather than a replacement.</p>
+    <div class="callout">
+        <strong>The goal is not to eliminate AI.</strong> It is to ensure that the assignment measures what you intend to measure, regardless of whether students use AI in the process. If AI can complete your assignment with no human judgment involved, the assignment is measuring the wrong thing.
+    </div>
+</section>
+
+<!-- ════ FIVE DESIGN PRINCIPLES ════ -->
+<section class="block" id="principles">
+    <h2>Five principles of AI-resilient design</h2>
+    <p>Apply these principles when creating or revising any assessment. An assignment does not need to satisfy all five, but the more it incorporates, the more resilient it becomes.</p>
+
+    <div class="principle-grid">
+        <div class="principle-card">
+            <div class="principle-number">Principle 1</div>
+            <h3>Require Personal Application</h3>
+            <p>Connect the assignment to something only the student has access to: their internship, their campus organization, a local business they visited, their own career goals, or data they collected firsthand. AI cannot fabricate lived experience convincingly.</p>
+        </div>
+        <div class="principle-card">
+            <div class="principle-number">Principle 2</div>
+            <h3>Make Process Visible</h3>
+            <p>Require students to show their thinking at multiple stages: outlines, drafts, revision logs, annotated bibliographies, or reflection journals. When you can see the evolution of thought, AI-generated final products stand out because there is no trail behind them.</p>
+        </div>
+        <div class="principle-card">
+            <div class="principle-number">Principle 3</div>
+            <h3>Include Live Performance</h3>
+            <p>Add an in-class or synchronous component where students must defend, present, or apply their work in real time. A student who submits AI-generated analysis but cannot answer follow-up questions reveals the gap immediately.</p>
+        </div>
+        <div class="principle-card">
+            <div class="principle-number">Principle 4</div>
+            <h3>Build in Iteration</h3>
+            <p>Scaffold assignments across multiple submissions with feedback loops. Each revision should build on instructor or peer feedback from the prior stage. This creates a chain of evidence that is difficult to fabricate and easy to verify.</p>
+        </div>
+        <div class="principle-card">
+            <div class="principle-number">Principle 5</div>
+            <h3>Require Collaboration or Negotiation</h3>
+            <p>Design group tasks where the deliverable depends on real-time negotiation, role division, and synthesis of multiple perspectives. AI can draft a solo report, but it cannot navigate interpersonal dynamics, resolve disagreements, or integrate conflicting viewpoints in a team.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════ STRATEGY TYPES WITH BEFORE/AFTER ════ -->
+<section class="block" id="strategies">
+    <h2>Strategies with before and after examples</h2>
+    <p>Each strategy below shows a traditional assignment format (vulnerable to AI completion) alongside a redesigned version (resilient). These are drawn from common business school assignment types.</p>
+
+    <!-- Strategy 1 -->
+    <div class="strategy-section">
+        <h3>1. Personal Application</h3>
+        <p>Anchor the assignment to a specific, verifiable personal context that AI cannot access.</p>
+        <div class="conversion-grid">
+            <div class="conversion-before">
+                <span class="conversion-label">Before (AI-Vulnerable)</span>
+                <span class="conversion-tag tag-vulnerable">Traditional</span>
+                <p>"Write a 1,500-word analysis of a company's competitive strategy using Porter's Five Forces."</p>
+            </div>
+            <div class="conversion-after">
+                <span class="conversion-label">After (AI-Resilient)</span>
+                <span class="conversion-tag tag-resilient">Redesigned</span>
+                <p>"Interview a manager at a company where you have interned or worked. Using that conversation and at least one publicly available data source, analyze the company's competitive position using Porter's Five Forces. Include direct quotes from your interview and explain where your interviewee's perspective confirms or contradicts what the framework predicts."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strategy 2 -->
+    <div class="strategy-section">
+        <h3>2. Process Documentation</h3>
+        <p>Make the evolution of thinking part of the grade, not just the final output.</p>
+        <div class="conversion-grid">
+            <div class="conversion-before">
+                <span class="conversion-label">Before (AI-Vulnerable)</span>
+                <span class="conversion-tag tag-vulnerable">Traditional</span>
+                <p>"Submit a final research paper on a topic in organizational behavior."</p>
+            </div>
+            <div class="conversion-after">
+                <span class="conversion-label">After (AI-Resilient)</span>
+                <span class="conversion-tag tag-resilient">Redesigned</span>
+                <p>"Submit your paper in four stages: (1) a topic proposal with three candidate research questions and a rationale for each, (2) an annotated bibliography of 8 sources with a paragraph explaining how each connects to your question, (3) a rough draft with marginal comments explaining your reasoning in key sections, and (4) the final paper plus a 300-word reflection on how your argument changed from proposal to final draft. Each stage is graded, and later stages must reference instructor feedback from earlier ones."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strategy 3 -->
+    <div class="strategy-section">
+        <h3>3. Live Performance</h3>
+        <p>Add a synchronous component where students must demonstrate understanding in real time.</p>
+        <div class="conversion-grid">
+            <div class="conversion-before">
+                <span class="conversion-label">Before (AI-Vulnerable)</span>
+                <span class="conversion-tag tag-vulnerable">Traditional</span>
+                <p>"Submit a written case analysis of the Southwest Airlines case."</p>
+            </div>
+            <div class="conversion-after">
+                <span class="conversion-label">After (AI-Resilient)</span>
+                <span class="conversion-tag tag-resilient">Redesigned</span>
+                <p>"Submit a two-page executive briefing on the Southwest Airlines case. During the following class session, you will deliver a 5-minute presentation of your analysis and respond to 3-4 follow-up questions from the instructor and peers. The presentation and Q&amp;A are worth 40% of the assignment grade. You may use notes but not read from a script."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strategy 4 -->
+    <div class="strategy-section">
+        <h3>4. Iterative Feedback Loops</h3>
+        <p>Create a chain of evidence where each stage builds on the last and references prior feedback.</p>
+        <div class="conversion-grid">
+            <div class="conversion-before">
+                <span class="conversion-label">Before (AI-Vulnerable)</span>
+                <span class="conversion-tag tag-vulnerable">Traditional</span>
+                <p>"Create a marketing plan for a new product launch."</p>
+            </div>
+            <div class="conversion-after">
+                <span class="conversion-label">After (AI-Resilient)</span>
+                <span class="conversion-tag tag-resilient">Redesigned</span>
+                <p>"Develop a marketing plan across three iterations. Version 1: submit a market analysis and positioning statement. You will receive written peer feedback from two classmates plus instructor comments. Version 2: revise your positioning based on feedback and add your channel strategy, including a memo explaining which feedback you incorporated and why. Version 3: final plan with an executive summary and a one-page appendix documenting your decision trail from Version 1 through Version 3."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strategy 5 -->
+    <div class="strategy-section">
+        <h3>5. Collaborative Negotiation</h3>
+        <p>Design tasks where the deliverable requires real-time coordination between people.</p>
+        <div class="conversion-grid">
+            <div class="conversion-before">
+                <span class="conversion-label">Before (AI-Vulnerable)</span>
+                <span class="conversion-tag tag-vulnerable">Traditional</span>
+                <p>"Write a group report analyzing the ethical implications of AI in hiring."</p>
+            </div>
+            <div class="conversion-after">
+                <span class="conversion-label">After (AI-Resilient)</span>
+                <span class="conversion-tag tag-resilient">Redesigned</span>
+                <p>"Your team of four will conduct a structured debate on AI in hiring. Two members argue for expanded use; two argue against. After the debate (held in class), the full team collaborates on a joint policy recommendation that synthesizes both positions. Submit the recommendation plus individual reflections (300 words each) on how your thinking changed during the debate and what your partner's strongest argument was."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strategy 6 -->
+    <div class="strategy-section">
+        <h3>6. AI as an Explicit Tool (Transparency)</h3>
+        <p>When AI use is appropriate, make it visible and gradeable rather than something to detect.</p>
+        <div class="conversion-grid">
+            <div class="conversion-before">
+                <span class="conversion-label">Before (AI-Vulnerable)</span>
+                <span class="conversion-tag tag-vulnerable">Traditional</span>
+                <p>"Write a financial analysis memo for a prospective acquisition."</p>
+            </div>
+            <div class="conversion-after">
+                <span class="conversion-label">After (AI-Resilient)</span>
+                <span class="conversion-tag tag-resilient">Redesigned</span>
+                <p>"Use an AI tool to generate a draft financial analysis memo for the acquisition case. Submit both the AI output and your revised version. In a 500-word critique, identify at least three errors, gaps, or oversimplifications in the AI draft. Explain how your revision improves on each. Your grade is based on the quality of your critique and revision, not the AI draft."</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════ AI USE SPECTRUM ════ -->
+<section class="block" id="spectrum">
+    <h2>The AI use spectrum</h2>
+    <p>Not every assignment needs the same level of restriction. Match your AI policy to the purpose of the assessment. The table below provides guidance on when each level is appropriate.</p>
+
+    <div style="overflow-x:auto;">
+    <table class="spectrum-table">
+        <thead>
+            <tr>
+                <th style="width:18%;">AI Level</th>
+                <th style="width:28%;">When to Use</th>
+                <th style="width:27%;">Assignment Examples</th>
+                <th style="width:27%;">What to Require</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong style="color:#8A1E1E;">Prohibited</strong></td>
+                <td>The learning outcome depends on the student performing the cognitive work unaided. AI would bypass the skill being assessed.</td>
+                <td>In-class essays, quantitative problem sets (show work), foreign language composition, competency exams</td>
+                <td>Clear syllabus statement (Tier 1). In-class or proctored setting when feasible. Oral follow-up for high-stakes work.</td>
+            </tr>
+            <tr>
+                <td><strong style="color:#8B6914;">Permitted with Disclosure</strong></td>
+                <td>AI assistance is realistic in practice, but you need to know what role it played in order to evaluate the student's contribution.</td>
+                <td>Case analyses, research papers, presentations, project deliverables</td>
+                <td>AI Use Statement with each submission. Grade based on both output quality and evidence of student judgment.</td>
+            </tr>
+            <tr>
+                <td><strong style="color:#2D6A4F;">Required / Encouraged</strong></td>
+                <td>AI fluency is a course outcome. Students are expected to use AI and demonstrate skill in prompting, evaluating, and integrating AI output.</td>
+                <td>Strategy consulting projects, marketing plans, data analysis, capstone deliverables</td>
+                <td>Submit both AI output and human revision. Grade the critique, revision quality, and prompt sophistication.</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<!-- ════ QUICK SELF-CHECK ════ -->
+<section class="block" id="selfcheck">
+    <h2>Assignment self-check</h2>
+    <p>Run any existing or new assignment through these seven questions. The more you can answer "yes," the more resilient the assignment is. Click each checkbox as you review.</p>
+
+    <div class="self-check" id="checkList">
+        <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('checked')"></div>
+            <p><strong>Personal context:</strong> Does this assignment require students to draw on personal experience, local data, or a specific situation only they have access to?</p>
+        </div>
+        <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('checked')"></div>
+            <p><strong>Visible process:</strong> Do students submit intermediate work (drafts, outlines, annotations) that shows how their thinking developed?</p>
+        </div>
+        <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('checked')"></div>
+            <p><strong>Live component:</strong> Is there a synchronous moment (presentation, defense, in-class application) where students must demonstrate understanding in real time?</p>
+        </div>
+        <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('checked')"></div>
+            <p><strong>Feedback integration:</strong> Does a later stage of the assignment require students to respond to specific feedback from a prior stage?</p>
+        </div>
+        <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('checked')"></div>
+            <p><strong>Collaboration:</strong> Does the assignment involve real-time teamwork, negotiation, or synthesis of multiple perspectives that cannot be completed solo?</p>
+        </div>
+        <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('checked')"></div>
+            <p><strong>AI transparency:</strong> If AI use is permitted, does the assignment require students to show the AI output alongside their own revision and critique?</p>
+        </div>
+        <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('checked')"></div>
+            <p><strong>Outcome alignment:</strong> Does this assignment measure the learning objective it claims to? If AI can produce a passing submission with zero human judgment, the assignment is measuring AI capability, not student learning.</p>
+        </div>
+    </div>
+
+    <div class="callout" style="margin-top:18px;">
+        <strong>Scoring guide:</strong> 0-2 checks = high vulnerability (consider redesigning before next offering). 3-4 checks = moderate resilience (adequate for most contexts). 5-7 checks = strong resilience (well-designed for an AI-enabled environment).
+    </div>
+</section>
+
+<!-- ════ GETTING STARTED ════ -->
+<section class="block">
+    <h2>Getting started</h2>
+    <p>You do not need to redesign every assignment at once. Start with the one that matters most: your highest-stakes assessment, or the one where you suspect AI completion is most common. Apply one or two principles from this guide, pilot the revised version in a single section, and evaluate the results before scaling.</p>
+    <p>TLI learning designers are available to help you redesign assignments, build scaffolded sequences, or create rubrics that assess process alongside product. Reach out to start a conversation.</p>
+    <div style="margin-top:16px;">
+        <a href="mailto:jeffrey.jones@tamu.edu?subject=Assignment%20Redesign%20Support" class="btn btn-primary" style="background:var(--maroon); color:#fff; border:none;">Contact TLI &#8594;</a>
+    </div>
+</section>
+
+<p style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:20px;">
+    Guide v1.0 &bull; Released April 2026 &bull; Maintained by Teaching &amp; Learning Innovation, Mays Business School
+</p>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div>
+            <strong style="color:#fff; font-family:'Oswald',Arial,sans-serif; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Teaching &amp; Learning Innovation</strong>
+            <span>Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <div>
+            Powered by <a href="https://tamu.ai/" target="_blank" rel="noopener">TAMU AI Chat</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
