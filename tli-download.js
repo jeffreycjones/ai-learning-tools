@@ -318,7 +318,14 @@
         const generatedOn = new Date().toLocaleString();
         const titlePara = `<w:p><w:pPr><w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t xml:space="preserve">${xmlEscape(title)}</w:t></w:r></w:p>`;
         const metaPara = `<w:p><w:pPr><w:pStyle w:val="DocSubtitle"/></w:pPr><w:r><w:t xml:space="preserve">Generated ${xmlEscape(generatedOn)}</w:t></w:r></w:p>`;
-        const bodyContent = htmlToBodyXml(rendered);
+        // Hook: tools can set window.tliDocxPreprocess to a function(html) => html
+        // that restructures the rendered HTML before OOXML translation. This allows
+        // per-tool customization (e.g., script-specific heading hierarchy) without
+        // duplicating the core .docx machinery.
+        const processedHtml = typeof window.tliDocxPreprocess === 'function'
+            ? window.tliDocxPreprocess(rendered)
+            : rendered;
+        const bodyContent = htmlToBodyXml(processedHtml);
         const newBodyInner = titlePara + metaPara + bodyContent;
 
         // Rewrite document.xml.
