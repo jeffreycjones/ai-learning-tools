@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Design Suite | Artificial Intelligence</title>
+    <title>Learning Design Tools | Learning Design Suite</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -216,7 +216,7 @@
             border-bottom-color: var(--maroon);
         }
 
-        /* ── Hero ─────────────────────────────────────────── */
+        /* ── Hero / Intro Banner ──────────────────────────── */
         .hero {
             background: linear-gradient(135deg, #3C0000 0%, #500000 45%, #6B1D1D 100%);
             color: var(--white);
@@ -236,40 +236,12 @@
             height: 100%;
             display: block;
         }
-        .hero-grid {
+        .hero-content {
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 24px;
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 48px;
-            align-items: center;
             position: relative;
             z-index: 1;
-        }
-        .hero-content { position: relative; z-index: 1; }
-        .hero-ai-art {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 260px;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 5px 16px;
-            border-radius: 2px;
-            font-family: var(--font-body);
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 24px;
         }
         .hero h2 {
             font-family: var(--font-heading);
@@ -285,52 +257,15 @@
             font-weight: 300;
             opacity: 0.92;
             max-width: 580px;
-            margin: 0 0 32px;
+            margin: 0;
             line-height: 1.7;
         }
-        .hero-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 28px;
-            border-radius: 2px;
-            font-family: var(--font-body);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-        .btn:hover { text-decoration: none; }
-        .btn-primary {
-            background: var(--white);
-            color: var(--maroon);
-        }
-        .btn-primary:hover { background: var(--gray-bg); color: var(--maroon); }
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            border: 2px solid rgba(255,255,255,0.5);
-        }
-        .btn-secondary:hover { border-color: var(--white); color: var(--white); }
 
         /* ── Main Content ─────────────────────────────────── */
         .main { max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
 
         /* ── Section Headers ──────────────────────────────── */
         .section { margin-bottom: 56px; }
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            margin-bottom: 8px;
-        }
         .section h3 {
             font-family: var(--font-heading);
             font-size: 28px;
@@ -338,6 +273,7 @@
             color: var(--text-primary);
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            margin-bottom: 24px;
         }
         .section h3::before {
             content: '';
@@ -348,12 +284,7 @@
             margin-right: 12px;
             vertical-align: middle;
         }
-        .section > p {
-            color: var(--text-secondary);
-            font-size: 15px;
-            margin-bottom: 24px;
-            max-width: 700px;
-        }
+        .section.hidden { display: none; }
 
         /* ── Audience Toggle ──────────────────────────────── */
         .audience-toggle {
@@ -364,6 +295,7 @@
             overflow: hidden;
             margin-bottom: 24px;
             width: fit-content;
+            flex-wrap: wrap;
         }
         .audience-toggle button {
             padding: 8px 20px;
@@ -412,12 +344,9 @@
             letter-spacing: 0.5px;
             margin-bottom: 12px;
         }
-        .tag-faculty { background: #EDE8F5; color: var(--accent-purple); }
-        .tag-tli { background: #E0F0E8; color: var(--accent-green); }
-        .tag-both { background: #FFF4E0; color: #8B6914; }
         .tag-policy { background: #FDEAEA; color: #8A1E1E; }
-        .tag-tool { background: #E8F0F8; color: var(--accent-blue); }
         .tag-media { background: #FDE8D8; color: #9C4A0A; }
+        .tag-tli { background: #E0F0E8; color: var(--accent-green); }
         .tag-delivery { background: #D9EDF0; color: #0D5C75; }
         .card h4 {
             font-family: var(--font-heading);
@@ -441,256 +370,7 @@
             gap: 4px;
         }
         .card-link:hover { gap: 8px; text-decoration: none; }
-
-        /* ── Coming Soon tag for pipeline resources ───────── */
-        .coming-soon {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 2px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: var(--text-muted);
-            background: #F1EFEC;
-            border: 1px solid #e5e1da;
-            cursor: default;
-        }
-        .coming-soon::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #B89B3E;
-            display: inline-block;
-        }
-        .card-pipeline { opacity: 0.88; }
-
-        /* ── Framework Table ──────────────────────────────── */
-        .framework-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            margin-top: 4px;
-        }
-        .framework-table thead {
-            background: var(--maroon);
-            color: var(--white);
-        }
-        .framework-table th {
-            padding: 14px 20px;
-            text-align: left;
-            font-family: var(--font-heading);
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-        .framework-table td {
-            padding: 16px 20px;
-            font-size: 14px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: top;
-        }
-        .framework-table tr:last-child td { border-bottom: none; }
-        .framework-table tbody tr:hover { background: var(--gray-light); }
-        .level-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-family: var(--font-heading);
-            font-weight: 500;
-            font-size: 14px;
-        }
-        .level-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        .level-1 .level-dot { background: #2D6A4F; }
-        .level-2 .level-dot { background: var(--accent-blue); }
-        .level-3 .level-dot { background: var(--accent-purple); }
-        .level-4 .level-dot { background: var(--maroon); }
-
-        /* ── Toolbox Section ──────────────────────────────── */
-        .tool-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .tool-item {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            display: flex;
-            gap: 16px;
-            align-items: flex-start;
-            transition: box-shadow 0.2s;
-        }
-        .tool-item:hover { box-shadow: var(--shadow-sm); }
-        .tool-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-        .tool-info h5 {
-            font-family: var(--font-heading);
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-        .tool-info p {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-        .tool-status {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 2px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-top: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        .status-approved { background: #E0F0E8; color: #2D6A4F; }
-        .status-pilot { background: #FFF4E0; color: #8B6914; }
-        .status-review { background: #E8F0F8; color: var(--accent-blue); }
-
-        /* ── Policy Accordion ─────────────────────────────── */
-        .accordion { display: flex; flex-direction: column; gap: 8px; }
-        .accordion-item {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
-        .accordion-trigger {
-            width: 100%;
-            padding: 18px 24px;
-            background: none;
-            border: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            font-family: var(--font-body);
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-align: left;
-        }
-        .accordion-trigger:hover { background: var(--gray-light); }
-        .accordion-arrow {
-            font-size: 12px;
-            transition: transform 0.2s;
-            color: var(--text-muted);
-        }
-        .accordion-item.open .accordion-arrow { transform: rotate(180deg); }
-        .accordion-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .accordion-item.open .accordion-body { max-height: 600px; }
-        .accordion-content {
-            padding: 0 24px 20px;
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-        .accordion-content ul {
-            margin: 8px 0;
-            padding-left: 20px;
-        }
-        .accordion-content li { margin-bottom: 6px; }
-
-        /* ── Workflow / Process Steps ─────────────────────── */
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-        }
-        .step {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            text-align: center;
-            position: relative;
-            border-top: 3px solid var(--maroon);
-        }
-        .step-number {
-            width: 36px;
-            height: 36px;
-            background: var(--maroon);
-            color: var(--white);
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-heading);
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-        .step h5 {
-            font-family: var(--font-heading);
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        .step p {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        /* ── Quick-Reference Stats ────────────────────────── */
-        .stat-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 48px;
-        }
-        .stat-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            text-align: center;
-            border-top: 3px solid var(--maroon);
-        }
-        .stat-card .stat-value {
-            font-family: var(--font-heading);
-            font-size: 36px;
-            font-weight: 600;
-            color: var(--maroon);
-            line-height: 1;
-            margin-bottom: 6px;
-        }
-        .stat-card .stat-label {
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
+        .card.hidden { display: none; }
 
         /* ── Contact / CTA ────────────────────────────────── */
         .cta-banner {
@@ -715,10 +395,26 @@
             font-weight: 300;
             margin-bottom: 24px;
         }
-        .cta-banner .btn-primary {
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover { text-decoration: none; }
+        .btn-primary {
             background: var(--white);
             color: var(--maroon);
         }
+        .btn-primary:hover { background: var(--gray-bg); color: var(--maroon); }
 
         /* ── Footer ───────────────────────────────────────── */
         .site-footer {
@@ -788,8 +484,6 @@
 
         /* ── Responsive ───────────────────────────────────── */
         @media (max-width: 900px) {
-            .hero-grid { grid-template-columns: 1fr; gap: 24px; }
-            .hero-ai-art { min-height: 180px; }
             .brand-search input { width: 180px; }
         }
         @media (max-width: 768px) {
@@ -797,10 +491,6 @@
             .hero { padding: 48px 20px 44px; }
             .main { padding: 32px 16px; }
             .card-grid { grid-template-columns: 1fr; }
-            .process-steps { grid-template-columns: 1fr 1fr; }
-            .framework-table { font-size: 13px; }
-            .framework-table th, .framework-table td { padding: 10px 12px; }
-            .stat-bar { grid-template-columns: 1fr 1fr; }
             .top-strip-left { display: none; }
             .brand-band-inner { flex-direction: column; align-items: flex-start; gap: 16px; padding: 14px 20px; }
             .brand-search input { width: 100%; }
@@ -809,10 +499,10 @@
             .brand-lockup img { height: 46px; }
             .footer-inner { flex-direction: column; text-align: center; }
             .footer-links { justify-content: center; }
+            .audience-toggle { margin-bottom: 32px; }
         }
         @media (max-width: 480px) {
-            .process-steps { grid-template-columns: 1fr; }
-            .stat-bar { grid-template-columns: 1fr; }
+            .audience-toggle button { padding: 8px 12px; font-size: 12px; }
         }
     </style>
 </head>
@@ -847,7 +537,7 @@
         </a>
         <form class="brand-search" role="search" onsubmit="event.preventDefault(); runSearch(this.querySelector('input').value);">
             <label for="suiteSearch" class="sr-only" style="position:absolute;left:-9999px;">Search tools</label>
-            <input type="search" id="suiteSearch" placeholder="Search tools, policies, resources" autocomplete="off">
+            <input type="search" id="suiteSearch" placeholder="Search tools" autocomplete="off" oninput="runSearch(this.value)">
             <button type="submit" aria-label="Search">&#128269;</button>
         </form>
     </div>
@@ -858,9 +548,9 @@
      ════════════════════════════════════════════════════════ -->
 <nav class="site-nav" aria-label="Primary">
     <div class="nav-inner">
-        <a href="index.html" class="active">Overview</a>
+        <a href="index.html">Overview</a>
         <a href="tools.html">AI Tools</a>
-        <a href="design-tools.html">Design Tools</a>
+        <a href="design-tools.html" class="active">Design Tools</a>
         <a href="policy.html">Policy &amp; Governance</a>
         <a href="literacy.html">AI Literacy</a>
         <a href="resources.html">Resources</a>
@@ -868,9 +558,9 @@
 </nav>
 
 <!-- ════════════════════════════════════════════════════════
-     HERO with AI-themed abstract visual
+     HERO / INTRO BANNER
      ════════════════════════════════════════════════════════ -->
-<section class="hero" id="overview">
+<section class="hero">
     <div class="hero-visual" aria-hidden="true">
         <svg viewBox="0 0 1280 420" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -890,7 +580,6 @@
             </defs>
             <rect width="1280" height="420" fill="url(#glow1)"/>
             <rect width="1280" height="420" fill="url(#glow2)"/>
-            <!-- abstract neural mesh lines -->
             <g stroke="url(#line1)" stroke-width="1" fill="none" opacity="0.55">
                 <path d="M0,60 C200,40 420,180 640,140 C860,100 1080,220 1280,200"/>
                 <path d="M0,140 C220,120 440,260 640,220 C840,180 1060,300 1280,280"/>
@@ -898,7 +587,6 @@
                 <path d="M0,300 C220,280 440,140 640,180 C840,220 1060,100 1280,120"/>
                 <path d="M0,380 C220,360 440,220 640,260 C840,300 1060,180 1280,200"/>
             </g>
-            <!-- node dots -->
             <g fill="rgba(255,255,255,0.75)">
                 <circle cx="120" cy="80"  r="3"/>
                 <circle cx="310" cy="160" r="2.5"/>
@@ -912,132 +600,164 @@
             </g>
         </svg>
     </div>
-    <div class="hero-grid">
-        <div class="hero-content">
-            <div class="hero-badge">Powered by TAMU AI Chat</div>
-            <h2>AI-Informed Learning Design for Mays Business School</h2>
-            <p>A comprehensive resource for faculty and TLI staff to responsibly integrate artificial intelligence into course design, delivery, and quality assurance across the Flex Online and on-campus portfolio.</p>
-            <div class="hero-actions">
-                <a href="design-tools.html" class="btn btn-primary">Explore Design Tools &#8594;</a>
-                <a href="literacy.html" class="btn btn-secondary">View AI Literacy Framework</a>
-            </div>
-        </div>
-        <div class="hero-ai-art" aria-hidden="true">
-            <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;height:auto;">
-                <defs>
-                    <linearGradient id="coreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#FFE9A8"/>
-                        <stop offset="60%" stop-color="#D4A843"/>
-                        <stop offset="100%" stop-color="#8A6A1A"/>
-                    </linearGradient>
-                    <radialGradient id="orbGlow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#FFF4D1" stop-opacity="0.9"/>
-                        <stop offset="55%" stop-color="#D4A843" stop-opacity="0.35"/>
-                        <stop offset="100%" stop-color="#D4A843" stop-opacity="0"/>
-                    </radialGradient>
-                </defs>
-                <!-- outer glow -->
-                <circle cx="180" cy="150" r="140" fill="url(#orbGlow)"/>
-                <!-- orbital rings -->
-                <g fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1">
-                    <ellipse cx="180" cy="150" rx="130" ry="50" transform="rotate(20 180 150)"/>
-                    <ellipse cx="180" cy="150" rx="120" ry="42" transform="rotate(-25 180 150)"/>
-                    <ellipse cx="180" cy="150" rx="105" ry="34" transform="rotate(65 180 150)"/>
-                </g>
-                <!-- neural node constellation -->
-                <g stroke="rgba(255,255,255,0.7)" stroke-width="1.1" fill="none">
-                    <line x1="90" y1="90"  x2="180" y2="150"/>
-                    <line x1="270" y1="90" x2="180" y2="150"/>
-                    <line x1="80" y1="210" x2="180" y2="150"/>
-                    <line x1="280" y1="210" x2="180" y2="150"/>
-                    <line x1="180" y1="40" x2="180" y2="150"/>
-                    <line x1="180" y1="260" x2="180" y2="150"/>
-                    <line x1="90" y1="90"  x2="270" y2="90"/>
-                    <line x1="80" y1="210" x2="280" y2="210"/>
-                    <line x1="90" y1="90"  x2="80" y2="210"/>
-                    <line x1="270" y1="90" x2="280" y2="210"/>
-                </g>
-                <!-- outer nodes -->
-                <g fill="rgba(255,255,255,0.95)" stroke="#D4A843" stroke-width="1.2">
-                    <circle cx="90"  cy="90"  r="5"/>
-                    <circle cx="270" cy="90"  r="5"/>
-                    <circle cx="80"  cy="210" r="5"/>
-                    <circle cx="280" cy="210" r="5"/>
-                    <circle cx="180" cy="40"  r="5"/>
-                    <circle cx="180" cy="260" r="5"/>
-                </g>
-                <!-- core orb -->
-                <circle cx="180" cy="150" r="26" fill="url(#coreGrad)" stroke="#FFF4D1" stroke-width="1.5"/>
-                <circle cx="180" cy="150" r="10" fill="#FFF4D1" opacity="0.9"/>
-            </svg>
-        </div>
+    <div class="hero-content">
+        <h2>Learning Design Tools</h2>
+        <p>Interactive, AI-powered tools for learning design, media production, quality assurance, and delivery. Each tool connects directly to TAMU AI Chat to generate results on the page.</p>
     </div>
 </section>
 
 <!-- ════════════════════════════════════════════════════════
-     AT-A-GLANCE STATS
+     MAIN CONTENT
      ════════════════════════════════════════════════════════ -->
 <main class="main">
 
-    <div class="stat-bar">
-        <div class="stat-card">
-            <div class="stat-value">4</div>
-            <div class="stat-label">AI Literacy Levels</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">5</div>
-            <div class="stat-label">Approved / Pilot Tools</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">5</div>
-            <div class="stat-label">Governance Policies</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">16</div>
-            <div class="stat-label">Interactive Design Tools</div>
-        </div>
+    <!-- Category Filter Toggle -->
+    <div class="audience-toggle" id="designToolToggle">
+        <button class="active" onclick="filterDesignTools('all')">All Tools</button>
+        <button onclick="filterDesignTools('course-design')">Learning Design</button>
+        <button onclick="filterDesignTools('media')">Learning Media</button>
+        <button onclick="filterDesignTools('quality')">Learning Quality</button>
+        <button onclick="filterDesignTools('delivery')">Learning Delivery</button>
     </div>
 
-    
     <!-- ════════════════════════════════════════════════════
-         HUB SECTION CARDS
+         LEARNING DESIGN (9 tools)
          ════════════════════════════════════════════════════ -->
-    <div class="card-grid" style="margin-bottom: 48px;">
-        <a href="tools.html" class="card" style="text-decoration:none;">
-            <span class="card-tag tag-tool">5 Tools</span>
-            <h4>AI Tools &amp; Integration</h4>
-            <p>Approved and pilot AI tools for course design, content development, and learning delivery. Each tool has been evaluated for data privacy, accessibility, and instructional alignment.</p>
-            <span class="card-link">View AI Tools &#8594;</span>
-        </a>
-        <a href="design-tools.html" class="card" style="text-decoration:none;">
-            <span class="card-tag tag-policy">16 Tools</span>
-            <h4>Learning Design Tools</h4>
-            <p>Interactive, AI-powered generators for learning design, media production, quality assurance, and delivery. Each tool connects to TAMU AI Chat to produce results on the page.</p>
-            <span class="card-link">Explore Design Tools &#8594;</span>
-        </a>
-        <a href="policy.html" class="card" style="text-decoration:none;">
-            <span class="card-tag tag-policy">5 Policies</span>
-            <h4>Policy &amp; Governance</h4>
-            <p>Institutional policies governing AI use in teaching, learning design, and student assessment. Covers acceptable use, disclosure, FERPA, academic integrity, and accessibility.</p>
-            <span class="card-link">Review Policies &#8594;</span>
-        </a>
-        <a href="literacy.html" class="card" style="text-decoration:none;">
-            <span class="card-tag tag-tli">Framework</span>
-            <h4>AI Literacy &amp; Workflow</h4>
-            <p>A four-level competency model for building AI literacy among faculty and students, plus a six-step process for integrating AI tools into any course.</p>
-            <span class="card-link">View Framework &#8594;</span>
-        </a>
-        <a href="resources.html" class="card" style="text-decoration:none;">
-            <span class="card-tag tag-faculty">Templates</span>
-            <h4>Resources &amp; Templates</h4>
-            <p>Templates, guides, and reference documents for AI integration: syllabus statements, evaluation checklists, prompt libraries, and more.</p>
-            <span class="card-link">Browse Resources &#8594;</span>
-        </a>
+    <div class="section" id="learning-design-section">
+        <h3>Learning Design</h3>
+        <div class="card-grid" id="learningDesignGrid">
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Learning Design</span>
+                <h4>Learning Objectives Creator</h4>
+                <p>Generate clear, measurable learning objectives aligned to Bloom's Taxonomy for any course or module.</p>
+                <a href="tool-learning-objectives-creator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Learning Design</span>
+                <h4>Module Sequencing Strategist</h4>
+                <p>Organize course topics into a coherent, pedagogically grounded sequence across your modules or weeks.</p>
+                <a href="tool-module-sequencing-strategist.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Learning Design</span>
+                <h4>Syllabus Reviewer</h4>
+                <p>Get structured feedback on your syllabus against Mays standards, TAMU requirements, and instructional design best practices.</p>
+                <a href="tool-syllabus-reviewer.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Learning Design</span>
+                <h4>Canvas Content Converter</h4>
+                <p>Paste content from Word, PDF, or other sources and get back clean, accessible HTML formatted for Canvas pages.</p>
+                <a href="tool-canvas-content-converter.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Learning Design</span>
+                <h4>Discussion Prompt Generator</h4>
+                <p>Draft discussion prompts that extend critical thinking and connect theory to practice at targeted cognitive levels.</p>
+                <a href="tool-discussion-prompt-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Learning Design</span>
+                <h4>Assignment Description Builder</h4>
+                <p>Create clear, well-designed assignment descriptions with rubrics and built-in AI use policy statements.</p>
+                <a href="tool-assignment-description-builder.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Learning Design</span>
+                <h4>Assessment Question Generator</h4>
+                <p>Generate quiz and exam questions across multiple formats, mapped to learning objectives and Bloom's levels.</p>
+                <a href="tool-assessment-question-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Learning Design</span>
+                <h4>Student FAQ Generator</h4>
+                <p>Generate anticipated student questions with draft answers, organized by category, for a proactive course FAQ page.</p>
+                <a href="tool-student-faq-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="course-design">
+                <span class="card-tag tag-policy">Learning Design</span>
+                <h4>Case Study Scenario Builder</h4>
+                <p>Create realistic business case study scenarios with discussion questions, data exhibits, and teaching notes.</p>
+                <a href="tool-case-study-scenario-builder.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+        </div>
     </div>
 
+    <!-- ════════════════════════════════════════════════════
+         LEARNING MEDIA (3 tools)
+         ════════════════════════════════════════════════════ -->
+    <div class="section" id="learning-media-section">
+        <h3>Learning Media</h3>
+        <div class="card-grid" id="learningMediaGrid">
+            <div class="card" data-category="media">
+                <span class="card-tag tag-media">Learning Media</span>
+                <h4>Lecture Video Script Writer</h4>
+                <p>Turn an outline, rough notes, or slides into a camera-ready script with pacing, visual cues, and clean transitions.</p>
+                <a href="tool-lecture-video-script-writer.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="media">
+                <span class="card-tag tag-media">Learning Media</span>
+                <h4>Storyboard Generator</h4>
+                <p>Paste a finalized script and get back a shot-by-shot visual plan ready to hand to Learning Media for production.</p>
+                <a href="tool-storyboard-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="media">
+                <span class="card-tag tag-media">Learning Media</span>
+                <h4>Caption Cleanup &amp; Speaker Attribution</h4>
+                <p>Clean up auto-generated captions from Zoom, YouTube, or Canvas Studio with speaker labels, punctuation, and error correction.</p>
+                <a href="tool-caption-cleanup.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         LEARNING QUALITY (3 tools)
+         ════════════════════════════════════════════════════ -->
+    <div class="section" id="learning-quality-section">
+        <h3>Learning Quality</h3>
+        <div class="card-grid" id="learningQualityGrid">
+            <div class="card" data-category="quality">
+                <span class="card-tag tag-tli">Learning Quality</span>
+                <h4>Alt Text Generator</h4>
+                <p>Create accessible, WCAG-compliant alt text for images in course materials, slides, and Canvas pages.</p>
+                <a href="tool-alt-text-generator.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="quality">
+                <span class="card-tag tag-tli">Learning Quality</span>
+                <h4>Content Accessibility Checker</h4>
+                <p>Audit course content for accessibility issues including reading level, heading structure, link text, and inclusive language.</p>
+                <a href="tool-content-accessibility-checker.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+            <div class="card" data-category="quality">
+                <span class="card-tag tag-tli">Learning Quality</span>
+                <h4>TLI QA Tracker</h4>
+                <p>Upload a Canvas .imscc export and run 29 automated checks against the TLI 123-criterion rubric. Track manual criteria, generate a branded Mays .docx remediation report with role-based action lists and WCAG 2.1 AA findings.</p>
+                <a href="tool-qa-tracker.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         LEARNING DELIVERY (1 tool)
+         ════════════════════════════════════════════════════ -->
+    <div class="section" id="learning-delivery-section">
+        <h3>Learning Delivery</h3>
+        <div class="card-grid" id="learningDeliveryGrid">
+            <div class="card" data-category="delivery">
+                <span class="card-tag tag-delivery">Learning Delivery</span>
+                <h4>Block Readiness Checklist</h4>
+                <p>Generate a phased readiness checklist for Mays 8-week blocks, including the overlap week when Block A is closing and Block B is launching.</p>
+                <a href="tool-block-readiness-checklist.html" class="card-link">Access Tool &#8594;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         CTA BANNER
+         ════════════════════════════════════════════════════ -->
     <div class="cta-banner">
-        <h3>Questions about AI in your course?</h3>
-        <p>TLI is here to help you navigate AI integration, from tool selection to policy compliance. Reach out to start a conversation.</p>
+        <h3>Questions about learning design?</h3>
+        <p>TLI is here to help you develop engaging, accessible, and effectively designed courses. Reach out to start a conversation.</p>
         <a href="mailto:jeffrey.jones@tamu.edu" class="btn btn-primary">Contact TLI &#8594;</a>
     </div>
 
@@ -1067,20 +787,101 @@
      JAVASCRIPT
      ════════════════════════════════════════════════════════ -->
 <script>
-    /* Hub page: search redirects to design-tools.html which has the full searchable content */
+    function filterDesignTools(category) {
+        const buttons = document.querySelectorAll('#designToolToggle button');
+        buttons.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // Get all cards from all grids
+        const allCards = document.querySelectorAll('.card-grid .card');
+
+        allCards.forEach(card => {
+            const cat = card.getAttribute('data-category');
+            card.style.display = (category === 'all' || cat === category) ? 'block' : 'none';
+        });
+
+        // Hide section headings if all their cards are hidden
+        const sections = [
+            { sectionId: 'learning-design-section', gridId: 'learningDesignGrid' },
+            { sectionId: 'learning-media-section', gridId: 'learningMediaGrid' },
+            { sectionId: 'learning-quality-section', gridId: 'learningQualityGrid' },
+            { sectionId: 'learning-delivery-section', gridId: 'learningDeliveryGrid' }
+        ];
+
+        sections.forEach(section => {
+            const grid = document.getElementById(section.gridId);
+            const visibleCards = Array.from(grid.querySelectorAll('.card')).filter(card => card.style.display !== 'none');
+            const sectionDiv = document.getElementById(section.sectionId);
+
+            if (visibleCards.length === 0) {
+                sectionDiv.classList.add('hidden');
+            } else {
+                sectionDiv.classList.remove('hidden');
+            }
+        });
+    }
+
     function runSearch(rawQuery) {
-        const q = (rawQuery || '').trim();
-        if (q) {
-            window.location.href = 'design-tools.html?q=' + encodeURIComponent(q);
+        const q = (rawQuery || '').trim().toLowerCase();
+        const allCards = document.querySelectorAll('.card-grid .card');
+
+        let visibleCount = 0;
+        allCards.forEach(card => {
+            const text = card.innerText.toLowerCase();
+            const match = q === '' || text.includes(q);
+            card.style.display = match ? 'block' : 'none';
+            if (match && q !== '') visibleCount++;
+        });
+
+        // Reset filter to "All Tools" when searching
+        if (q !== '') {
+            document.querySelectorAll('#designToolToggle button').forEach((b, i) => b.classList.toggle('active', i === 0));
+        }
+
+        // Show/hide section headings based on visible cards
+        const sections = [
+            { sectionId: 'learning-design-section', gridId: 'learningDesignGrid' },
+            { sectionId: 'learning-media-section', gridId: 'learningMediaGrid' },
+            { sectionId: 'learning-quality-section', gridId: 'learningQualityGrid' },
+            { sectionId: 'learning-delivery-section', gridId: 'learningDeliveryGrid' }
+        ];
+
+        sections.forEach(section => {
+            const grid = document.getElementById(section.gridId);
+            const visibleCards = Array.from(grid.querySelectorAll('.card')).filter(card => card.style.display !== 'none');
+            const sectionDiv = document.getElementById(section.sectionId);
+
+            if (visibleCards.length === 0) {
+                sectionDiv.classList.add('hidden');
+            } else {
+                sectionDiv.classList.remove('hidden');
+            }
+        });
+
+        // Empty state message
+        let empty = document.getElementById('searchEmpty');
+        if (q !== '' && visibleCount === 0) {
+            if (!empty) {
+                empty = document.createElement('div');
+                empty.id = 'searchEmpty';
+                empty.className = 'search-empty show';
+                empty.innerHTML = 'No tools match <strong></strong>. Try a different term.';
+                document.querySelector('.main').appendChild(empty);
+            }
+            empty.querySelector('strong').textContent = '"' + rawQuery + '"';
+            empty.classList.add('show');
+        } else if (empty) {
+            empty.classList.remove('show');
         }
     }
 
-    /* Handle ?q= on hub load (redirect to design-tools) */
+    // Read ?q= on page load to support redirects from tool pages
     (function initSearchFromUrl() {
         const params = new URLSearchParams(window.location.search);
         const q = params.get('q');
         if (q) {
-            window.location.href = 'design-tools.html?q=' + encodeURIComponent(q);
+            const input = document.getElementById('suiteSearch');
+            if (input) { input.value = q; runSearch(q); }
         }
     })();
 </script>

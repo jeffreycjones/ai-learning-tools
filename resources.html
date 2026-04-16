@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources &amp; Templates | Mays Business School Learning Design Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Root Variables */
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --font-heading: 'Oswald', sans-serif;
+            --font-body: 'Work Sans', sans-serif;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --color-white: #ffffff;
+            --color-text: #333333;
+            --color-text-light: #666666;
+            --color-border: #e0e0e0;
+            --color-bg: #f9f9f9;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text);
+            line-height: 1.6;
+            background-color: var(--color-bg);
+        }
+
+        a {
+            color: var(--maroon);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--maroon-dark);
+        }
+
+        /* Top Strip */
+        .top-strip {
+            background-color: var(--maroon-dark);
+            color: var(--color-white);
+            padding: var(--spacing-sm);
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .top-strip a {
+            color: var(--color-white);
+            text-decoration: underline;
+        }
+
+        .top-strip a:hover {
+            opacity: 0.8;
+        }
+
+        /* Brand Band */
+        .brand-band {
+            background-color: var(--color-white);
+            padding: var(--spacing-lg) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .brand-band-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .brand-band-logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .brand-band-logo a {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--maroon);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .brand-band-search {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+        }
+
+        .brand-band-search input {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+        }
+
+        .brand-band-search input::placeholder {
+            color: var(--color-text-light);
+        }
+
+        /* Site Navigation */
+        .site-nav {
+            background-color: var(--maroon);
+            padding: 0;
+        }
+
+        .nav-inner {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .site-nav a {
+            flex: 1;
+            min-width: 140px;
+            padding: var(--spacing-md);
+            color: var(--color-white);
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .site-nav a:hover {
+            background-color: var(--maroon-light);
+            color: var(--color-white);
+        }
+
+        .site-nav a.active {
+            background-color: var(--maroon-light);
+            border-bottom-color: var(--color-white);
+            color: var(--color-white);
+        }
+
+        /* Section Intro Banner */
+        .section-intro {
+            background: linear-gradient(135deg, var(--maroon) 0%, var(--maroon-dark) 100%);
+            color: var(--color-white);
+            padding: var(--spacing-xl) var(--spacing-md);
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .section-intro h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .section-intro p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Main Container */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md) var(--spacing-xl);
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        /* Card */
+        .card {
+            background-color: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card > a {
+            display: contents;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--maroon);
+            flex: 1;
+        }
+
+        .card-tag {
+            display: inline-block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-faculty {
+            background-color: #e8f0f8;
+            color: #003366;
+        }
+
+        .tag-tli {
+            background-color: #f0e8f8;
+            color: #330066;
+        }
+
+        .tag-both {
+            background-color: #f0f0f0;
+            color: #333333;
+        }
+
+        .card-description {
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+            flex-grow: 1;
+        }
+
+        .card-link {
+            display: inline-block;
+            color: var(--maroon);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            align-self: flex-start;
+        }
+
+        .card-link:hover {
+            border-bottom-color: var(--maroon);
+        }
+
+        .coming-soon {
+            display: inline-block;
+            background-color: #e8e8e8;
+            color: #666666;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-pipeline {
+            opacity: 0.85;
+        }
+
+        .card-pipeline .card-description {
+            color: var(--color-text-light);
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background-color: var(--maroon-light);
+            color: var(--color-white);
+            padding: var(--spacing-xl) var(--spacing-lg);
+            margin: var(--spacing-xl) var(--spacing-md);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .cta-banner h2 {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .cta-banner p {
+            font-size: 1rem;
+            margin-bottom: var(--spacing-lg);
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--color-white);
+            color: var(--maroon);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .cta-button:hover {
+            background-color: var(--maroon);
+            color: var(--color-white);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--maroon-dark);
+            color: var(--color-white);
+            padding: var(--spacing-xl) var(--spacing-md);
+            margin-top: var(--spacing-xl);
+            border-top: 4px solid var(--maroon);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .footer-section h3 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .footer-section a {
+            color: var(--color-white);
+            opacity: 0.9;
+        }
+
+        .footer-section a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: var(--spacing-md);
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .brand-band {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .brand-band-search {
+                max-width: 100%;
+            }
+
+            .nav-inner {
+                flex-direction: column;
+            }
+
+            .site-nav a {
+                text-align: left;
+                padding: var(--spacing-md);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                border-right: 3px solid transparent;
+            }
+
+            .site-nav a.active {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                border-right: 3px solid var(--color-white);
+            }
+
+            .section-intro h1 {
+                font-size: 2rem;
+            }
+
+            .section-intro p {
+                font-size: 1rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .cta-banner h2 {
+                font-size: 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-band-logo {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .section-intro {
+                padding: var(--spacing-lg) var(--spacing-sm);
+            }
+
+            .section-intro h1 {
+                font-size: 1.5rem;
+            }
+
+            .section-intro p {
+                font-size: 0.95rem;
+            }
+
+            .main {
+                padding: 0 var(--spacing-sm) var(--spacing-lg);
+            }
+
+            .card {
+                padding: var(--spacing-md);
+            }
+
+            .cta-banner {
+                margin: var(--spacing-lg) var(--spacing-sm);
+                padding: var(--spacing-lg) var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Strip -->
+    <div class="top-strip">
+        &#9888; This is a prototype resource suite. Content and tools are in active development. <a href="#">Share feedback</a>.
+    </div>
+
+    <!-- Brand Band -->
+    <div class="brand-band">
+        <div class="brand-band-logo">
+            <img src="assets/mays-primary-logo.png" alt="Mays Business School">
+            <a href="index.html">Learning Design Suite</a>
+        </div>
+        <div class="brand-band-search">
+            <input type="search" placeholder="Search resources, tools, and guides...">
+        </div>
+    </div>
+
+    <!-- Site Navigation -->
+    <nav class="site-nav" aria-label="Primary">
+        <div class="nav-inner">
+            <a href="index.html">Overview</a>
+            <a href="tools.html">AI Tools</a>
+            <a href="design-tools.html">Design Tools</a>
+            <a href="policy.html">Policy &amp; Governance</a>
+            <a href="literacy.html">AI Literacy</a>
+            <a href="resources.html" class="active">Resources</a>
+        </div>
+    </nav>
+
+    <!-- Section Intro -->
+    <section class="section-intro">
+        <h1>Resources &amp; Templates</h1>
+        <p>Templates, guides, and reference documents for integrating AI into your courses. Resources are published here as they are finalized.</p>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="card-grid">
+            <!-- Card 1: Syllabus AI Use Statement Template -->
+            <div class="card">
+                <a href="resource-syllabus-ai-statement.html">
+                    <div class="card-header">
+                        <h2 class="card-title">Syllabus AI Use Statement Template</h2>
+                        <span class="card-tag tag-faculty">Faculty</span>
+                    </div>
+                    <p class="card-description">A customizable syllabus insert that communicates your course-level AI policy to students. Includes three tiers: AI prohibited, AI permitted with disclosure, and AI encouraged.</p>
+                    <span class="card-link">Open Template &rarr;</span>
+                </a>
+            </div>
+
+            <!-- Card 2: AI Prompt Library for Course Design -->
+            <div class="card card-pipeline">
+                <div class="card-header">
+                    <h2 class="card-title">AI Prompt Library for Course Design</h2>
+                    <span class="card-tag tag-both">Faculty + TLI</span>
+                </div>
+                <p class="card-description">A curated set of effective prompts for common learning design tasks: writing learning objectives, generating quiz questions, drafting rubric criteria, and creating case study scenarios.</p>
+                <span class="coming-soon">Coming Soon</span>
+            </div>
+
+            <!-- Card 3: AI Tool Evaluation Checklist -->
+            <div class="card">
+                <a href="resource-ai-tool-evaluation.html">
+                    <div class="card-header">
+                        <h2 class="card-title">AI Tool Evaluation Checklist</h2>
+                        <span class="card-tag tag-tli">TLI Staff</span>
+                    </div>
+                    <p class="card-description">A two-layer instrument: pass/fail hard gates for data privacy, security, and accessibility, plus a four-level scored rubric across five domains. Routes through a three-stage governance flow.</p>
+                    <span class="card-link">Open Checklist &rarr;</span>
+                </a>
+            </div>
+
+            <!-- Card 4: AI-Resilient Assignment Design Guide -->
+            <div class="card card-pipeline">
+                <div class="card-header">
+                    <h2 class="card-title">AI-Resilient Assignment Design Guide</h2>
+                    <span class="card-tag tag-faculty">Faculty</span>
+                </div>
+                <p class="card-description">Strategies for designing assignments that maintain academic integrity in an AI-enabled environment. Focuses on personal application, reflection, and process-based assessment.</p>
+                <span class="coming-soon">Coming Soon</span>
+            </div>
+
+            <!-- Card 5: AI Integration SOP for Learning Designers -->
+            <div class="card card-pipeline">
+                <div class="card-header">
+                    <h2 class="card-title">AI Integration SOP for Learning Designers</h2>
+                    <span class="card-tag tag-tli">TLI Staff</span>
+                </div>
+                <p class="card-description">Step-by-step operating procedures for incorporating AI tools into the course build workflow, including quality checkpoints and documentation requirements.</p>
+                <span class="coming-soon">Coming Soon</span>
+            </div>
+
+            <!-- Card 6: AI Literacy Module Template (Canvas) -->
+            <div class="card card-pipeline">
+                <div class="card-header">
+                    <h2 class="card-title">AI Literacy Module Template (Canvas)</h2>
+                    <span class="card-tag tag-both">Faculty + TLI</span>
+                </div>
+                <p class="card-description">A ready-to-import Canvas module that introduces students to AI literacy fundamentals. Includes a video overview, a self-assessment quiz, and a reflection discussion.</p>
+                <span class="coming-soon">Coming Soon</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- CTA Banner -->
+    <section class="cta-banner">
+        <h2>Need a Custom Resource?</h2>
+        <p>Have a specific learning design challenge? Submit a resource request and our team will develop tools tailored to your needs.</p>
+        <a href="mailto:learning-design@mays.tamu.edu" class="cta-button">Request a Resource</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About</h3>
+                <ul>
+                    <li><a href="#">Suite Overview</a></li>
+                    <li><a href="#">Team &amp; Credits</a></li>
+                    <li><a href="#">Feedback &amp; Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Templates</a></li>
+                    <li><a href="#">Best Practices</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">TAMU Hub</a></li>
+                    <li><a href="#">Learning &amp; Design</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Mays Business School. Powered by Learning &amp; Design Excellence.</p>
+        </div>
+    </footer>
+</body>
+</html>

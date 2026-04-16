@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Literacy &amp; Workflow | Mays Learning Design Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --accent-green: #2D6A4F;
+            --accent-blue: #1F77B4;
+            --accent-purple: #9467BD;
+            --gray-light: #F5F5F5;
+            --gray-medium: #E0E0E0;
+            --gray-dark: #333333;
+            --font-heading: 'Oswald', sans-serif;
+            --font-body: 'Work Sans', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--gray-dark);
+            background-color: #FFFFFF;
+            line-height: 1.6;
+        }
+
+        /* ===== TOP STRIP ===== */
+        .top-strip {
+            background-color: var(--gray-dark);
+            color: #FFFFFF;
+            padding: 12px 20px;
+            font-size: 0.875rem;
+            text-align: center;
+        }
+
+        .top-strip a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid #FFFFFF;
+        }
+
+        .top-strip a:hover {
+            opacity: 0.8;
+        }
+
+        /* ===== BRAND BAND ===== */
+        .brand-band {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid var(--gray-medium);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-band .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--maroon);
+            font-weight: 700;
+        }
+
+        .brand-band .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .brand-band .search-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .brand-band .search-container input {
+            padding: 8px 12px;
+            border: 1px solid var(--gray-medium);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+        }
+
+        .brand-band .search-container button {
+            padding: 8px 16px;
+            background-color: var(--maroon);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .brand-band .search-container button:hover {
+            background-color: var(--maroon-dark);
+        }
+
+        /* ===== SITE NAV ===== */
+        .site-nav {
+            background-color: var(--maroon);
+            border-bottom: 3px solid var(--maroon-dark);
+            padding: 0;
+            margin: 0;
+        }
+
+        .site-nav .nav-inner {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 100%;
+        }
+
+        .site-nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 14px 18px;
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease;
+            display: block;
+        }
+
+        .site-nav a:last-child {
+            border-right: none;
+        }
+
+        .site-nav a:hover {
+            background-color: var(--maroon-dark);
+        }
+
+        .site-nav a.active {
+            background-color: var(--maroon-light);
+            border-bottom: 3px solid #FFC107;
+        }
+
+        /* ===== INTRO BANNER ===== */
+        .intro-banner {
+            background: linear-gradient(135deg, var(--maroon) 0%, var(--maroon-dark) 100%);
+            color: #FFFFFF;
+            padding: 60px 40px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .intro-banner h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .intro-banner p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== SECTION ===== */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--maroon);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        section > p {
+            font-size: 1rem;
+            color: var(--gray-dark);
+            margin-bottom: 32px;
+            line-height: 1.8;
+            max-width: 900px;
+        }
+
+        /* ===== FRAMEWORK TABLE ===== */
+        .framework-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .framework-table thead {
+            background-color: var(--maroon);
+            color: #FFFFFF;
+        }
+
+        .framework-table thead th {
+            padding: 18px 16px;
+            text-align: left;
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-bottom: 2px solid var(--maroon-dark);
+            letter-spacing: 0.5px;
+        }
+
+        .framework-table thead th:nth-child(1) {
+            width: 18%;
+        }
+
+        .framework-table thead th:nth-child(2) {
+            width: 25%;
+        }
+
+        .framework-table thead th:nth-child(3) {
+            width: 32%;
+        }
+
+        .framework-table thead th:nth-child(4) {
+            width: 25%;
+        }
+
+        .framework-table tbody tr {
+            border-bottom: 1px solid var(--gray-medium);
+            transition: background-color 0.2s ease;
+        }
+
+        .framework-table tbody tr:hover {
+            background-color: var(--gray-light);
+        }
+
+        .framework-table tbody td {
+            padding: 20px 16px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .framework-table tbody tr.level-1 td:first-child {
+            background-color: rgba(45, 106, 79, 0.08);
+            font-weight: 600;
+        }
+
+        .framework-table tbody tr.level-2 td:first-child {
+            background-color: rgba(31, 119, 180, 0.08);
+            font-weight: 600;
+        }
+
+        .framework-table tbody tr.level-3 td:first-child {
+            background-color: rgba(148, 103, 189, 0.08);
+            font-weight: 600;
+        }
+
+        .framework-table tbody tr.level-4 td:first-child {
+            background-color: rgba(80, 0, 0, 0.08);
+            font-weight: 600;
+        }
+
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .level-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .level-dot.level-1 {
+            background-color: var(--accent-green);
+        }
+
+        .level-dot.level-2 {
+            background-color: var(--accent-blue);
+        }
+
+        .level-dot.level-3 {
+            background-color: var(--accent-purple);
+        }
+
+        .level-dot.level-4 {
+            background-color: var(--maroon);
+        }
+
+        /* ===== PROCESS STEPS ===== */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .step {
+            background-color: #FFFFFF;
+            border: 2px solid var(--gray-medium);
+            border-radius: 8px;
+            padding: 28px 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 70px;
+        }
+
+        .step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 14px;
+            top: 24px;
+            background-color: var(--maroon);
+            color: #FFFFFF;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .step:hover {
+            border-color: var(--maroon);
+            box-shadow: 0 4px 12px rgba(80, 0, 0, 0.15);
+        }
+
+        .step h3 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--maroon);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step p {
+            font-size: 0.95rem;
+            color: var(--gray-dark);
+            line-height: 1.7;
+        }
+
+        /* ===== CTA BANNER ===== */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--maroon) 0%, var(--maroon-dark) 100%);
+            color: #FFFFFF;
+            padding: 40px;
+            border-radius: 8px;
+            margin: 60px 0;
+            text-align: center;
+        }
+
+        .cta-banner h2 {
+            color: #FFFFFF;
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .cta-banner p {
+            font-size: 1rem;
+            margin-bottom: 24px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-banner a {
+            display: inline-block;
+            background-color: #FFC107;
+            color: var(--maroon);
+            padding: 12px 28px;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-banner a:hover {
+            background-color: #FFD700;
+            transform: translateY(-2px);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background-color: var(--gray-dark);
+            color: #FFFFFF;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 3px solid var(--maroon);
+        }
+
+        footer .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        footer h3 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer ul li {
+            margin-bottom: 8px;
+        }
+
+        footer a {
+            color: #FFFFFF;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #FFC107;
+        }
+
+        footer .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .intro-banner h1 {
+                font-size: 1.8rem;
+            }
+
+            .intro-banner {
+                padding: 40px 20px;
+            }
+
+            .brand-band {
+                flex-direction: column;
+                gap: 12px;
+                padding: 12px 20px;
+            }
+
+            .site-nav .nav-inner {
+                flex-direction: column;
+            }
+
+            .site-nav a {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 12px 16px;
+            }
+
+            .site-nav a.active {
+                border-right: 3px solid #FFC107;
+                border-bottom: none;
+            }
+
+            .framework-table {
+                font-size: 0.85rem;
+            }
+
+            .framework-table thead th,
+            .framework-table tbody td {
+                padding: 12px 10px;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                padding-left: 60px;
+            }
+
+            section h2 {
+                font-size: 1.5rem;
+            }
+
+            .cta-banner h2 {
+                font-size: 1.3rem;
+            }
+
+            footer .footer-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .intro-banner h1 {
+                font-size: 1.5rem;
+                margin-bottom: 12px;
+            }
+
+            .intro-banner p {
+                font-size: 0.95rem;
+            }
+
+            .brand-band .search-container {
+                width: 100%;
+            }
+
+            .brand-band .search-container input,
+            .brand-band .search-container button {
+                flex: 1;
+            }
+
+            .framework-table thead {
+                display: none;
+            }
+
+            .framework-table tbody,
+            .framework-table tbody tr,
+            .framework-table tbody td {
+                display: block;
+                width: 100%;
+            }
+
+            .framework-table tbody tr {
+                margin-bottom: 20px;
+                border: 1px solid var(--gray-medium);
+                border-radius: 4px;
+                overflow: hidden;
+            }
+
+            .framework-table tbody td {
+                padding: 12px;
+                border: none;
+                border-top: 1px solid var(--gray-medium);
+                position: relative;
+                padding-left: 100px;
+            }
+
+            .framework-table tbody td::before {
+                position: absolute;
+                left: 12px;
+                top: 12px;
+                font-weight: 700;
+                color: var(--maroon);
+            }
+
+            .framework-table tbody tr.level-1 td:first-child::before {
+                content: 'Level:';
+            }
+
+            .framework-table tbody tr.level-2 td:first-child::before {
+                content: 'Level:';
+            }
+
+            .framework-table tbody tr.level-3 td:first-child::before {
+                content: 'Level:';
+            }
+
+            .framework-table tbody tr.level-4 td:first-child::before {
+                content: 'Level:';
+            }
+
+            .framework-table tbody td:nth-child(2)::before {
+                content: 'Competency:';
+            }
+
+            .framework-table tbody td:nth-child(3)::before {
+                content: 'Faculty Application:';
+            }
+
+            .framework-table tbody td:nth-child(4)::before {
+                content: 'Student Outcome:';
+            }
+
+            .step::before {
+                width: 32px;
+                height: 32px;
+                font-size: 0.95rem;
+                left: 10px;
+            }
+
+            .step {
+                padding-left: 52px;
+                padding: 20px 16px;
+            }
+
+            section h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP STRIP -->
+    <div class="top-strip">
+        Teaching &amp; Learning Innovation | Texas A&amp;M University
+    </div>
+
+    <!-- BRAND BAND -->
+    <div class="brand-band">
+        <a href="index.html" class="logo">
+            <img src="assets/mays-primary-logo.png" alt="Mays Business School Logo">
+            <span>Mays Learning Design Suite</span>
+        </a>
+        <div class="search-container">
+            <input type="search" placeholder="Search tools &amp; resources...">
+            <button onclick="window.location.href='hub.html'">Search</button>
+        </div>
+    </div>
+
+    <!-- SITE NAV -->
+    <nav class="site-nav" aria-label="Primary">
+        <div class="nav-inner">
+            <a href="index.html">Overview</a>
+            <a href="tools.html">AI Tools</a>
+            <a href="design-tools.html">Design Tools</a>
+            <a href="policy.html">Policy &amp; Governance</a>
+            <a href="literacy.html" class="active">AI Literacy</a>
+            <a href="resources.html">Resources</a>
+        </div>
+    </nav>
+
+    <!-- INTRO BANNER -->
+    <div class="intro-banner">
+        <h1>AI Literacy &amp; Workflow</h1>
+        <p>A competency framework for building AI literacy among faculty and students, plus a step-by-step process for integrating AI tools into your courses.</p>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+        <!-- SECTION 1: AI LITERACY FRAMEWORK -->
+        <section>
+            <h2>AI Literacy Framework</h2>
+            <p>A four-level competency model for building AI literacy among faculty and students at Mays. Each level builds on the previous, with clear indicators and practical applications mapped to course design activities.</p>
+
+            <table class="framework-table">
+                <thead>
+                    <tr>
+                        <th>Level</th>
+                        <th>Competency</th>
+                        <th>Faculty Application</th>
+                        <th>Student Outcome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="level-1">
+                        <td>
+                            <span class="level-badge">
+                                <span class="level-dot level-1"></span>
+                                Level 1
+                            </span>
+                            <br><strong>Awareness</strong>
+                        </td>
+                        <td>Understands what AI is, how it works at a high level, and where it appears in everyday tools. Can distinguish AI-assisted from non-AI processes.</td>
+                        <td>Include a brief AI orientation in the Getting Started module. Identify which course tools use AI features (e.g., Grammarly, Canvas recommendations).</td>
+                        <td>Students can identify AI-powered features in tools they already use and articulate basic capabilities and limitations.</td>
+                    </tr>
+                    <tr class="level-2">
+                        <td>
+                            <span class="level-badge">
+                                <span class="level-dot level-2"></span>
+                                Level 2
+                            </span>
+                            <br><strong>Application</strong>
+                        </td>
+                        <td>Can use AI tools effectively for defined tasks. Understands prompt engineering basics and can evaluate output quality.</td>
+                        <td>Design assignments that permit AI use with clear parameters. Provide prompt templates. Model effective AI use in class demonstrations.</td>
+                        <td>Students can use approved AI tools to complete defined tasks, write effective prompts, and assess whether AI output meets assignment requirements.</td>
+                    </tr>
+                    <tr class="level-3">
+                        <td>
+                            <span class="level-badge">
+                                <span class="level-dot level-3"></span>
+                                Level 3
+                            </span>
+                            <br><strong>Evaluation</strong>
+                        </td>
+                        <td>Can critically assess AI outputs for accuracy, bias, and appropriateness. Understands ethical implications and institutional policy.</td>
+                        <td>Build in peer-review activities where students evaluate AI-generated work. Include case studies on AI bias in business contexts. Require reflection on AI use.</td>
+                        <td>Students can identify errors, biases, and ethical issues in AI outputs. They can justify when AI use is and is not appropriate for a given context.</td>
+                    </tr>
+                    <tr class="level-4">
+                        <td>
+                            <span class="level-badge">
+                                <span class="level-dot level-4"></span>
+                                Level 4
+                            </span>
+                            <br><strong>Integration</strong>
+                        </td>
+                        <td>Can design workflows that strategically incorporate AI to enhance outcomes. Understands organizational and societal impacts.</td>
+                        <td>Co-design course projects where students build AI-augmented solutions for real business problems. Integrate AI into capstone and experiential learning.</td>
+                        <td>Students can propose, build, and defend AI-integrated solutions within professional and ethical boundaries relevant to their discipline.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SECTION 2: AI INTEGRATION WORKFLOW -->
+        <section>
+            <h2>AI Integration Workflow</h2>
+            <p>A six-step process for faculty and learning designers to evaluate, plan, and integrate AI tools into a course. This workflow applies whether you are building a new Flex Online course or enhancing an existing on-campus section.</p>
+
+            <div class="process-steps">
+                <div class="step" data-step="1">
+                    <h3>Identify the Need</h3>
+                    <p>Define the instructional problem or opportunity. What task will AI support: content creation, assessment, student engagement, or workflow efficiency?</p>
+                </div>
+                <div class="step" data-step="2">
+                    <h3>Check Policy Alignment</h3>
+                    <p>Review Mays AI governance policies. Confirm the proposed use complies with FERPA, accessibility standards, and academic integrity requirements.</p>
+                </div>
+                <div class="step" data-step="3">
+                    <h3>Select Approved Tool</h3>
+                    <p>Choose from the approved tool list. If your use case requires an unlisted tool, submit a tool evaluation request to TLI.</p>
+                </div>
+                <div class="step" data-step="4">
+                    <h3>Design with Guardrails</h3>
+                    <p>Define clear parameters: what AI will and will not do, what the human review process looks like, and how students will be informed.</p>
+                </div>
+                <div class="step" data-step="5">
+                    <h3>Pilot and Collect Feedback</h3>
+                    <p>Test in a single module or assignment. Gather student and instructor feedback before scaling across the full course.</p>
+                </div>
+                <div class="step" data-step="6">
+                    <h3>Evaluate and Document</h3>
+                    <p>Assess impact on learning outcomes and efficiency. Document what worked, what did not, and share findings with TLI for the knowledge base.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA BANNER -->
+        <div class="cta-banner">
+            <h2>Ready to Integrate AI into Your Course?</h2>
+            <p>Access our AI tools, design templates, and policy guides to build AI-enhanced learning experiences that meet Mays standards.</p>
+            <a href="tools.html">Explore AI Tools</a>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <h3>Teaching &amp; Learning</h3>
+                <ul>
+                    <li><a href="resources.html">Learning Resources</a></li>
+                    <li><a href="design-tools.html">Design Tools</a></li>
+                    <li><a href="tools.html">AI Tools</a></li>
+                    <li><a href="literacy.html">AI Literacy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Policies &amp; Standards</h3>
+                <ul>
+                    <li><a href="policy.html">AI Governance</a></li>
+                    <li><a href="#">FERPA Guidelines</a></li>
+                    <li><a href="#">Accessibility Standards</a></li>
+                    <li><a href="#">Academic Integrity</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Contact TLI</a></li>
+                    <li><a href="#">Request Training</a></li>
+                    <li><a href="#">Tool Evaluation</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Texas A&amp;M University Mays Business School. All rights reserved. | <a href="#">Privacy</a> | <a href="#">Accessibility</a></p>
+        </div>
+    </footer>
+</body>
+</html>

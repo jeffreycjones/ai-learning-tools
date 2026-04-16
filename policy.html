@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy &amp; Governance | Learning Design Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset & Base ─────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --maroon: #500000;
+            --maroon-dark: #3C0000;
+            --maroon-light: #6B1D1D;
+            --gray-dark: #313131;
+            --gray-bg: #eeeeee;
+            --gray-light: #f7f7f7;
+            --text-primary: #313131;
+            --text-secondary: #4A4A4A;
+            --text-muted: #6B6B6B;
+            --border: #ddd;
+            --white: #FFFFFF;
+            --accent-blue: #1E5C8A;
+            --accent-green: #2D6A4F;
+            --accent-purple: #5C4B8A;
+            --radius: 4px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --font-heading: 'Oswald', Arial, sans-serif;
+            --font-body: 'Work Sans', Arial, sans-serif;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: var(--maroon); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--maroon-light); text-decoration: underline; }
+
+        /* ── Tier 1: Top Maroon Strip ─────────────────────── */
+        .top-strip {
+            background: var(--maroon);
+            color: var(--white);
+            font-size: 11px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+        .top-strip-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 32px;
+        }
+        .top-strip-left {
+            font-family: var(--font-heading);
+            font-weight: 500;
+            color: rgba(255,255,255,0.95);
+        }
+        .top-strip-links {
+            display: flex;
+            gap: 0;
+        }
+        .top-strip-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            padding: 8px 14px;
+            font-weight: 600;
+            transition: background 0.15s, color 0.15s;
+        }
+        .top-strip-links a:hover {
+            color: var(--white);
+            background: rgba(0,0,0,0.18);
+            text-decoration: none;
+        }
+        .top-strip-links a + a {
+            border-left: 1px solid rgba(255,255,255,0.18);
+        }
+
+        /* ── Tier 2: Brand Band ───────────────────────────── */
+        .brand-band {
+            background: var(--white);
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .brand-band-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+        }
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .brand-lockup:hover { text-decoration: none; }
+        .brand-lockup img {
+            height: 58px;
+            width: auto;
+            display: block;
+        }
+        .brand-suite {
+            display: flex;
+            flex-direction: column;
+            padding-left: 18px;
+            margin-left: 18px;
+            border-left: 2px solid var(--maroon);
+        }
+        .brand-suite .suite-eyebrow {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--maroon);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .brand-suite .suite-title {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+        .brand-search {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .brand-search input {
+            font-family: var(--font-body);
+            font-size: 14px;
+            padding: 9px 42px 9px 14px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            width: 260px;
+            background: var(--white);
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .brand-search input:focus {
+            border-color: var(--maroon);
+            box-shadow: 0 0 0 2px rgba(80,0,0,0.12);
+        }
+        .brand-search button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 38px;
+            background: transparent;
+            border: none;
+            color: var(--maroon);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+        .brand-search button:hover { color: var(--maroon-dark); }
+
+        /* ── Tier 3: Primary Navigation ───────────────────── */
+        .site-nav {
+            background: var(--white);
+            border-bottom: 2px solid var(--maroon);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            align-items: stretch;
+        }
+        .nav-inner a {
+            color: var(--text-primary);
+            padding: 16px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: var(--font-body);
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.15s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .nav-inner a:hover {
+            color: var(--maroon);
+            text-decoration: none;
+        }
+        .nav-inner a.active {
+            color: var(--maroon);
+            border-bottom-color: var(--maroon);
+        }
+
+        /* ── Hero / Intro Banner ──────────────────────────── */
+        .hero {
+            background: linear-gradient(135deg, #3C0000 0%, #500000 45%, #6B1D1D 100%);
+            color: var(--white);
+            padding: 72px 24px 64px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .hero h2 {
+            font-family: var(--font-heading);
+            font-size: 44px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+        .hero p {
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0.92;
+            max-width: 700px;
+            line-height: 1.7;
+        }
+
+        /* ── Main Content ─────────────────────────────────── */
+        .main { max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
+
+        /* ── Policy Accordion ─────────────────────────────── */
+        .accordion { display: flex; flex-direction: column; gap: 8px; }
+        .accordion-item {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .accordion-trigger {
+            width: 100%;
+            padding: 18px 24px;
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: left;
+        }
+        .accordion-trigger:hover { background: var(--gray-light); }
+        .accordion-arrow {
+            font-size: 12px;
+            transition: transform 0.2s;
+            color: var(--text-muted);
+        }
+        .accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .accordion-item.open .accordion-body { max-height: 1000px; }
+        .accordion-content {
+            padding: 0 24px 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .accordion-content p {
+            margin-bottom: 12px;
+        }
+        .accordion-content ul {
+            margin: 8px 0 12px;
+            padding-left: 20px;
+        }
+        .accordion-content li { margin-bottom: 6px; }
+
+        /* ── CTA Banner ───────────────────────────────────── */
+        .cta-banner {
+            background: var(--maroon);
+            color: var(--white);
+            border-radius: var(--radius);
+            padding: 48px 40px;
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .cta-banner h3 {
+            font-family: var(--font-heading);
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+        .cta-banner p {
+            opacity: 0.9;
+            font-size: 15px;
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn:hover { text-decoration: none; }
+        .btn-primary {
+            background: var(--white);
+            color: var(--maroon);
+        }
+        .btn-primary:hover { background: var(--gray-bg); color: var(--maroon); }
+
+        /* ── Footer ───────────────────────────────────────── */
+        .site-footer {
+            background: var(--gray-dark);
+            color: rgba(255,255,255,0.7);
+            padding: 40px 24px;
+            font-size: 13px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .footer-brand strong {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--white);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .footer-brand span {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+        }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .footer-links a:hover { color: var(--white); text-decoration: underline; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 16px auto 0;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+        }
+
+        /* ── Responsive ───────────────────────────────────── */
+        @media (max-width: 900px) {
+            .hero { padding: 48px 20px 44px; }
+            .main { padding: 32px 16px; }
+            .brand-search input { width: 180px; }
+        }
+        @media (max-width: 768px) {
+            .hero h2 { font-size: 30px; }
+            .hero { padding: 48px 20px 44px; }
+            .main { padding: 32px 16px; }
+            .top-strip-left { display: none; }
+            .brand-band-inner { flex-direction: column; align-items: flex-start; gap: 16px; padding: 14px 20px; }
+            .brand-search input { width: 100%; }
+            .brand-search { width: 100%; }
+            .brand-suite { padding-left: 14px; margin-left: 14px; }
+            .brand-lockup img { height: 46px; }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; }
+            .accordion-item.open .accordion-body { max-height: 1400px; }
+        }
+        @media (max-width: 480px) {
+            .hero h2 { font-size: 24px; }
+            .cta-banner { padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     TIER 1: TOP MAROON STRIP
+     ════════════════════════════════════════════════════════ -->
+<div class="top-strip">
+    <div class="top-strip-inner">
+        <span class="top-strip-left">Texas A&amp;M University</span>
+        <nav class="top-strip-links" aria-label="University links">
+            <a href="https://mays.tamu.edu" target="_blank" rel="noopener">Mays</a>
+            <a href="https://www.tamu.edu" target="_blank" rel="noopener">TAMU</a>
+            <a href="https://mays.tamu.edu/teaching-learning-innovation/" target="_blank" rel="noopener">TLI</a>
+            <a href="mailto:jeffrey.jones@tamu.edu?subject=Learning%20Design%20Suite%20Feedback">Feedback</a>
+        </nav>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TIER 2: BRAND BAND (logo + suite mark + search)
+     ════════════════════════════════════════════════════════ -->
+<div class="brand-band">
+    <div class="brand-band-inner">
+        <a href="index.html" class="brand-lockup" aria-label="Mays Business School home">
+            <img src="assets/mays-primary-logo.png" alt="Mays Business School, Texas A&amp;M University">
+            <span class="brand-suite">
+                <span class="suite-eyebrow">Teaching &amp; Learning Innovation</span>
+                <span class="suite-title">Learning Design Suite</span>
+            </span>
+        </a>
+        <form class="brand-search" role="search" onsubmit="event.preventDefault();">
+            <label for="suiteSearch" class="sr-only" style="position:absolute;left:-9999px;">Search tools</label>
+            <input type="search" id="suiteSearch" placeholder="Search tools, policies, resources" autocomplete="off">
+            <button type="submit" aria-label="Search">&#128269;</button>
+        </form>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TIER 3: PRIMARY NAVIGATION
+     ════════════════════════════════════════════════════════ -->
+<nav class="site-nav" aria-label="Primary">
+    <div class="nav-inner">
+        <a href="index.html">Overview</a>
+        <a href="tools.html">AI Tools</a>
+        <a href="design-tools.html">Design Tools</a>
+        <a href="policy.html" class="active">Policy &amp; Governance</a>
+        <a href="literacy.html">AI Literacy</a>
+        <a href="resources.html">Resources</a>
+    </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════
+     HERO / INTRO BANNER
+     ════════════════════════════════════════════════════════ -->
+<section class="hero">
+    <div class="hero-inner">
+        <h2>Policy &amp; Governance</h2>
+        <p>Institutional policies governing AI use in teaching, learning design, and student assessment at Mays Business School. All policies align with Texas A&amp;M University System regulations.</p>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     MAIN CONTENT: POLICY ACCORDION
+     ════════════════════════════════════════════════════════ -->
+<main class="main">
+
+    <div class="accordion">
+        <!-- Policy 1: Acceptable Use of AI in Course Design (open by default) -->
+        <div class="accordion-item open">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                <span>Acceptable Use of AI in Course Design</span>
+                <span class="accordion-arrow">&#9660;</span>
+            </button>
+            <div class="accordion-body">
+                <div class="accordion-content">
+                    <p>AI tools may be used to support course design activities including content drafting, rubric development, and learning objective alignment. All AI-generated content must be reviewed, verified for accuracy, and edited by the responsible faculty member or learning designer before being published to students.</p>
+                    <ul>
+                        <li>AI outputs are starting points, not final products</li>
+                        <li>Faculty retain full responsibility for course content accuracy</li>
+                        <li>AI-generated content must meet Mays accessibility standards (WCAG 2.1 AA)</li>
+                        <li>Proprietary or FERPA-protected data must never be entered into public AI tools</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy 2: Student-Facing AI Disclosure Requirements -->
+        <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                <span>Student-Facing AI Disclosure Requirements</span>
+                <span class="accordion-arrow">&#9660;</span>
+            </button>
+            <div class="accordion-body">
+                <div class="accordion-content">
+                    <p>Courses that permit or require student use of AI tools must include a clear AI use policy in the syllabus. This statement should specify which tools are allowed, how they may be used, and citation expectations.</p>
+                    <ul>
+                        <li>Include an AI use statement in the syllabus (template available below)</li>
+                        <li>Define permitted vs. prohibited uses per assignment</li>
+                        <li>Require students to disclose AI use where applicable</li>
+                        <li>Provide guidance on proper citation of AI-generated content</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy 3: Data Privacy and FERPA Compliance -->
+        <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                <span>Data Privacy and FERPA Compliance</span>
+                <span class="accordion-arrow">&#9660;</span>
+            </button>
+            <div class="accordion-body">
+                <div class="accordion-content">
+                    <p>AI tools used in course design and delivery must comply with FERPA regulations and Texas A&amp;M data governance standards. No student personally identifiable information (PII) may be processed through AI tools that lack institutional data processing agreements.</p>
+                    <ul>
+                        <li>Do not enter student names, UINs, grades, or email addresses into AI tools</li>
+                        <li>Use only institutionally licensed or approved AI platforms for student data</li>
+                        <li>Microsoft Copilot (via TAMU license) is the only tool currently approved for use with internal institutional data</li>
+                        <li>Contact TLI before integrating any new AI tool that will process student information</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy 4: Academic Integrity and AI Detection -->
+        <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                <span>Academic Integrity and AI Detection</span>
+                <span class="accordion-arrow">&#9660;</span>
+            </button>
+            <div class="accordion-body">
+                <div class="accordion-content">
+                    <p>Mays Business School supports a balanced approach to academic integrity in the age of AI. Detection-based strategies alone are unreliable and should not be the primary mechanism for safeguarding academic integrity. Design-first strategies produce more durable results.</p>
+                    <ul>
+                        <li>AI detection tools produce probabilistic estimates, not definitive findings, and should never be the sole basis for academic misconduct determinations</li>
+                        <li>Assignment design is the most effective academic integrity strategy: build assessments that require personal application, reflection, process documentation, or in-class performance</li>
+                        <li>When AI use is permitted, require disclosure through an AI Use Statement rather than relying on detection after the fact</li>
+                        <li>Document your AI policy expectations clearly in every syllabus and assignment description</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy 5: Accessibility Requirements for AI-Generated Content -->
+        <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                <span>Accessibility Requirements for AI-Generated Content</span>
+                <span class="accordion-arrow">&#9660;</span>
+            </button>
+            <div class="accordion-body">
+                <div class="accordion-content">
+                    <p>All AI-generated content published in Canvas or distributed to students must meet the same accessibility standards as any other course material. AI tools do not reliably produce accessible output by default.</p>
+                    <ul>
+                        <li>Check heading structure, alt text, and reading order on all AI-generated documents</li>
+                        <li>Verify color contrast ratios meet WCAG 2.1 AA (4.5:1 for body text)</li>
+                        <li>Ensure AI-generated captions and transcripts are edited for accuracy</li>
+                        <li>Use the Ally accessibility checker in Canvas before publishing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         CTA BANNER
+         ════════════════════════════════════════════════════ -->
+    <div class="cta-banner">
+        <h3>Questions about AI policy in your course?</h3>
+        <p>TLI is here to help you navigate AI integration, from tool selection to policy compliance. Reach out to start a conversation.</p>
+        <a href="mailto:jeffrey.jones@tamu.edu" class="btn btn-primary">Contact TLI &#8594;</a>
+    </div>
+
+</main>
+
+<!-- ════════════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <strong>Teaching &amp; Learning Innovation</strong>
+            <span>Mays Business School &bull; Texas A&amp;M University</span>
+        </div>
+        <div class="footer-links">
+            <a href="https://mays.tamu.edu" target="_blank">Mays Business School</a>
+            <a href="https://www.tamu.edu" target="_blank">Texas A&amp;M University</a>
+            <a href="mailto:jeffrey.jones@tamu.edu">Contact</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 Mays Business School. All rights reserved. &bull; Last updated April 2026
+    </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ════════════════════════════════════════════════════════ -->
+<script>
+    function toggleAccordion(trigger) {
+        const item = trigger.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+    }
+</script>
+
+</body>
+</html>
